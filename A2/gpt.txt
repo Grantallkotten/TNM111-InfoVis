@@ -4,120 +4,166 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Scatter Plot Visualization</title>
+    <style>
+      canvas {
+        border: 1px solid #000;
+      }
+    </style>
   </head>
   <body>
-    <canvas id="scatterPlotCanvas" width="800" height="600"></canvas>
+    <canvas id="scatterPlotCanvas" width="600" height="400"></canvas>
 
     <script>
-      // Function to parse CSV data
-      function parseCSV(csvData) {
-        const rows = csvData.split("\n");
-        const data = [];
-        for (const row of rows) {
-          const values = row.split(",");
-          data.push({
-            x: parseFloat(values[0]),
-            y: parseFloat(values[1]),
-            category: values[2],
-          });
-        }
-        return data;
-      }
-
-      // Function to draw scatter plot
-      function drawScatterPlot(data) {
-        const canvas = document.getElementById("scatterPlotCanvas");
-        const ctx = canvas.getContext("2d");
-
-        // Set value ranges based on data
-        const xValues = data.map((point) => point.x);
-        const yValues = data.map((point) => point.y);
-        const minX = Math.min(...xValues);
-        const maxX = Math.max(...xValues);
-        const minY = Math.min(...yValues);
-        const maxY = Math.max(...yValues);
-
-        // Map data points to canvas coordinates
-        const mapX = (x) => ((x - minX) / (maxX - minX)) * canvas.width;
-        const mapY = (y) =>
-          canvas.height - ((y - minY) / (maxY - minY)) * canvas.height;
-
-        // Draw x-axis ticks and values
-        for (let i = 0; i <= 10; i++) {
-          const tickX = i * (canvas.width / 10);
-          const tickValueX = minX + (i / 10) * (maxX - minX);
-
-          ctx.beginPath();
-          ctx.moveTo(tickX, canvas.height - 5);
-          ctx.lineTo(tickX, canvas.height + 5);
-          ctx.stroke();
-
-          ctx.font = "10px Arial";
-          ctx.fillStyle = "black";
-          ctx.fillText(tickValueX.toFixed(1), tickX - 15, canvas.height + 15);
+      document.addEventListener("DOMContentLoaded", function () {
+        // Function to read the CSV file
+        function readCSV(file, callback) {
+          let xhr = new XMLHttpRequest();
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+              callback(xhr.responseText);
+            }
+          };
+          xhr.open("GET", file, true);
+          xhr.send();
         }
 
-        // Draw y-axis ticks and values
-        for (let i = 0; i <= 10; i++) {
-          const tickY = i * (canvas.height / 10);
-          const tickValueY = minY + (i / 10) * (maxY - minY);
+        // Function to parse CSV data
+        function parseCSV(csvData) {
+          let rows = csvData.split("\n");
+          let data = [];
+          let dataPoint;
 
-          ctx.beginPath();
-          ctx.moveTo(canvas.width - 5, tickY);
-          ctx.lineTo(canvas.width + 5, tickY);
-          ctx.stroke();
+          for (let i = 0; i < rows.length; i++) {
+            let columns = rows[i].split(",");
+            if (columns.length === 3) {
+              data.push({
+                x: parseFloat(columns[0]),
+                y: parseFloat(columns[1]),
+                className: columns[2].trim(),
+              });
+            }
+          }
 
-          ctx.font = "10px Arial";
-          ctx.fillStyle = "black";
-          ctx.fillText(tickValueY.toFixed(1), canvas.width + 10, tickY + 5);
+          return data;
         }
 
-        // Draw x-axis
-        ctx.beginPath();
-        ctx.moveTo(0, mapY(0));
-        ctx.lineTo(canvas.width, mapY(0));
-        ctx.stroke();
+        // Function to create the scatter plot
+        function createScatterPlot(data) {
+          const scatterPlot = document.getElementById("scatter-plot");
 
-        // Draw y-axis
-        ctx.beginPath();
-        ctx.moveTo(mapX(0), 0);
-        ctx.lineTo(mapX(0), canvas.height);
-        ctx.stroke();
+          // Calculate value ranges
+          const xValues = data.map((point) => point.x);
+          const yValues = data.map((point) => point.y);
+          const xRange = {
+            min: Math.min(...xValues),
+            max: Math.max(...xValues),
+          };
+          const yRange = {
+            min: Math.min(...yValues),
+            max: Math.max(...yValues),
+          };
 
-        // Draw data points with color and labels
-        for (const point of data) {
-          const x = mapX(point.x);
-          const y = mapY(point.y);
-          ctx.beginPath();
-          ctx.arc(x, y, 8, 0, 2 * Math.PI);
-          ctx.fillStyle = getCategoryColor(point.category);
-          ctx.fill();
+          // Draw x-axis
+          const xAxis = document.createElement("div");
+          xAxis.className = "axis axis-x";
+          xAxis.style.bottom = "0";
+          scatterPlot.appendChild(xAxis);
 
-          // Draw label
-          ctx.font = "12px Arial";
-          ctx.fillStyle = "black";
-          ctx.fillText(point.category, x - 4, y + 4);
+          // Draw y-axis
+          const yAxis = document.createElement("div");
+          yAxis.className = "axis axis-y";
+          yAxis.style.left = "0";
+          scatterPlot.appendChild(yAxis);
+
+          // Draw ticks and tick values for x-axis
+          for (let xTick = xRange.min; xTick <= xRange.max; xTick++) {
+            const tick = document.createElement("div");
+            tick.className = "tick";
+            tick.style.bottom = "0";
+            tick.style.left =
+              ((xTick - xRange.min) / (xRange.max - xRange.min)) * 100 + "%";
+            xAxis.appendChild(tick);
+
+            const tickValue = document.createElement("div");
+            tickValue.innerText = xTick;
+            tickValue.style.bottom = "-15px";
+            tickValue.style.left =
+              ((xTick - xRange.min) / (xRange.max - xRange.min)) * 100 + "%";
+            xAxis.appendChild(tickValue);
+          }
+
+          // Draw ticks and tick values for y-axis
+          for (let yTick = yRange.min; yTick <= yRange.max; yTick++) {
+            const tick = document.createElement("div");
+            tick.className = "tick";
+            tick.style.left = "0";
+            tick.style.bottom =
+              ((yTick - yRange.min) / (yRange.max - yRange.min)) * 100 + "%";
+            yAxis.appendChild(tick);
+
+            const tickValue = document.createElement("div");
+            tickValue.innerText = yTick;
+            tickValue.style.left = "-30px";
+            tickValue.style.bottom =
+              ((yTick - yRange.min) / (yRange.max - yRange.min)) * 100 + "%";
+            yAxis.appendChild(tickValue);
+          }
+
+          // Draw data points with different shapes based on the className
+          for (const point of data) {
+            const dataPoint = document.createElement("div");
+            dataPoint.className = "data-point";
+            dataPoint.style.left =
+              ((point.x - xRange.min) / (xRange.max - xRange.min)) * 100 + "%";
+            dataPoint.style.bottom =
+              ((point.y - yRange.min) / (yRange.max - yRange.min)) * 100 + "%";
+            dataPoint.style.background = getColor(point.className);
+            scatterPlot.appendChild(dataPoint);
+          }
+
+          // Display legend
+          const legend = document.createElement("div");
+          legend.className = "legend";
+          for (const className of Array.from(
+            new Set(data.map((point) => point.className))
+          )) {
+            const legendItem = document.createElement("div");
+            legendItem.className = "legend-item";
+
+            const legendColor = document.createElement("div");
+            legendColor.className = "legend-color";
+            legendColor.style.background = getColor(className);
+            legendItem.appendChild(legendColor);
+
+            const legendText = document.createElement("span");
+            legendText.innerText = className;
+            legendItem.appendChild(legendText);
+
+            legend.appendChild(legendItem);
+          }
+          scatterPlot.appendChild(legend);
         }
-      }
 
-      // Function to get color based on category
-      function getCategoryColor(category) {
-        switch (category) {
-          case "a":
-            return "red";
-          case "b":
-            return "green";
-          case "c":
-            return "blue";
-          default:
-            return "black";
+        // Function to get color based on className
+        function getColor(className) {
+          switch (className) {
+            case "A":
+              return "red";
+            case "B":
+              return "green";
+            case "C":
+              return "blue";
+            default:
+              return "black";
+          }
         }
-      }
 
-      // Load and draw data1.csv
-      const dataCSV = `-12,20,a\n-23,23,a\n50,-12,b\n1,54,c\n2,2,c\n19,-7,b\n-52,19,a\n-1,30,a\n-13,21,a\n30,-22,b\n11,34,c\n-9,17,a\n11,-41,b\n32,-4,b\n-1,21,a\n55,-55,b\n15,-25,b\n32,12,c\n9,7,c\n50,51,c\n-23,13,a\n-34,29,a`;
-      const data = parseCSV(dataCSV);
-      drawScatterPlot(data);
+        readCSV("data1.csv", function (csvContent) {
+          // Parse the CSV data
+          let csvData = parseCSV(csvContent);
+          createScatterPlot(csvData);
+        });
+      });
     </script>
   </body>
 </html>
