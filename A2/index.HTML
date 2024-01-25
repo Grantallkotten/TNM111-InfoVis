@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scatter Plot Visualization</title>
+  </head>
+  <body>
+    <script>
+      // Function to handle the CSV file reading and processing
+      function readCSV() {
+        // Replace 'data1.csv' with your actual CSV file name
+        fetch("data1.csv")
+          .then((response) => response.text())
+          .then((data) => {
+            // Process the CSV data (you can use a CSV parsing library if needed)
+            console.log(data);
+
+            // Example: Split the CSV content into rows
+            var rows = data.split("\n");
+            for (var i = 0; i < rows.length; i++) {
+              var columns = rows[i].split(",");
+              console.log(columns);
+            }
+          })
+          .catch((error) =>
+            console.error("Error reading the CSV file:", error)
+          );
+      }
+
+      // Call the function when the page is loaded
+      window.onload = readCSV;
+    </script>
+  </body>
+</html>
