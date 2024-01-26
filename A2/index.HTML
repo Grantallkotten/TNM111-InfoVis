@@ -12,7 +12,7 @@
         background-color: white;
         border-radius: 0.4vw;
         margin: 1vw;
-        box-shadow: 0 0 1vw white; /* Horizontal offset, vertical offset, blur radius, and color */
+        box-shadow: 0 0 1vw #fff; /* Horizontal offset, vertical offset, blur radius, and color */
       }
     </style>
     <title>Scatter Plot Visualization</title>
@@ -202,9 +202,9 @@
           }
 
           // Draw x = 0
-          ctx.setLineDash([5, 5]);
+          ctx.setLineDash([]);
           ctx.beginPath();
-          ctx.fillStyle = "#1C355C";
+          ctx.strokeStyle = "#555555a8";
           ctx.moveTo((0 - minX) * scaleX, 0 + padding);
           ctx.lineTo((0 - minX) * scaleX, canvas.height - 2 * padding);
           ctx.stroke();
@@ -212,7 +212,7 @@
           ctx.setLineDash([]);
 
           // Draw y = 0
-          ctx.setLineDash([5, 5]);
+          ctx.setLineDash([]);
           ctx.beginPath();
           ctx.moveTo(0 + padding, (0 - minY) * scaleY);
           ctx.lineTo(canvas.width - padding, (0 - minY) * scaleY);
@@ -344,7 +344,7 @@
         }
 
         // Load CSV file on document load
-        readCSV("data1.csv", function (csvContent) {
+        readCSV("data2.csv", function (csvContent) {
           let csvData = parseCSV(csvContent);
           drawScatterPlot(csvData);
         });
