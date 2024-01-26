@@ -11,10 +11,17 @@
     <title>Scatter Plot Visualization</title>
   </head>
   <body>
-    <canvas id="scatterPlotCanvas" width="600" height="400"></canvas>
+    <canvas id="scatterPlotCanvas"></canvas>
+    <canvas
+      id="legendCanvas"
+      style="width: fit-content; height: fit-content"
+    ></canvas>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        // Dictionary to store colors and shapes for each unique class
+        let dictionary = [];
+
         // Function to read the CSV file
         function readCSV(file, callback) {
           let xhr = new XMLHttpRequest();
@@ -46,143 +53,246 @@
           return data;
         }
 
+        function getClass(className) {
+          let existingClass;
+
+          dictionary.forEach(function (element) {
+            if (element.name == className) {
+              existingClass = element;
+            }
+          });
+          if (existingClass) {
+            return existingClass;
+          }
+          let newClass = {
+            color: "#" + Math.floor(Math.random() * 16777215).toString(16),
+            name: className,
+          };
+          dictionary.push(newClass);
+
+          return newClass;
+        }
+
+        function calculateDistance(point1, point2) {
+          const dx = point1.x - point2.x;
+          const dy = point1.y - point2.y;
+          return Math.sqrt(dx * dx + dy * dy);
+        }
+
         function drawScatterPlot(data) {
+          let coordinates = [];
+          let i = 0;
+          data.forEach((point) => {
+            coordinates.push(point);
+            coordinates[i].y *= -1;
+            i++;
+          });
+
           // Set up the canvas element
           var canvas = document.getElementById("scatterPlotCanvas");
           var ctx = canvas.getContext("2d");
+
           // set canvas size to window size
-          canvas.width = window.innerWidth;
-          canvas.height = window.innerHeight;
+          canvas.width = window.innerWidth * 0.8;
+          canvas.height = window.innerWidth * 0.8;
 
           // Set up min and max values
-          const minX = data
-            .map((point) => point.x)
-            .reduce((min, currentX) => Math.min(min, currentX), Infinity);
+          const minX =
+            data
+              .map((point) => point.x)
+              .reduce((min, currentX) => Math.min(min, currentX), Infinity) -
+            10;
 
-          const minY = data
-            .map((point) => point.y)
-            .reduce((min, currentY) => Math.min(min, currentY), Infinity);
+          const minY =
+            data
+              .map((point) => point.y)
+              .reduce((min, currentY) => Math.min(min, currentY), Infinity) -
+            10;
 
-          const maxX = data
-            .map((point) => point.x)
-            .reduce((max, currentX) => Math.max(max, currentX), -Infinity);
+          const maxX =
+            data
+              .map((point) => point.x)
+              .reduce((max, currentX) => Math.max(max, currentX), -Infinity) +
+            10;
 
-          const maxY = data
-            .map((point) => point.y)
-            .reduce((max, currentY) => Math.max(max, currentY), -Infinity);
+          const maxY =
+            data
+              .map((point) => point.y)
+              .reduce((max, currentY) => Math.max(max, currentY), -Infinity) +
+            10;
 
           // Calculate scale and offset for the plot
-          const scaleX = canvas.width / (maxX - minX);
-          const scaleY = -canvas.height / (maxY - minY);
-
-          const screenOrigin = {
-            x: 0,
-            y: 0,
-          };
-
-          const screenCenter = {
-            x: canvas.width / 2,
-            y: canvas.height / 2,
-          };
-
-          let axisPadding = 20;
-          if (minX > 0) {
-            screenCenter.x = axisPadding;
-          }
-          if (maxY > 0) {
-            screenCenter.y = canvas.height - axisPadding;
-          }
+          const padding = 20;
+          const scaleX = (canvas.width - 2 * padding) / (maxX - minX); // What a pixel is in terms of a x-value
+          const scaleY = (canvas.height - 2 * padding) / (maxY - minY); // What a pixel is in terms of a y-value
 
           const plotOrigin = {
-            x: 0, //canvas.width / 2,
-            y: 0, //canvas.height / 2,
+            x: padding + (0 - minX) * scaleX,
+            y: canvas.height - (padding + (0 - minY)) * scaleY,
           };
 
-          console.log("maxX: " + maxX + "\nminX: " + minX);
-          console.log("\n\nmaxY: " + maxY + "\nminY: " + minY);
-          console.log("scaleX: " + scaleX + "\nscaleY: " + scaleY);
+          /*
+          Om y min och max är mellan 0
+            x_axis_y_axis = origin_y;
+          
 
-          ctx.translate(screenCenter.x, screenCenter.y);
-
-          ctx.scale(scaleX * 0.6, scaleY * 0.6);
-
-          // Draw data points
-          data.forEach((point) => {
-            ctx.beginPath();
-            ctx.arc(
-              point.x + plotOrigin.x,
-              point.y + plotOrigin.y,
-              2, // radius
-              0, // Start ang
-              2 * Math.PI // end ang
-            );
-            ctx.fillStyle = "blue"; //getColor(point.className); // function for color
-            ctx.fill();
-            ctx.stroke();
-          });
-
+          */
           // Draw x-axis
           ctx.beginPath();
-          ctx.moveTo(plotOrigin.x + Math.min(minX, 0), plotOrigin.y); // Move to the bottom-left corner
-          ctx.lineTo(plotOrigin.x + maxX, plotOrigin.y); // Draw to the bottom-right corner
-          ctx.fillStyle = "black"; //getColor(point.className); // function for color
+          ctx.moveTo((minX - minX) * scaleX, (0 - minY) * scaleY);
+          ctx.lineTo((maxX - minX) * scaleX, (0 - minY) * scaleY);
+          ctx.fillStyle = "black";
           ctx.stroke();
 
           for (
             let x = Math.min(Math.ceil(minX / 5) * 5, 0);
-            x <= Math.floor(maxX / 5) * 5;
+            x < Math.floor(maxX / 5) * 5;
             x += 5
           ) {
             if (x != 0) {
               const xPos = x;
               const yPos = 0;
 
-              ctx.save();
-              ctx.scale(1 / scaleX, 1 / scaleY);
-              ctx.font = "24px Arial";
-              ctx.fillText(x.toString(), xPos * scaleX, yPos - 20);
-              ctx.restore();
+              ctx.beginPath();
+              ctx.moveTo((xPos - minX) * scaleX, (yPos - minY - 1) * scaleY);
+              ctx.lineTo((xPos - minX) * scaleX, (yPos - minY + 1) * scaleY);
+              ctx.fillStyle = "black";
+              ctx.stroke();
+
+              ctx.font = scaleX.toString() + "px Arial";
+              ctx.textAlign = "center";
+              ctx.fillText(
+                x.toString(),
+                (xPos - minX) * scaleX,
+                (yPos - minY - 1.5) * scaleY
+              );
             }
           }
 
           // Draw y-axis
           ctx.beginPath();
-          ctx.moveTo(plotOrigin.x, plotOrigin.y + Math.min(minY, 0)); // Move to the top-left corner
-          ctx.lineTo(plotOrigin.x, plotOrigin.y + maxY); // Draw to the bottom-left corner
-          ctx.fillStyle = "black"; //getColor(point.className); // function for color
+          ctx.moveTo((0 - minX) * scaleX, (minY - minY) * scaleY);
+          ctx.lineTo((0 - minX) * scaleX, (maxY - minY) * scaleY);
+          ctx.strokeStyle = "black";
           ctx.stroke();
 
-          // Draw y-axis labels
           for (
             let y = Math.min(Math.ceil(minY / 5) * 5, 0);
-            y <= Math.floor(maxY / 5) * 5;
+            y < Math.floor(maxY / 5) * 5;
             y += 5
           ) {
             if (y != 0) {
               const xPos = 0;
-              const yPos = y;
+              const yPos = -y;
 
-              // Save the current canvas state
-              ctx.save();
+              ctx.beginPath();
+              ctx.moveTo(
+                (xPos - minX - (1.0 * scaleY) / scaleX) * scaleX,
+                (yPos - minY) * scaleY
+              );
+              ctx.lineTo(
+                (xPos - minX + (1.0 * scaleY) / scaleX) * scaleX,
+                (yPos - minY) * scaleY
+              );
+              ctx.fillStyle = "black";
+              ctx.stroke();
 
-              // Scale only the text
-              ctx.scale(1 / scaleX, 1 / scaleY);
-
-              // Set the font size
-              ctx.font = "24px Arial"; // Adjust the font size as needed
-
-              ctx.fillText(y.toString(), xPos + 20, yPos * scaleY); // Adjust the xOffset as needed
-
-              // Restore the previous canvas state
-              ctx.restore();
+              ctx.font = scaleX.toString() + "px Arial";
+              ctx.textAlign = "center";
+              ctx.fillText(
+                y.toString(),
+                (xPos - minX + 1.5) * scaleX,
+                (yPos - minY) * scaleY
+              );
             }
           }
+
+          // Draw data points
+          data.forEach((point) => {
+            ctx.beginPath();
+            ctx.fillStyle = getClass(point.className).color;
+
+            if (dictionary[0].name == point.className) {
+              ctx.rect(
+                (point.x - minX) * scaleX - 3,
+                (point.y - minY) * scaleY - 3,
+                12, // x-width
+                12 // y-height
+              );
+            } else if (dictionary[1].name == point.className) {
+              const size = 1;
+              ctx.moveTo(
+                (point.x - minX) * scaleX,
+                (point.y - minY - size) * scaleY
+              );
+              ctx.lineTo(
+                (point.x - minX + size) * scaleX,
+                (point.y - minY + size) * scaleY
+              );
+              ctx.lineTo(
+                (point.x - minX - size) * scaleX,
+                (point.y - minY + size) * scaleY
+              );
+            } else {
+              ctx.arc(
+                (point.x - minX) * scaleX,
+                (point.y - minY) * scaleY,
+                6, // radius
+                0, // Start ang
+                2 * Math.PI // end ang
+              );
+            }
+            ctx.fill();
+            ctx.stroke();
+          });
+
+          // Draw legend
+          drawLegend();
+        }
+
+        function drawLegend() {
+          var legendCanvas = document.getElementById("legendCanvas");
+          var legendCtx = legendCanvas.getContext("2d");
+
+          let legendX = 30;
+          let legendY = 30;
+          const legendSpacing = 40;
+          const size = 24;
+
+          dictionary.forEach((item) => {
+            legendCtx.beginPath();
+            legendCtx.fillStyle = item.color;
+
+            if (item.name === dictionary[0].name) {
+              legendCtx.rect(
+                legendX - size / 2,
+                legendY - size / 2,
+                size,
+                size
+              );
+            } else if (item.name === dictionary[1].name) {
+              legendCtx.moveTo(legendX, legendY - size / 2);
+              legendCtx.lineTo(legendX + size / 2, legendY + size / 2);
+              legendCtx.lineTo(legendX - size / 2, legendY + size / 2);
+            } else {
+              legendCtx.arc(legendX, legendY, size / 2, 0, 2 * Math.PI);
+            }
+            legendCtx.fill();
+            legendCtx.stroke();
+
+            legendCtx.fillStyle = "black";
+
+            legendCtx.font = size + "px Arial";
+            legendCtx.textAlign = "left";
+            legendCtx.fillText(item.name, legendX + 20, legendY + 5);
+
+            legendY += legendSpacing;
+          });
         }
 
         // Load CSV file on document load
         readCSV("data2.csv", function (csvContent) {
           let csvData = parseCSV(csvContent);
-          console.log(csvData);
           drawScatterPlot(csvData);
         });
       });

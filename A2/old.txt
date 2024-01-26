@@ -1,0 +1,93 @@
+ const screenOrigin = {
+            x: 0,
+            y: 0,
+          };
+
+          const screenCenter = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+          };
+
+          const plotOrigin = {
+            x: 0, //canvas.width / 2,
+            y: 0, //canvas.height / 2,
+          };
+
+          console.log("maxX: " + maxX + "\nminX: " + minX);
+          console.log("\n\nmaxY: " + maxY + "\nminY: " + minY);
+          console.log("scaleX: " + scaleX + "\nscaleY: " + scaleY);
+
+          // ctx.translate(screenCenter.x, screenCenter.y); // Dåliga
+          // ctx.scale(scaleX, scaleY); // Dåliga
+
+          // Draw data points
+          data.forEach((point) => {
+            ctx.beginPath();
+            ctx.arc(
+              (point.x - minX) * scaleX + plotOrigin.x,
+              (point.y - minY) * scaleY + plotOrigin.y,
+              6, // radius
+              0, // Start ang
+              2 * Math.PI // end ang
+            );
+            ctx.fillStyle = getColor(point.className); //getColor(point.className); // function for color
+            ctx.fill();
+            ctx.stroke();
+          });
+
+          // Draw x-axis
+          ctx.beginPath();
+          ctx.moveTo(plotOrigin.x + Math.min(minX, 0), plotOrigin.y); // Move to the bottom-left corner
+          ctx.lineTo(plotOrigin.x + maxX, plotOrigin.y); // Draw to the bottom-right corner
+          ctx.fillStyle = "black"; //getColor(point.className); // function for color
+          ctx.stroke();
+
+          for (
+            let x = Math.min(Math.ceil(minX / 5) * 5, 0);
+            x <= Math.floor(maxX / 5) * 5;
+            x += 5
+          ) {
+            if (x != 0) {
+              const xPos = x;
+              const yPos = 0;
+
+              ctx.save();
+              ctx.scale(1 / scaleX, 1 / scaleY);
+              ctx.font = "4px Arial";
+              ctx.fillText(x.toString(), xPos * scaleX, yPos - 20);
+              ctx.restore();
+            }
+          }
+
+          // Draw y-axis
+          ctx.beginPath();
+          ctx.moveTo(plotOrigin.x, plotOrigin.y + Math.min(minY, 0)); // Move to the top-left corner
+          ctx.lineTo(plotOrigin.x, plotOrigin.y + maxY); // Draw to the bottom-left corner
+          ctx.fillStyle = "black"; //getColor(point.className); // function for color
+          ctx.stroke();
+
+          // Draw y-axis labels
+          for (
+            let y = Math.min(Math.ceil(minY / 5) * 5, 0);
+            y <= Math.floor(maxY / 5) * 5;
+            y += 5
+          ) {
+            if (y != 0) {
+              const xPos = 0;
+              const yPos = y;
+
+              // Save the current canvas state
+              ctx.save();
+
+              // Scale only the text
+              ctx.scale(1 / scaleX, 1 / scaleY);
+
+              // Set the font size
+              ctx.font = "24px Arial"; // Adjust the font size as needed
+
+              ctx.fillText(y.toString(), xPos + 20, yPos * scaleY); // Adjust the xOffset as needed
+
+              // Restore the previous canvas state
+              ctx.restore();
+            }
+          }
