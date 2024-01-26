@@ -4,8 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
+      body {
+        background-color: #363744;
+        display: flex;
+      }
       canvas {
-        border: 1px solid #ccc;
+        background-color: white;
+        border-radius: 0.4vw;
+        margin: 1vw;
+        box-shadow: 0 0 1vw white; /* Horizontal offset, vertical offset, blur radius, and color */
       }
     </style>
     <title>Scatter Plot Visualization</title>
@@ -45,7 +52,7 @@
             if (columns.length === 3) {
               data.push({
                 x: parseFloat(columns[0]),
-                y: parseFloat(columns[1]),
+                y: -parseFloat(columns[1]),
                 className: columns[2].trim(),
               });
             }
@@ -80,21 +87,15 @@
         }
 
         function drawScatterPlot(data) {
-          let coordinates = [];
-          let i = 0;
-          data.forEach((point) => {
-            coordinates.push(point);
-            coordinates[i].y *= -1;
-            i++;
-          });
+          console.log(data);
 
           // Set up the canvas element
           var canvas = document.getElementById("scatterPlotCanvas");
           var ctx = canvas.getContext("2d");
 
           // set canvas size to window size
-          canvas.width = window.innerWidth * 0.8;
-          canvas.height = window.innerWidth * 0.8;
+          canvas.width = window.innerWidth * 0.9;
+          canvas.height = window.innerWidth * 0.9;
 
           // Set up min and max values
           const minX =
@@ -131,16 +132,10 @@
             y: canvas.height - (padding + (0 - minY)) * scaleY,
           };
 
-          /*
-          Om y min och max är mellan 0
-            x_axis_y_axis = origin_y;
-          
-
-          */
           // Draw x-axis
           ctx.beginPath();
-          ctx.moveTo((minX - minX) * scaleX, (0 - minY) * scaleY);
-          ctx.lineTo((maxX - minX) * scaleX, (0 - minY) * scaleY);
+          ctx.moveTo(0 + padding, 0 + padding);
+          ctx.lineTo(0 + padding, canvas.height - 2 * padding);
           ctx.fillStyle = "black";
           ctx.stroke();
 
@@ -149,30 +144,36 @@
             x < Math.floor(maxX / 5) * 5;
             x += 5
           ) {
-            if (x != 0) {
-              const xPos = x;
-              const yPos = 0;
-
+            const xPos = x;
+            const yPos = 0;
+            const tickSize = 6;
+            if (5 < xPos - minX) {
               ctx.beginPath();
-              ctx.moveTo((xPos - minX) * scaleX, (yPos - minY - 1) * scaleY);
-              ctx.lineTo((xPos - minX) * scaleX, (yPos - minY + 1) * scaleY);
+              ctx.moveTo(
+                (xPos - minX) * scaleX,
+                canvas.height - 2 * padding - tickSize
+              );
+              ctx.lineTo(
+                (xPos - minX) * scaleX,
+                canvas.height - 2 * padding + tickSize
+              );
               ctx.fillStyle = "black";
               ctx.stroke();
 
               ctx.font = scaleX.toString() + "px Arial";
               ctx.textAlign = "center";
               ctx.fillText(
-                x.toString(),
+                xPos.toString(),
                 (xPos - minX) * scaleX,
-                (yPos - minY - 1.5) * scaleY
+                canvas.height - 2 * padding - 20
               );
             }
           }
 
           // Draw y-axis
           ctx.beginPath();
-          ctx.moveTo((0 - minX) * scaleX, (minY - minY) * scaleY);
-          ctx.lineTo((0 - minX) * scaleX, (maxY - minY) * scaleY);
+          ctx.moveTo(0 + padding, canvas.width - 2 * padding);
+          ctx.lineTo(canvas.width - 2 * padding, canvas.height - 2 * padding);
           ctx.strokeStyle = "black";
           ctx.stroke();
 
@@ -181,31 +182,43 @@
             y < Math.floor(maxY / 5) * 5;
             y += 5
           ) {
-            if (y != 0) {
-              const xPos = 0;
-              const yPos = -y;
+            const xPos = 0;
+            const yPos = y;
+            let tickSize = 6;
 
-              ctx.beginPath();
-              ctx.moveTo(
-                (xPos - minX - (1.0 * scaleY) / scaleX) * scaleX,
-                (yPos - minY) * scaleY
-              );
-              ctx.lineTo(
-                (xPos - minX + (1.0 * scaleY) / scaleX) * scaleX,
-                (yPos - minY) * scaleY
-              );
-              ctx.fillStyle = "black";
-              ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(0 + padding - tickSize, (yPos - minY) * scaleY);
+            ctx.lineTo(0 + padding + tickSize, (yPos - minY) * scaleY);
+            ctx.fillStyle = "black";
+            ctx.stroke();
 
-              ctx.font = scaleX.toString() + "px Arial";
-              ctx.textAlign = "center";
-              ctx.fillText(
-                y.toString(),
-                (xPos - minX + 1.5) * scaleX,
-                (yPos - minY) * scaleY
-              );
-            }
+            ctx.font = scaleX.toString() + "px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText(
+              (-y).toString(),
+              0 + padding + 20,
+              (yPos - minY) * scaleY
+            );
           }
+
+          // Draw x = 0
+          ctx.setLineDash([5, 5]);
+          ctx.beginPath();
+          ctx.fillStyle = "#1C355C";
+          ctx.moveTo((0 - minX) * scaleX, 0 + padding);
+          ctx.lineTo((0 - minX) * scaleX, canvas.height - 2 * padding);
+          ctx.stroke();
+          // Reset line dash to default (solid line)
+          ctx.setLineDash([]);
+
+          // Draw y = 0
+          ctx.setLineDash([5, 5]);
+          ctx.beginPath();
+          ctx.moveTo(0 + padding, (0 - minY) * scaleY);
+          ctx.lineTo(canvas.width - padding, (0 - minY) * scaleY);
+          ctx.stroke();
+          // Reset line dash to default (solid line)
+          ctx.setLineDash([]);
 
           // Draw data points
           data.forEach((point) => {
@@ -250,13 +263,54 @@
           drawLegend();
         }
 
+        function drawPoints(points, ctx) {
+          data.forEach((point) => {
+            ctx.beginPath();
+            ctx.fillStyle = getClass(point.className).color;
+
+            if (dictionary[0].name == point.className) {
+              ctx.rect(
+                (point.x - minX) * scaleX - 3,
+                (point.y - minY) * scaleY - 3,
+                12, // x-width
+                12 // y-height
+              );
+            } else if (dictionary[1].name == point.className) {
+              const size = 1;
+              ctx.moveTo(
+                (point.x - minX) * scaleX,
+                (point.y - minY - size) * scaleY
+              );
+              ctx.lineTo(
+                (point.x - minX + size) * scaleX,
+                (point.y - minY + size) * scaleY
+              );
+              ctx.lineTo(
+                (point.x - minX - size) * scaleX,
+                (point.y - minY + size) * scaleY
+              );
+            } else {
+              ctx.arc(
+                (point.x - minX) * scaleX,
+                (point.y - minY) * scaleY,
+                6, // radius
+                0, // Start ang
+                2 * Math.PI // end ang
+              );
+            }
+            ctx.fill();
+            ctx.stroke();
+          });
+        }
+
         function drawLegend() {
           var legendCanvas = document.getElementById("legendCanvas");
           var legendCtx = legendCanvas.getContext("2d");
 
+          const legendSpacing = 30;
+
           let legendX = 30;
-          let legendY = 30;
-          const legendSpacing = 40;
+          let legendY = legendSpacing;
           const size = 24;
 
           dictionary.forEach((item) => {
@@ -285,13 +339,12 @@
             legendCtx.font = size + "px Arial";
             legendCtx.textAlign = "left";
             legendCtx.fillText(item.name, legendX + 20, legendY + 5);
-
             legendY += legendSpacing;
           });
         }
 
         // Load CSV file on document load
-        readCSV("data2.csv", function (csvContent) {
+        readCSV("data1.csv", function (csvContent) {
           let csvData = parseCSV(csvContent);
           drawScatterPlot(csvData);
         });
