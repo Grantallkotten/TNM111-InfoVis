@@ -42,6 +42,9 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        let dictionary = [];
+        var canvas = document.getElementById("scatterPlotCanvas");
+
         // Toggle button event listener
         var toggleButton = document.getElementById("toggleButton");
         toggleButton.addEventListener("click", function () {
@@ -51,13 +54,13 @@
 
           // Load the new CSV file
           readCSV(currentDataSource, function (csvContent) {
+            dictionary = [];
             let csvData = parseCSV(csvContent);
             drawScatterPlot(csvData);
           });
         });
 
         // Dictionary to store colors and shapes for each unique class
-        let dictionary = [];
 
         // Function to read the CSV file
         function readCSV(file, callback) {
@@ -117,11 +120,9 @@
         }
 
         function drawScatterPlot(data) {
-          console.log(data);
-
           // Set up the canvas element
-          var canvas = document.getElementById("scatterPlotCanvas");
           var ctx = canvas.getContext("2d");
+          ctx.clearRect(0, 0, legendCanvas.width, legendCanvas.height);
 
           // set canvas size to window size
           canvas.width = window.innerWidth * 0.6;
@@ -336,6 +337,7 @@
         function drawLegend() {
           var legendCanvas = document.getElementById("legendCanvas");
           var legendCtx = legendCanvas.getContext("2d");
+          legendCtx.clearRect(0, 0, legendCanvas.width, legendCanvas.height);
 
           const legendSpacing = 30;
 
