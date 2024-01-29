@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", function () {
   let scaleX;
   let scaleY;
   let clickedForHiglight = [];
-  let highlightPoint = [];
 
   // Toggle button event listener
   var toggleButton = document.getElementById("toggleButton");
@@ -21,8 +20,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Load the new CSV file
     readCSV(currentDataSource, function (csvContent) {
+      var ctx = canvas.getContext("2d");
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      clickedForHiglight = [];
       dictionary = [];
-      let csvData = parseCSV(csvContent);
+      csvData = parseCSV(csvContent);
       drawScatterPlot(csvData);
     });
   });
@@ -373,13 +377,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const pixelY = event.clientY - rect.top;
 
     // Translate pixel coordinates to plot coordinates
-    const plotX = (pixelX - padding) / scaleX + minX;
-    const plotY = (pixelY - padding) / scaleY + minY;
+    const plotX = pixelX / scaleX + minX;
+    const plotY = pixelY / scaleY + minY;
 
     // Find the closest point in the data to where you clicked
     let closestPoint;
     let minDistance = Infinity;
-    let threshold = 7;
+    let threshold = 6;
 
     csvData.forEach((point) => {
       const distance = calculateDistance({ x: plotX, y: plotY }, point);
@@ -389,17 +393,11 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
     if (minDistance < threshold) {
+      console.log(closestPoint);
       if (closestPoint.closestPoints == null) {
         const closestPoints = findClosestPoints(closestPoint, csvData, 5);
         closestPoint.closestPoints = closestPoints;
-
-        //ctx.clearRect(0, 0, canvas.width, canvas.height);
-        //drawScatterPlot(csvData);
-        //drawClosestPoints(closestPoints, ctx);
         clickedForHiglight.push(closestPoint);
-        // let highlightPoint = [];
-        // highlightPoint.push(closestPoint);
-        // highlightPoints(highlightPoint, ctx);
       } else {
         closestPoint.closestPoints = null;
         // Remove closestPoint from clickedForHighlight array
