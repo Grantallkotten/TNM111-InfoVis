@@ -7,12 +7,27 @@
       body {
         background-color: #363744;
         display: flex;
+        margin: 1vw 1vw;
       }
       canvas {
         background-color: white;
         border-radius: 0.4vw;
         margin: 1vw;
-        box-shadow: 0 0 1vw #fff; /* Horizontal offset, vertical offset, blur radius, and color */
+        box-shadow: 0 0 1vw #c0c0c0; /* Horizontal offset, vertical offset, blur radius, and color */
+      }
+      button {
+        margin: 1vw;
+        width: 20vw;
+        height: 10vh;
+        border-radius: 1vw;
+        background-color: #ffffff;
+        cursor: pointer;
+        border: 1px solid #dbe2e7; /* Border width, style, and color */
+        box-shadow: 0 0 1vw #878787;
+      }
+      button:hover {
+        background-color: #d2d2d2;
+        transition: all 300ms;
       }
     </style>
     <title>Scatter Plot Visualization</title>
@@ -23,9 +38,24 @@
       id="legendCanvas"
       style="width: fit-content; height: fit-content"
     ></canvas>
+    <button id="toggleButton">Switch Data Source</button>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        // Toggle button event listener
+        var toggleButton = document.getElementById("toggleButton");
+        toggleButton.addEventListener("click", function () {
+          // Toggle between data sources
+          currentDataSource =
+            currentDataSource === "data1.csv" ? "data2.csv" : "data1.csv";
+
+          // Load the new CSV file
+          readCSV(currentDataSource, function (csvContent) {
+            let csvData = parseCSV(csvContent);
+            drawScatterPlot(csvData);
+          });
+        });
+
         // Dictionary to store colors and shapes for each unique class
         let dictionary = [];
 
@@ -94,8 +124,8 @@
           var ctx = canvas.getContext("2d");
 
           // set canvas size to window size
-          canvas.width = window.innerWidth * 0.9;
-          canvas.height = window.innerWidth * 0.9;
+          canvas.width = window.innerWidth * 0.6;
+          canvas.height = window.innerWidth * 0.6;
 
           // Set up min and max values
           const minX =
@@ -344,7 +374,8 @@
         }
 
         // Load CSV file on document load
-        readCSV("data2.csv", function (csvContent) {
+        var currentDataSource = "data1.csv";
+        readCSV(currentDataSource, function (csvContent) {
           let csvData = parseCSV(csvContent);
           drawScatterPlot(csvData);
         });
