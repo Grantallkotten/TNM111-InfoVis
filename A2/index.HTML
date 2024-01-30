@@ -7,7 +7,7 @@
       body {
         background-color: #363744;
         display: flex;
-        margin: 1vw 1vw;
+        margin: 0.1vh 1vw;
       }
       canvas {
         background-color: white;
@@ -16,17 +16,19 @@
         box-shadow: 0 0 1vw #c0c0c0; /* Horizontal offset, vertical offset, blur radius, and color */
       }
       button {
+        color: #fff;
+        font-size: bold;
         margin: 1vw;
-        width: 20vw;
-        height: 10vh;
+        width: 100%;
+        height: 8vh;
         border-radius: 1vw;
-        background-color: #ffffff;
+        background-color: #de7257;
         cursor: pointer;
-        border: 1px solid #dbe2e7; /* Border width, style, and color */
+        border: 1px solid #e7dbdb; /* Border width, style, and color */
         box-shadow: 0 0 1vw #878787;
       }
       button:hover {
-        background-color: #d2d2d2;
+        background-color: #a61818;
         transition: all 300ms;
       }
     </style>
@@ -34,11 +36,15 @@
   </head>
   <body>
     <canvas id="scatterPlotCanvas"></canvas>
-    <canvas
-      id="legendCanvas"
-      style="width: fit-content; height: fit-content"
-    ></canvas>
-    <button id="toggleButton">Switch Data Source</button>
+    <div style="display: list-item; list-style: none">
+      <div>
+        <canvas
+          id="legendCanvas"
+          style="width: 100%; height: fit-content"
+        ></canvas>
+      </div>
+      <button id="toggleButton">Switch Data Source</button>
+    </div>
 
     <script defer src="plot.js"></script>
   </body>

@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+  let canvasScaler = 0.4;
   let csvData;
   let dictionary = [];
   var canvas = document.getElementById("scatterPlotCanvas");
@@ -91,8 +92,8 @@ document.addEventListener("DOMContentLoaded", function () {
     ctx.clearRect(0, 0, legendCanvas.width, legendCanvas.height);
 
     // set canvas size to window size
-    canvas.width = window.innerWidth * 0.6;
-    canvas.height = window.innerWidth * 0.6;
+    canvas.width = window.innerWidth * canvasScaler;
+    canvas.height = window.innerWidth * canvasScaler;
 
     // Set up min and max values
     minX =
@@ -257,7 +258,7 @@ document.addEventListener("DOMContentLoaded", function () {
     data.forEach((point) => {
       ctx.beginPath();
       ctx.strokeStyle = "blue";
-      ctx.lineWidth = 4;
+      ctx.lineWidth = 6;
 
       if (dictionary[0].name == point.className) {
         ctx.rect(
