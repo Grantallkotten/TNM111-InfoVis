@@ -420,6 +420,20 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  function handleLeftClick(event) {
+    const rect = canvas.getBoundingClientRect();
+    const pixelX = event.clientX - rect.left;
+    const pixelY = event.clientY - rect.top;
+
+    // Translate pixel coordinates to plot coordinates
+    const plotX = pixelX / scaleX + minX;
+    const plotY = pixelY / scaleY + minY;
+
+    // ...
+
+    console.log("Left-clicked at plot coordinates:", plotX, plotY);
+  }
+
   function findClosestPoints(targetPoint, allPoints, k) {
     // Calculate distances and store them with their corresponding points
     const distances = allPoints.map((point) => ({
@@ -440,6 +454,10 @@ document.addEventListener("DOMContentLoaded", function () {
   canvas.addEventListener("contextmenu", function (event) {
     event.preventDefault(); // Prevent the default context menu
     handleRightClick(event);
+  });
+
+  canvas.addEventListener("click", function (event) {
+    handleLeftClick(event);
   });
 
   // Load CSV file on document load
