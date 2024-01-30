@@ -258,6 +258,8 @@ document.addEventListener("DOMContentLoaded", function () {
     data.forEach((point) => {
       ctx.beginPath();
       ctx.strokeStyle = "blue";
+      ctx.fillStyle = "none";
+
       ctx.lineWidth = 6;
 
       if (dictionary[0].name == point.className) {
@@ -296,6 +298,8 @@ document.addEventListener("DOMContentLoaded", function () {
     data.forEach((point) => {
       ctx.beginPath();
       ctx.strokeStyle = "red";
+      ctx.fillStyle = "none";
+
       ctx.lineWidth = 2;
 
       if (dictionary[0].name == point.className) {
