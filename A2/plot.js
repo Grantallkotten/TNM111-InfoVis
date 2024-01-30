@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  let canvasScaler = 0.4;
+  let canvasScaler = 0.8;
   let csvData;
   let dictionary = [];
   var canvas = document.getElementById("scatterPlotCanvas");
@@ -226,8 +226,8 @@ document.addEventListener("DOMContentLoaded", function () {
         ctx.rect(
           (point.x - minX) * scaleX - 3,
           (point.y - minY) * scaleY - 3,
-          12, // x-width
-          12 // y-height
+          24, // x-width
+          24 // y-height
         );
       } else if (dictionary[1].name == point.className) {
         const size = 1;
@@ -244,7 +244,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ctx.arc(
           (point.x - minX) * scaleX,
           (point.y - minY) * scaleY,
-          6, // radius
+          12, // radius
           0, // Start ang
           2 * Math.PI // end ang
         );
@@ -254,10 +254,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  function highlightPoints(data, ctx) {
+  function highlightPoints(data, ctx, color) {
     data.forEach((point) => {
       ctx.beginPath();
-      ctx.strokeStyle = "blue";
+      ctx.strokeStyle = color;
       ctx.fillStyle = "none";
 
       ctx.lineWidth = 6;
@@ -266,8 +266,8 @@ document.addEventListener("DOMContentLoaded", function () {
         ctx.rect(
           (point.x - minX) * scaleX - 3,
           (point.y - minY) * scaleY - 3,
-          12, // x-width
-          12 // y-height
+          24, // x-width
+          24 // y-height
         );
       } else if (dictionary[1].name == point.className) {
         const size = 1;
@@ -284,7 +284,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ctx.arc(
           (point.x - minX) * scaleX,
           (point.y - minY) * scaleY,
-          6, // radius
+          12, // radius
           0, // Start ang
           2 * Math.PI // end ang
         );
@@ -306,8 +306,8 @@ document.addEventListener("DOMContentLoaded", function () {
         ctx.rect(
           (point.x - minX) * scaleX - 3,
           (point.y - minY) * scaleY - 3,
-          12, // x-width
-          12 // y-height
+          24, // x-width
+          24 // y-height
         );
       } else if (dictionary[1].name == point.className) {
         const size = 1;
@@ -324,7 +324,46 @@ document.addEventListener("DOMContentLoaded", function () {
         ctx.arc(
           (point.x - minX) * scaleX,
           (point.y - minY) * scaleY,
-          6, // radius
+          12, // radius
+          0, // Start ang
+          2 * Math.PI // end ang
+        );
+      }
+      ctx.fill();
+      ctx.stroke();
+    });
+  }
+
+  function drawPointsUsingColor(data, ctx, color) {
+    data.forEach((point) => {
+      ctx.beginPath();
+      ctx.fillStyle = color;
+
+      ctx.lineWidth = 2;
+
+      if (dictionary[0].name == point.className) {
+        ctx.rect(
+          (point.x - minX) * scaleX - 3,
+          (point.y - minY) * scaleY - 3,
+          24, // x-width
+          24 // y-height
+        );
+      } else if (dictionary[1].name == point.className) {
+        const size = 1;
+        ctx.moveTo((point.x - minX) * scaleX, (point.y - minY - size) * scaleY);
+        ctx.lineTo(
+          (point.x - minX + size) * scaleX,
+          (point.y - minY + size) * scaleY
+        );
+        ctx.lineTo(
+          (point.x - minX - size) * scaleX,
+          (point.y - minY + size) * scaleY
+        );
+      } else {
+        ctx.arc(
+          (point.x - minX) * scaleX,
+          (point.y - minY) * scaleY,
+          12, // radius
           0, // Start ang
           2 * Math.PI // end ang
         );
@@ -390,13 +429,8 @@ document.addEventListener("DOMContentLoaded", function () {
     let minDistance = Infinity;
     let threshold = 6;
 
-    csvData.forEach((point) => {
-      const distance = calculateDistance({ x: plotX, y: plotY }, point);
-      if (distance < minDistance) {
-        minDistance = distance;
-        closestPoint = point;
-      }
-    });
+    [closestPoint, minDistance] = getClosestPoint(plotX, plotY);
+
     if (minDistance < threshold) {
       console.log(closestPoint);
       if (closestPoint.closestPoints == null) {
@@ -413,7 +447,7 @@ document.addEventListener("DOMContentLoaded", function () {
       var ctx = canvas.getContext("2d");
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawScatterPlot(csvData);
-      highlightPoints(clickedForHiglight, ctx);
+      highlightPoints(clickedForHiglight, ctx, "blue");
       clickedForHiglight.forEach((point) => {
         drawClosestPoints(point.closestPoints, ctx);
       });
@@ -429,9 +463,66 @@ document.addEventListener("DOMContentLoaded", function () {
     const plotX = pixelX / scaleX + minX;
     const plotY = pixelY / scaleY + minY;
 
-    // ...
+    // Find the closest point in the data to where you clicked
+    let closestPoint;
+    let minDistance = Infinity;
+    let threshold = 6;
 
-    console.log("Left-clicked at plot coordinates:", plotX, plotY);
+    [closestPoint, minDistance] = getClosestPoint(plotX, plotY);
+
+    if (minDistance < threshold) {
+      let firstQ = [];
+      let secondQ = [];
+      let thirdQ = [];
+      let fourthQ = [];
+
+      csvData.forEach((point) => {
+        if (point.x >= closestPoint.x && point.y > closestPoint.y) {
+          // First quadrant
+          firstQ.push(point);
+        } else if (point.x < closestPoint.x && point.y >= closestPoint.y) {
+          // Second quadrant
+          secondQ.push(point);
+        } else if (point.x <= closestPoint.x && point.y < closestPoint.y) {
+          // Third quadrant
+          thirdQ.push(point);
+        } else if (
+          (point.x >= closestPoint.x && point.y < closestPoint.y) ||
+          (point.x > closestPoint.x && point.y <= closestPoint.y)
+        ) {
+          // Fourth quadrant
+          fourthQ.push(point);
+        }
+      });
+      var ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawScatterPlot(csvData);
+      drawPointsUsingColor(firstQ, ctx, "orange");
+      drawPointsUsingColor(secondQ, ctx, "green");
+      drawPointsUsingColor(thirdQ, ctx, "blue");
+      drawPointsUsingColor(fourthQ, ctx, "yellow");
+      drawPointsUsingColor(
+        [closestPoint],
+        ctx,
+        getClass(closestPoint.className).color
+      );
+      highlightPoints([closestPoint], ctx, "red");
+    }
+  }
+
+  function getClosestPoint(x, y) {
+    let closestPoint;
+    let minDistance = Infinity;
+
+    csvData.forEach((point) => {
+      const distance = calculateDistance({ x: x, y: y }, point);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestPoint = point;
+      }
+    });
+
+    return [closestPoint, minDistance];
   }
 
   function findClosestPoints(targetPoint, allPoints, k) {
