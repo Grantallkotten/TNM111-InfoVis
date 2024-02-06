@@ -1,11 +1,3 @@
-/**
- *
-    Author: Barack Obama
-    Date: Jan 24, 2020
-    TNM111 Lab 1 - Visual Information-Seeking Mantra
-    Focus+Context file
- *
-*/
 function focusPlusContext(data) {
   // Creating margins and figure sizes
   var margin = { top: 20, right: 20, bottom: 150, left: 40 },
@@ -51,51 +43,35 @@ function focusPlusContext(data) {
   /**
    * Task 1 - Parse date with timeParse to year-month-day
    */
-
-  let parseDate = d3.timeParse("%Y-%m-%d");
+  var parseDate = d3.timeParse("%Y-%m-%d");
 
   /**
    * Task 2 - Define scales and axes for scatterplot
    */
-
-  let xScale = d3.scaleTime().range([0, width]);
-  let yScale = d3.scaleLinear().range([height, 0]); // "bigger" y values are down on the screen
-  let xAxis = d3.axisBottom(xScale);
-  let yAxis = d3.axisLeft(yScale);
+  var xScale = d3.scaleTime().range([0, width]);
+  var yScale = d3.scaleLinear().range([height, 0]);
+  var xAxis = d3.axisBottom(xScale);
+  var yAxis = d3.axisLeft(yScale);
 
   /**
    * Task 3 - Define scales and axes for context (Navigation through the data)
    */
+  var navXScale = d3.scaleTime().range([0, width]);
 
-  let navXScale = d3.scaleTime().range([0, width]);
-  let navYScale = d3.scaleLinear().range([height2, 0]);
-  let navXAxis = d3.axisBottom(navXScale);
+  var navYScale = d3.scaleLinear().range([height2, 0]);
+
+  var navXAxis = d3.axisBottom(navXScale);
 
   /**
    * Task 4 - Define the brush for the context graph (Navigation)
    */
-
-  // d3.brushX():
-  //    This creates a new horizontal brush
-  //
-  //  .extent([[0, 0], [width, height2]]):
-  //    This method sets the extent of the brush. The
-  //    extent defines the area within which the brush can be applied. In this case, it's
-  //    set to a rectangle with the top-left corner at [0, 0] and the bottom-right corner
-  //    at [width, height2]. This means the brush can only be used within the specified
-  //    width and height along the x-axis.
-  //
-  // .on("brush", brushed):
-  //    This method sets up an event listener for the "brush" event. When the user
-  //    interacts with the brush (e.g., dragging it), the specified function, brushed,
-  //    will be called.
-  let brush = d3
+  var brush = d3
     .brushX()
     .extent([
       [0, 0],
       [width, height2],
     ])
-    .on("brush", brushed);
+    .on("brush end", brushed);
 
   //Setting scale parameters
   var maxDate = d3.max(data.features, function (d) {
@@ -117,15 +93,12 @@ function focusPlusContext(data) {
   /**
    * Task 5 - Set the axes scales, both for focus and context.
    */
-
-  // X-axis is from time 0 to today (max time)
+  let padding = 1.25;
   xScale.domain([minDate, maxDate_plus]);
-  // y-axis is from value 0 to max value
-  yScale.domain([0, maxMag]);
-
-  // Scale the nav to coresponding x and y value
+  yScale.domain([0, maxMag * padding]);
   navXScale.domain(xScale.domain());
   navYScale.domain(yScale.domain());
+
   //<---------------------------------------------------------------------------------------------------->
 
   /**
@@ -178,16 +151,19 @@ function focusPlusContext(data) {
    */
 
   //Append g tag for plotting the dots and axes
-  var dots = focus.append("g"); // Why?
+  var dots = focus.append("g");
   dots.attr("clip-path", "url(#clip)");
 
   /**
    * Task 10 - Call x and y axis
    */
-  focus.append("g");
-  //here..
-  focus.append("g");
-  //here..
+  focus
+    .append("g")
+    .attr("class", "axis axis--x")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis);
+
+  focus.append("g").attr("class", "axis axis-y").call(yAxis);
 
   //Add y axis label to the scatter plot
   d3.select(".legend").style("left", "170px").style("top", "300px");
@@ -207,7 +183,11 @@ function focusPlusContext(data) {
    */
   selected_dots = dots
     .selectAll("dot")
-    //here..
+    .data(data.features)
+    .enter()
+    .append("circle")
+    .attr("class", "dot")
+    .attr("opacity", 0.8)
     .filter(function (d) {
       return d.properties.EQ_PRIMARY != null;
     })
@@ -222,6 +202,8 @@ function focusPlusContext(data) {
    * Task 12 - Call plot function
    * plot(points,nr,nr) no need to send any integers!
    */
+  var points_selected = new Points();
+  points.plot(selected_dots);
 
   //<---------------------------------------------------------------------------------------------------->
 
@@ -236,6 +218,7 @@ function focusPlusContext(data) {
       /**
        * Task 13 - Update information in the "tooltip" by calling the tooltip function.
        */
+      points_selected.tooltip(d);
 
       //Rescale the dots onhover
       d3.select(this).attr("r", 15);
@@ -292,8 +275,11 @@ function focusPlusContext(data) {
    * The brush function is trying to access things in scatter plot which are not yet
    * implmented if we put the brush before.
    */
-
-  //here..
+  context
+    .append("g")
+    .attr("class", "brush")
+    .call(brush)
+    .call(brush.move, xScale.range());
 
   //<---------------------------------------------------------------------------------------------------->
 
@@ -315,8 +301,8 @@ function focusPlusContext(data) {
       });
 
     focus.select(".axis--x").call(xAxis);
-
-    if (d3.event.type == "end") {
+    //map update on brush instead of on end, more interactive, too slow?
+    if (d3.event.type == "brush") {
       var curr_view_erth = [];
       d3.selectAll(".dot").each(function (d, i) {
         if (
@@ -329,6 +315,7 @@ function focusPlusContext(data) {
       /**
        * Remove comment for updating dots on the map.
        */
+
       curr_points_view = world_map.change_map_points(curr_view_erth);
     }
   }
