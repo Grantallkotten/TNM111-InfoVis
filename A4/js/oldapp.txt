@@ -1,0 +1,105 @@
+const urls = [
+  "../json/starwars-episode-1-interactions-allCharacters.json",
+  "../json/starwars-episode-2-interactions-allCharacters.json",
+  "../json/starwars-episode-3-interactions-allCharacters.json",
+  "../json/starwars-episode-4-interactions-allCharacters.json",
+  "../json/starwars-episode-5-interactions-allCharacters.json",
+  "../json/starwars-episode-6-interactions-allCharacters.json",
+  "../json/starwars-episode-7-interactions-allCharacters.json",
+  "../json/starwars-full-interactions-allCharacters.json",
+];
+
+let SWEp1 = [],
+  SWEp2 = [],
+  SWEp3 = [],
+  SWEp4 = [],
+  SWEp5 = [],
+  SWEp6 = [],
+  SWEp7 = [],
+  SWEAll = [],
+  allData = [];
+
+class data {
+  constructor(episodeName) {
+    this.episode = episodeName;
+    this.nodes = [];
+    this.links = [];
+  }
+}
+
+class node {
+  constructor(name, value, colour) {
+    this.name = name;
+    this.value = value;
+    this.colour = colour;
+  }
+}
+
+class link {
+  constructor(source, target, value) {
+    this.source = source;
+    this.target = target;
+    this.value = value;
+  }
+}
+
+// window.onload = function () {
+//   // Loads in data from json files
+//   let index = 0;
+//   urls.forEach((url) => {
+//     let d = fetchAndProcessSequentially(url);
+//     console.log(d);
+//     index++;
+//   });
+// };
+
+window.onload = function () {
+  // Create an array of promises
+  let promises = urls.map((url) => fetchAndProcessSequentially(url));
+
+  // Wait for all promises to resolve
+  Promise.all(promises)
+    .then((dataArray) => {
+      // dataArray will contain the resolved data for each fetch
+      console.log(dataArray);
+    })
+    .catch((err) => {
+      console.error("Error fetching or processing:", err);
+    });
+};
+
+async function fetchAndProcessSequentially(url) {
+  return await fetch(url)
+    .then((response) => response.json())
+    .then((jsonData) => {
+      const urlParts = url.split("-");
+      let episodeName = urlParts[1] + " " + urlParts[2];
+
+      let theData = new data(episodeName);
+      let theNodes = [];
+      let theLinks = [];
+
+      const nodes = jsonData.nodes; // Array of node objects
+      let index = 0;
+      nodes.forEach((aNode) => {
+        theNodes[index] = new node(aNode.name, aNode.value, aNode.colour);
+        index++;
+      });
+
+      const links = jsonData.links; // Array of link objects
+      index = 0;
+      links.forEach((aLink) => {
+        theLinks[index] = new link(aLink.source, aLink.target, aLink.value);
+        index++;
+      });
+
+      theData.nodes = theNodes;
+      theData.links = theLinks;
+
+      return theData;
+    })
+    .catch((err) => {
+      console.error("Error fetching or processing:", url, err);
+      throw err; // Propagate the error to be caught by Promise.all
+    });
+}
