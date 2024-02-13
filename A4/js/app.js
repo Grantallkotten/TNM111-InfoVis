@@ -67,6 +67,8 @@ let SWEp1 = new SWdata("Episode 1", SWEP1RAW.nodes, SWEP1RAW.links),
   SWEp7 = new SWdata("Episode 7", SWEP7RAW.nodes, SWEP7RAW.links),
   SWAll = new SWdata("All episodes", SWALLRAW.nodes, SWALLRAW.links);
 
+const EPISODES = [SWAll, SWEp1, SWEp2, SWEp3, SWEp4, SWEp5, SWEp6, SWEp7];
+
 let allLinks = SWEp1.links.concat(
   SWEp2.links,
   SWEp3.links,
@@ -91,17 +93,83 @@ async function simulateNodeSystem() {
   const width = contentDiv.clientWidth;
   const height = contentDiv.clientHeight;
 
-  var nodes = SWAll.nodes;
-  console.log(nodes.length);
+  let nodes = SWEp1.nodes;
+  let links = SWEp1.links;
 
-  var simulation = d3
+  const NODERADIUS = 6;
+
+  let svg1 = d3
+    .select("#content")
+    .append("svg")
+    .attr("id", "svg1")
+    .attr("width", width / 2)
+    .attr("height", height)
+    .style("background-color", "#bed7ed");
+
+  let svg2 = d3
+    .select("#content")
+    .append("svg")
+    .attr("id", "svg2")
+    .attr("width", width / 2)
+    .attr("height", height)
+    .style("background-color", "#f0dadc");
+
+  let simulation1 = d3
     .forceSimulation(nodes)
-    .force("charge", d3.forceManyBody().strength(-5))
-    .force("center", d3.forceCenter(width / 2, height / 2))
-    .on("tick", ticked);
+    .force("charge", d3.forceManyBody().strength(-10))
+    .force("center", d3.forceCenter(width / 4, height / 2))
+    .force("link", d3.forceLink().links(links))
+    .on("tick", function () {
+      ticked("#svg1");
+    })
+    .force(
+      "collision",
+      d3.forceCollide().radius(function (d) {
+        return Math.max((NODERADIUS * d.value) / 80, NODERADIUS);
+      })
+    );
 
-  function ticked() {
-    d3.select("svg")
+  let simulation2 = d3
+    .forceSimulation(nodes)
+    .force("charge", d3.forceManyBody().strength(-10))
+    .force("center", d3.forceCenter(width / 4, height / 2))
+    .force("link", d3.forceLink().links(links))
+    .on("tick", function () {
+      ticked("#svg2");
+    })
+    .force(
+      "collision",
+      d3.forceCollide().radius(function (d) {
+        return Math.max((NODERADIUS * d.value) / 80, NODERADIUS);
+      })
+    );
+
+  function ticked(id) {
+    updateLinks(id);
+    updateNodes(id);
+  }
+
+  function updateLinks(id) {
+    d3.select(id)
+      .selectAll("line")
+      .data(links)
+      .join("line")
+      .attr("x1", function (d) {
+        return d.source.x;
+      })
+      .attr("y1", function (d) {
+        return d.source.y;
+      })
+      .attr("x2", function (d) {
+        return d.target.x;
+      })
+      .attr("y2", function (d) {
+        return d.target.y;
+      });
+  }
+
+  function updateNodes(id) {
+    d3.select(id)
       .selectAll("circle")
       .data(nodes)
       .join("circle")
@@ -114,8 +182,25 @@ async function simulateNodeSystem() {
       })
       .attr("cy", function (d) {
         return d.y;
+      })
+      .attr("r", function (d) {
+        return Math.max((NODERADIUS * d.value) / 80, NODERADIUS);
       });
   }
 }
+
+var episodeForm1 = d3.select("#form1");
+
+episodeForm1.selectAll("input").on("change", (event) => {
+  var checkedEpisodes = [];
+
+  episodeForm1.selectAll("input").each(function () {
+    var checkedBox = d3.select(this);
+    if (checkedBox.property("checked")) {
+      checkedEpisodes.push(parseInt(checkedBox.property("value")));
+    }
+  });
+  // Do the thing
+});
 
 simulateNodeSystem();
