@@ -1,4 +1,5 @@
 const urls = [
+  "../json/starwars-full-interactions-allCharacters.json",
   "../json/starwars-episode-1-interactions-allCharacters.json",
   "../json/starwars-episode-2-interactions-allCharacters.json",
   "../json/starwars-episode-3-interactions-allCharacters.json",
@@ -6,33 +7,36 @@ const urls = [
   "../json/starwars-episode-5-interactions-allCharacters.json",
   "../json/starwars-episode-6-interactions-allCharacters.json",
   "../json/starwars-episode-7-interactions-allCharacters.json",
-  "../json/starwars-full-interactions-allCharacters.json",
 ];
 
-const SWEP1RAW = await d3.json(urls[0]).catch(function (error) {
-    console.error("Error loading data:", error);
-  }),
-  SWEP2RAW = await d3.json(urls[1]).catch(function (error) {
-    console.error("Error loading data:", error);
-  }),
-  SWEP3RAW = await d3.json(urls[2]).catch(function (error) {
-    console.error("Error loading data:", error);
-  }),
-  SWEP4RAW = await d3.json(urls[3]).catch(function (error) {
-    console.error("Error loading data:", error);
-  }),
-  SWEP5RAW = await d3.json(urls[4]).catch(function (error) {
-    console.error("Error loading data:", error);
-  }),
-  SWEP6RAW = await d3.json(urls[5]).catch(function (error) {
-    console.error("Error loading data:", error);
-  }),
-  SWEP7RAW = await d3.json(urls[6]).catch(function (error) {
-    console.error("Error loading data:", error);
-  }),
-  SWALLRAW = await d3.json(urls[7]).catch(function (error) {
-    console.error("Error loading data:", error);
-  });
+async function loadEp() {
+  let SWEpRaw = [];
+
+  for (let url of urls) {
+    try {
+      let RawEp = await d3.json(url).catch(function (error) {
+        console.error("Error loading data:", error);
+      });
+      SWEpRaw.push(RawEp);
+    } catch (error) {
+      console.error("Error loading data:", error);
+    }
+  }
+
+  let EPISODES = [];
+  let index = 0;
+  for (let ep of SWEpRaw) {
+    if (index == 0) {
+      let SWep = new SWdata("All episodes", ep.nodes, ep.links);
+      EPISODES.push(SWep);
+    } else {
+      let SWep = new SWdata("Episode " + index, ep.nodes, ep.links);
+      EPISODES.push(SWep);
+    }
+    index++;
+  }
+  return EPISODES;
+}
 
 class SWdata {
   constructor(episodeName, nodes, links) {
@@ -58,101 +62,128 @@ class link {
   }
 }
 
-let SWEp1 = new SWdata("Episode 1", SWEP1RAW.nodes, SWEP1RAW.links),
-  SWEp2 = new SWdata("Episode 2", SWEP2RAW.nodes, SWEP2RAW.links),
-  SWEp3 = new SWdata("Episode 3", SWEP3RAW.nodes, SWEP3RAW.links),
-  SWEp4 = new SWdata("Episode 4", SWEP4RAW.nodes, SWEP4RAW.links),
-  SWEp5 = new SWdata("Episode 5", SWEP5RAW.nodes, SWEP5RAW.links),
-  SWEp6 = new SWdata("Episode 6", SWEP6RAW.nodes, SWEP6RAW.links),
-  SWEp7 = new SWdata("Episode 7", SWEP7RAW.nodes, SWEP7RAW.links),
-  SWAll = new SWdata("All episodes", SWALLRAW.nodes, SWALLRAW.links);
+async function simulateNodeSystem(index1, index2, graph) {
+  let EPISODES = await loadEp();
 
-const EPISODES = [SWAll, SWEp1, SWEp2, SWEp3, SWEp4, SWEp5, SWEp6, SWEp7];
-
-let allLinks = SWEp1.links.concat(
-  SWEp2.links,
-  SWEp3.links,
-  SWEp4.links,
-  SWEp5.links,
-  SWEp6.links,
-  SWEp7.links
-);
-
-let allNodes = SWEp1.nodes.concat(
-  SWEp2.nodes,
-  SWEp3.nodes,
-  SWEp4.nodes,
-  SWEp5.nodes,
-  SWEp6.nodes,
-  SWEp7.nodes
-);
-
-async function simulateNodeSystem() {
   const contentDiv = document.getElementById("content");
+  // contentDiv.innerHTML = "";
 
-  const width = contentDiv.clientWidth;
-  const height = contentDiv.clientHeight;
+  const width = contentDiv.clientWidth * 0.9;
+  const height = contentDiv.clientHeight * 0.9;
 
-  let nodes = SWEp1.nodes;
-  let links = SWEp1.links;
+  const NODERADIUS = 12;
 
-  const NODERADIUS = 6;
+  switch (graph) {
+    case 1:
+    case 0:
+      let data1 = EPISODES[index1];
 
-  let svg1 = d3
-    .select("#content")
-    .append("svg")
-    .attr("id", "svg1")
-    .attr("width", width / 2)
-    .attr("height", height)
-    .style("background-color", "#bed7ed");
+      let nodes1 = data1.nodes;
+      let links1 = data1.links;
+      let backgroundColor1 = "#bcd1eb";
 
-  let svg2 = d3
-    .select("#content")
-    .append("svg")
-    .attr("id", "svg2")
-    .attr("width", width / 2)
-    .attr("height", height)
-    .style("background-color", "#f0dadc");
+      let svgDummy = d3
+        .select("#content")
+        .append("svg")
+        .attr("id", "svgDummy")
+        .attr("width", width / 2)
+        .attr("height", height)
+        .style("background-color", backgroundColor1);
 
-  let simulation1 = d3
-    .forceSimulation(nodes)
-    .force("charge", d3.forceManyBody().strength(-10))
-    .force("center", d3.forceCenter(width / 4, height / 2))
-    .force("link", d3.forceLink().links(links))
-    .on("tick", function () {
-      ticked("#svg1");
-    })
-    .force(
-      "collision",
-      d3.forceCollide().radius(function (d) {
-        return Math.max((NODERADIUS * d.value) / 80, NODERADIUS);
-      })
-    );
+      d3.select("#svg1").remove();
 
-  let simulation2 = d3
-    .forceSimulation(nodes)
-    .force("charge", d3.forceManyBody().strength(-10))
-    .force("center", d3.forceCenter(width / 4, height / 2))
-    .force("link", d3.forceLink().links(links))
-    .on("tick", function () {
-      ticked("#svg2");
-    })
-    .force(
-      "collision",
-      d3.forceCollide().radius(function (d) {
-        return Math.max((NODERADIUS * d.value) / 80, NODERADIUS);
-      })
-    );
+      let svg1 = d3
+        .select("#content")
+        .insert("svg", ":first-child") // Insert SVG before the first child element
+        .attr("id", "svg1")
+        .attr("width", width / 2)
+        .attr("height", height)
+        .style("background-color", "#bcd1eb");
 
-  function ticked(id) {
-    updateLinks(id);
-    updateNodes(id);
+      d3.select("#svgDummy").remove();
+
+      let simulation1 = d3
+        .forceSimulation(nodes1)
+        .force("charge", d3.forceManyBody().strength(-50))
+        .force("center", d3.forceCenter(width / 4, height / 2).strength(0.6))
+        .force("link", d3.forceLink().links(links1))
+        .on("tick", function () {
+          ticked("#svg1", links1, nodes1, backgroundColor1);
+        })
+        .force(
+          "collision",
+          d3.forceCollide().radius(function (d) {
+            return Math.max((NODERADIUS * d.value) / 80, NODERADIUS);
+          })
+        )
+        .on("tick", function () {
+          // Adjust nodes to stay within bounding box
+          nodes1.forEach(function (d) {
+            d.x = Math.max(NODERADIUS, Math.min(width / 2 - NODERADIUS, d.x)); // Ensure x is within left and right bounds
+            d.y = Math.max(3 * NODERADIUS, Math.min(height - NODERADIUS, d.y)); // Ensure y is within top and bottom bounds
+          });
+
+          // Call ticked function
+          ticked("#svg1", links1, nodes1, backgroundColor1);
+        });
+      if (graph != 0) {
+        break;
+      }
+    case 2:
+    case 0:
+      let data2 = EPISODES[index2];
+
+      let nodes2 = data2.nodes;
+      let links2 = data2.links;
+
+      let backgroundColor2 = "#f0dadc";
+
+      d3.select("#svg2").remove();
+
+      let svg2 = d3
+        .select("#content")
+        .append("svg")
+        .attr("id", "svg2")
+        .attr("width", width / 2)
+        .attr("height", height)
+        .style("background-color", backgroundColor2);
+
+      let simulation2 = d3
+        .forceSimulation(nodes2)
+
+        .force("charge", d3.forceManyBody().strength(-50))
+        .force("center", d3.forceCenter(width / 4, height / 2).strength(0.6))
+        .force("link", d3.forceLink().links(links2))
+        .force(
+          "collision",
+          d3.forceCollide().radius(function (d) {
+            return Math.max((NODERADIUS * d.value) / 80, NODERADIUS);
+          })
+        )
+        .on("tick", function () {
+          // Adjust nodes to stay within bounding box
+          nodes2.forEach(function (d) {
+            d.x = Math.max(NODERADIUS, Math.min(width / 2 - NODERADIUS, d.x)); // Ensure x is within left and right bounds
+            d.y = Math.max(3 * NODERADIUS, Math.min(height - NODERADIUS, d.y)); // Ensure y is within top and bottom bounds
+          });
+
+          // Call ticked function
+          ticked("#svg2", links2, nodes2, backgroundColor2);
+        });
+
+      break;
+  }
+  async function ticked(id, theLinks, theNodes, backgroundColor) {
+    updateLinks(id, theLinks);
+    updateNodes(id, theNodes, backgroundColor);
   }
 
-  function updateLinks(id) {
-    d3.select(id)
+  async function updateLinks(id, theLinks) {
+    let svg = d3.select(id);
+
+    svg
       .selectAll("line")
-      .data(links)
+      .data(theLinks)
       .join("line")
       .attr("x1", function (d) {
         return d.source.x;
@@ -167,16 +198,16 @@ async function simulateNodeSystem() {
         return d.target.y;
       });
   }
+  async function updateNodes(id, theNodes, backgroundColor) {
+    let fontSize = 12;
 
-  function updateNodes(id) {
-    d3.select(id)
+    let svg = d3.select(id);
+
+    // Update circle elements
+    svg
       .selectAll("circle")
-      .data(nodes)
+      .data(theNodes)
       .join("circle")
-      .attr("r", 5)
-      .style("fill", function (d) {
-        return d.colour;
-      })
       .attr("cx", function (d) {
         return d.x;
       })
@@ -184,23 +215,72 @@ async function simulateNodeSystem() {
         return d.y;
       })
       .attr("r", function (d) {
-        return Math.max((NODERADIUS * d.value) / 80, NODERADIUS);
-      });
+        return Math.max((NODERADIUS * d.value) / 120, NODERADIUS); // Default radius if not provided
+      })
+      .style("fill", function (d) {
+        return backgroundColor;
+      })
+      .raise();
+
+    // Update text elements
+    svg
+      .selectAll("text")
+      .data(theNodes)
+      .join("text")
+      .attr("x", function (d) {
+        return d.x;
+      })
+      .attr("y", function (d) {
+        return d.y;
+      })
+      .attr("dy", "0.35em") // Adjust vertical alignment
+      .attr("text-anchor", "middle") // Center text horizontally
+      .text(function (d) {
+        return d.name;
+      })
+      .style("fill", function (d) {
+        return d.colour;
+      })
+      .attr("font-size", function (d) {
+        return Math.max((fontSize * d.value) / 60, fontSize);
+      })
+      .raise();
   }
 }
 
-var episodeForm1 = d3.select("#form1");
+let episodeForm1 = d3.select("#form1");
+let episodeForm2 = d3.select("#form2");
 
 episodeForm1.selectAll("input").on("change", (event) => {
-  var checkedEpisodes = [];
-
-  episodeForm1.selectAll("input").each(function () {
-    var checkedBox = d3.select(this);
-    if (checkedBox.property("checked")) {
-      checkedEpisodes.push(parseInt(checkedBox.property("value")));
-    }
-  });
-  // Do the thing
+  changeEpisode(1);
 });
 
-simulateNodeSystem();
+episodeForm2.selectAll("input").on("change", (event) => {
+  changeEpisode(2);
+});
+
+function changeEpisode(form) {
+  let checkedEpisodes1 = [];
+  let checkedEpisodes2 = [];
+
+  switch (form) {
+    case 1:
+      episodeForm1.selectAll("input").each(function () {
+        let checkedBox = d3.select(this);
+        if (checkedBox.property("checked")) {
+          checkedEpisodes1.push(parseInt(checkedBox.property("value")));
+        }
+      });
+    case 2:
+      episodeForm2.selectAll("input").each(function () {
+        let checkedBox = d3.select(this);
+        if (checkedBox.property("checked")) {
+          checkedEpisodes2.push(parseInt(checkedBox.property("value")));
+        }
+      });
+    default:
+  }
+  simulateNodeSystem(checkedEpisodes1, checkedEpisodes2, form);
+}
+
+simulateNodeSystem([0], [0], 0);
