@@ -62,7 +62,42 @@ class link {
   }
 }
 
-async function simulateNodeSystem(index1, index2, graph) {
+let backgroundColors = ["#bcd1eb", "#f0dadc"];
+
+let zoom = d3.zoom().on("zoom", handleZoom);
+
+function handleZoom(e) {
+  d3.select("svg g").attr("transform", e.transform);
+}
+
+function initZoom(id) {
+  d3.select(id).call(zoom);
+}
+function initSimulateNodeSystem(ids, backgroundColors) {
+  const contentDiv = document.getElementById("content");
+  let i = 0;
+
+  const width = contentDiv.clientWidth;
+  const height = contentDiv.clientHeight;
+
+  ids.forEach((id) => {
+    id = id.replace("#", "");
+    d3.select("#content")
+      .insert("svg")
+      .attr("id", id)
+      .attr("width", width / 2)
+      .attr("height", height)
+      .style("background-color", backgroundColors[i])
+      .append("g");
+    //.call(initZoom, `#${id}`); // Add zoom behavior to each SVG
+    i++;
+  });
+}
+
+let selectedNode;
+
+async function simulateNodeSystem(id, index, nodeColor) {
+  console.log(id);
   let EPISODES = await loadEp();
 
   const contentDiv = document.getElementById("content");
@@ -72,102 +107,47 @@ async function simulateNodeSystem(index1, index2, graph) {
   const height = contentDiv.clientHeight;
 
   const NODERADIUS = 12;
-  const force = -100;
-
-  switch (graph) {
-    case 1:
-    case 0:
-      let data1 = EPISODES[index1];
-
-      let nodes1 = data1.nodes;
-      let links1 = data1.links;
-      let backgroundColor1 = "#bcd1eb";
-
-      d3.select("#svg1").remove();
-
-      let svg1 = d3
-        .select("#content")
-        .insert("svg", ":first-child")
-        .attr("id", "svg1")
-        .attr("width", width / 2)
-        .attr("height", height)
-        .style("background-color", "#bcd1eb")
-        .append("g"); // Append a group element for the visualization
-
-      let simulation1 = d3
-        .forceSimulation(nodes1)
-        .force("charge", d3.forceManyBody().strength(force))
-        .force("center", d3.forceCenter(width / 4, height / 2).strength(0.8))
-        .force("link", d3.forceLink().links(links1))
-        .on("tick", function () {
-          ticked("#svg1", links1, nodes1, backgroundColor1);
-        })
-        .force(
-          "collision",
-          d3.forceCollide().radius(function (d) {
-            return Math.max((NODERADIUS * d.value) / 80, NODERADIUS);
-          })
-        )
-        .on("tick", function () {
-          // Adjust nodes to stay within bounding box
-          nodes1.forEach(function (d) {
-            d.x = Math.max(NODERADIUS, Math.min(width / 2 - NODERADIUS, d.x)); // Ensure x is within left and right bounds
-            d.y = Math.max(NODERADIUS, Math.min(height - 3 * NODERADIUS, d.y)); // Ensure y is within top and bottom bounds
-          });
-
-          // Call ticked function
-          ticked("#svg1", links1, nodes1, backgroundColor1);
-        });
-      if (graph != 0) {
-        break;
-      }
-    case 2:
-    case 0:
-      let data2 = EPISODES[index2];
-
-      let nodes2 = data2.nodes;
-      let links2 = data2.links;
-
-      let backgroundColor2 = "#f0dadc";
-
-      d3.select("#svg2").remove();
-
-      let svg2 = d3
-        .select("#content")
-        .append("svg")
-        .attr("id", "svg2")
-        .attr("width", width / 2)
-        .attr("height", height)
-        .style("background-color", backgroundColor2)
-        .append("g");
-
-      let simulation2 = d3
-        .forceSimulation(nodes2)
-        .force("charge", d3.forceManyBody().strength(force))
-        .force("center", d3.forceCenter(width / 4, height / 2).strength(0.8))
-        .force("link", d3.forceLink().links(links2))
-        .force(
-          "collision",
-          d3.forceCollide().radius(function (d) {
-            return Math.max((NODERADIUS * d.value) / 80, NODERADIUS);
-          })
-        )
-        .on("tick", function () {
-          // Adjust nodes to stay within bounding box
-          nodes2.forEach(function (d) {
-            d.x = Math.max(NODERADIUS, Math.min(width / 2 - NODERADIUS, d.x)); // Ensure x is within left and right bounds
-            d.y = Math.max(NODERADIUS, Math.min(height - 3 * NODERADIUS, d.y)); // Ensure y is within top and bottom bounds
-          });
-
-          // Call ticked function
-          ticked("#svg2", links2, nodes2, backgroundColor2);
-        });
-
-      break;
+  let force = 0;
+  if (index > 0) {
+    force = -300;
+  } else {
+    force = -100;
   }
-  async function ticked(id, theLinks, theNodes, backgroundColor) {
+  let data = EPISODES[index];
+
+  let nodes = data.nodes;
+  let links = data.links;
+
+  d3.select(id).selectAll("*").remove();
+
+  let simulation = d3
+    .forceSimulation(nodes)
+    .force("charge", d3.forceManyBody().strength(force))
+    .force("center", d3.forceCenter(width / 4, height / 2).strength(0.8))
+    .force("link", d3.forceLink().links(links))
+    .on("tick", function () {
+      ticked(id, links, nodes, nodeColor);
+    })
+    .force(
+      "collision",
+      d3.forceCollide().radius(function (d) {
+        return Math.max((NODERADIUS * d.value) / 80, NODERADIUS);
+      })
+    )
+    .on("tick", function () {
+      // Adjust nodes to stay within bounding box
+      nodes.forEach(function (d) {
+        d.x = Math.max(NODERADIUS, Math.min(width / 2 - NODERADIUS, d.x)); // Ensure x is within left and right bounds
+        d.y = Math.max(NODERADIUS, Math.min(height - 3 * NODERADIUS, d.y)); // Ensure y is within top and bottom bounds
+      });
+
+      // Call ticked function
+      ticked(id, links, nodes, nodeColor);
+    });
+
+  async function ticked(id, theLinks, theNodes, nodeColor) {
     updateLinks(id, theLinks);
-    updateNodes(id, theNodes, backgroundColor);
+    updateNodes(id, theNodes, nodeColor);
   }
 
   async function updateLinks(id, theLinks) {
@@ -191,7 +171,7 @@ async function simulateNodeSystem(index1, index2, graph) {
       });
   }
 
-  async function updateNodes(id, theNodes, backgroundColor) {
+  async function updateNodes(id, theNodes, nodeColor) {
     let fontSize = 12;
 
     let svg = d3.select(id);
@@ -211,12 +191,7 @@ async function simulateNodeSystem(index1, index2, graph) {
         return Math.max((NODERADIUS * d.value) / 120, NODERADIUS); // Default radius if not provided
       })
       .style("fill", function (d) {
-        return backgroundColor;
-      })
-      .on("click", (event) => {
-        d3.select(this).attr("r", "#FFF");
-
-        console.log("event");
+        return nodeColor;
       })
       .raise();
 
@@ -242,9 +217,14 @@ async function simulateNodeSystem(index1, index2, graph) {
       .attr("font-size", function (d) {
         return Math.max((fontSize * d.value) / 60, fontSize);
       })
-      .on("click", (event) => {
-        d3.select(this).attr("fill", "red");
-        console.log("color");
+      .on("click", function (_event, d) {
+        d3.select(selectedNode).style("fill", function (d) {
+          return d.colour;
+        });
+        selectedNode = this;
+        d3.select(this).style("fill", function (d) {
+          return "#FFF";
+        });
       })
       .raise();
   }
@@ -265,6 +245,7 @@ function changeEpisode(form) {
   let checkedEpisodes1 = [];
   let checkedEpisodes2 = [];
 
+  console.log(form);
   switch (form) {
     case 1:
       episodeForm1.selectAll("input").each(function () {
@@ -273,6 +254,8 @@ function changeEpisode(form) {
           checkedEpisodes1.push(parseInt(checkedBox.property("value")));
         }
       });
+      simulateNodeSystem("#svg1", checkedEpisodes1[0], backgroundColors[0]);
+      break;
     case 2:
       episodeForm2.selectAll("input").each(function () {
         let checkedBox = d3.select(this);
@@ -280,9 +263,12 @@ function changeEpisode(form) {
           checkedEpisodes2.push(parseInt(checkedBox.property("value")));
         }
       });
+      simulateNodeSystem("#svg2", checkedEpisodes2[0], backgroundColors[1]);
+      break;
     default:
   }
-  simulateNodeSystem(checkedEpisodes1, checkedEpisodes2, form);
 }
 
-simulateNodeSystem([0], [0], 0);
+initSimulateNodeSystem(["#svg1", "#svg2"], backgroundColors);
+simulateNodeSystem("#svg1", [0], backgroundColors[0]);
+simulateNodeSystem("#svg2", [1], backgroundColors[1]);
