@@ -47,10 +47,11 @@ class SWdata {
 }
 
 class node {
-  constructor(name, value, colour) {
+  constructor(name, value, colour, image) {
     this.name = name;
     this.value = value;
     this.colour = colour;
+    this.image = image;
   }
 }
 
@@ -178,10 +179,17 @@ async function simulateNodeSystem(id, index, nodeColor) {
 
     let svg = d3.select(id);
 
-    // Update circle elements
-    svg
-      .selectAll("circle")
+    // Update group elements
+    let nodeGroups = svg.selectAll(".node-group")
       .data(theNodes)
+      .join("g")
+      .attr("class", "node-group")
+      .on("click", onClick) // onClick is function
+      .raise();
+
+    // Update circle elements within the group
+    nodeGroups.selectAll("circle")
+      .data(d => [d]) // Wrap the data in an array to bind it to a single circle
       .join("circle")
       .attr("cx", function (d) {
         return d.x;
@@ -194,13 +202,25 @@ async function simulateNodeSystem(id, index, nodeColor) {
       })
       .style("fill", function (d) {
         return nodeColor;
-      })
-      .raise();
+      });
 
-    // Update text elements
-    svg
-      .selectAll("text")
-      .data(theNodes)
+    // Update image elements within the group
+    nodeGroups.selectAll("image")
+      .data(d => [d]) // Wrap the data in an array to bind it to a single image
+      .join("image")
+      .attr("x", function (d) {
+        return d.x - NODERADIUS; // Adjust the position based on the circle's radius
+      })
+      .attr("y", function (d) {
+        return d.y - NODERADIUS; // Adjust the position based on the circle's radius
+      })
+      .attr("width", 2 * NODERADIUS)
+      .attr("height", 2 * NODERADIUS)
+      .attr("xlink:href", d => d.image);
+
+    // Update text elements within the group
+    nodeGroups.selectAll("text")
+      .data(d => [d]) // Wrap the data in an array to bind it to a single text
       .join("text")
       .attr("text-name", function (d) {
         return d.name;
@@ -222,7 +242,6 @@ async function simulateNodeSystem(id, index, nodeColor) {
       .attr("font-size", function (d) {
         return Math.max((fontSize * d.value) / 60, fontSize);
       })
-      .on("click", onClick) // onClick is function
       .raise();
   }
 
