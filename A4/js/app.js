@@ -1,12 +1,12 @@
 const urls = [
-  "../json/starwars-full-interactions-allCharacters.json",
-  "../json/starwars-episode-1-interactions-allCharacters.json",
-  "../json/starwars-episode-2-interactions-allCharacters.json",
-  "../json/starwars-episode-3-interactions-allCharacters.json",
-  "../json/starwars-episode-4-interactions-allCharacters.json",
-  "../json/starwars-episode-5-interactions-allCharacters.json",
-  "../json/starwars-episode-6-interactions-allCharacters.json",
-  "../json/starwars-episode-7-interactions-allCharacters.json",
+  "./json/starwars-full-interactions-allCharacters.json",
+  "./json/starwars-episode-1-interactions-allCharacters.json",
+  "./json/starwars-episode-2-interactions-allCharacters.json",
+  "./json/starwars-episode-3-interactions-allCharacters.json",
+  "./json/starwars-episode-4-interactions-allCharacters.json",
+  "./json/starwars-episode-5-interactions-allCharacters.json",
+  "./json/starwars-episode-6-interactions-allCharacters.json",
+  "./json/starwars-episode-7-interactions-allCharacters.json",
 ];
 
 async function loadEp() {
@@ -63,7 +63,8 @@ class link {
 }
 
 const BACKGROUNDCOLORS = ["#fff", "#fff"];
-const HIGHLIGHTCOLOR = "red";
+const HIGHLIGHTCOLOR = "#FF1200";
+const HIGHLIGHTSHADOW = "0 0 10px rgba(255, 18, 43, 1)";
 
 function initSimulateNodeSystem(ids, BACKGROUNDCOLORS) {
   const contentDiv = document.getElementById("content");
@@ -97,7 +98,6 @@ let selectedNode1;
 let selectedNode2;
 
 async function simulateNodeSystem(id, index, nodeColor) {
-  console.log(id);
   let EPISODES = await loadEp();
 
   const contentDiv = document.getElementById("content");
@@ -139,7 +139,10 @@ async function simulateNodeSystem(id, index, nodeColor) {
     )
     .on("tick", function () {
       nodes.forEach(function (d) {
-        d.x = Math.max(NODERADIUS, Math.min(width / 2 - NODERADIUS, d.x)); // Ensure x is within left and right bounds
+        d.x = Math.max(
+          4 * NODERADIUS,
+          Math.min(width / 2 - 4 * NODERADIUS, d.x)
+        ); // Ensure x is within left and right bounds
         d.y = Math.max(NODERADIUS, Math.min(height - 3 * NODERADIUS, d.y)); // Ensure y is within top and bottom bounds
       });
 
@@ -215,7 +218,7 @@ async function simulateNodeSystem(id, index, nodeColor) {
       .attr("dy", "0.35em")
       .attr("text-anchor", "middle")
       .text(function (d) {
-        return d.name;
+        return d.name.toLowerCase(); // Starwars font dont work for upper (defect in .ttf)
       })
       .style("fill", function (d) {
         return d.colour;
@@ -228,7 +231,10 @@ async function simulateNodeSystem(id, index, nodeColor) {
   }
 
   function resetHiglight() {
-    d3.selectAll("text")
+    let content = d3.select("#content");
+
+    content
+      .selectAll("text")
       .style("text-shadow", "0 0 0px rgba(255, 0, 0, 0)")
 
       .style("fill", function (d) {
@@ -237,25 +243,27 @@ async function simulateNodeSystem(id, index, nodeColor) {
   }
 
   function onClick() {
-    d3.select(selectedNode1)
-      .style("text-shadow", "0 0 0px rgba(255, 0, 0, 0)")
+    // d3.select(selectedNode1)
+    //   .style("text-shadow", "0 0 0px rgba(255, 0, 0, 0)")
 
-      .style("fill", function (d) {
-        return d.colour;
-      });
+    //   .style("fill", function (d) {
+    //     return d.colour;
+    //   });
 
-    let svg = d3.select(id);
-    svg
-      .select(selectedNode2)
-      .style("text-shadow", "0 0 0px rgba(255, 0, 0, 0)")
+    // let svg = d3.select(id);
+    // svg
+    //   .select(selectedNode2)
+    //   .style("text-shadow", "0 0 0px rgba(255, 0, 0, 0)")
 
-      .style("fill", function (d) {
-        return d.colour;
-      });
+    //   .style("fill", function (d) {
+    //     return d.colour;
+    //   });
+    resetHiglight();
 
     selectedNode1 = this;
+
     d3.select(this)
-      .style("text-shadow", "0 0 10px rgba(255, 0, 0, 1)")
+      .style("text-shadow", HIGHLIGHTSHADOW)
 
       .style("fill", function (d) {
         return HIGHLIGHTCOLOR;
@@ -266,8 +274,12 @@ async function simulateNodeSystem(id, index, nodeColor) {
     if (id == "#svg2") {
       id2 = "#svg1";
     }
-
     selectAll(name, id2);
+
+    // @TODO
+    const context1 = d3.select("#context1");
+    context1.selectAll("*").remove();
+    context1.append("text").text(name.toLowerCase());
   }
 
   function selectAll(name, id) {
@@ -275,20 +287,26 @@ async function simulateNodeSystem(id, index, nodeColor) {
 
     const matching = svg.select(`text[text-name="${name}"]`);
 
-    svg
-      .select(selectedNode2)
+    d3.select(selectedNode2)
       .style("text-shadow", "0 0 0px rgba(255, 0, 0, 0)")
-
       .style("fill", function (d) {
         return d.colour;
       });
 
-    matching
-      .style("text-shadow", "0 0 10px rgba(255, 0, 0, 1)")
-      .style("fill", function (d) {
-        return HIGHLIGHTCOLOR;
-      });
-    selectedNode2 = `text[text-name="${name}"]`;
+    matching.style("text-shadow", HIGHLIGHTSHADOW).style("fill", function (d) {
+      return HIGHLIGHTCOLOR;
+    });
+    selectedNode2 = matching.node();
+
+    // @TODO
+    if (matching.node()) {
+      const context1 = d3.select("#context2");
+      context1.selectAll("*").remove();
+      context1.append("text").text(name.toLowerCase());
+    } else {
+      const context1 = d3.select("#context2");
+      context1.selectAll("*").remove();
+    }
   }
 }
 

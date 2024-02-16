@@ -1,6 +1,15 @@
+@font-face {
+  font-family: "YourFontName";
+  src: url("../font/Starjedi.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 :root {
   --bg-color: #ffffff;
   --border-radius: 8px;
+  /* font-family: "Star Wars", sans-serif; */
+  font-family: "YourFontName", sans-serif;
 }
 
 body {
@@ -46,7 +55,7 @@ section {
 }
 
 #episodeForm form {
-  width: 50%;
+  width: 80%;
   background-color: var(--bg-color);
   /* box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3); */
   border-radius: var(--border-radius);
