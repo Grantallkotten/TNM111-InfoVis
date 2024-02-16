@@ -68,10 +68,11 @@ async function simulateNodeSystem(index1, index2, graph) {
   const contentDiv = document.getElementById("content");
   // contentDiv.innerHTML = "";
 
-  const width = contentDiv.clientWidth * 0.9;
-  const height = contentDiv.clientHeight * 0.9;
+  const width = contentDiv.clientWidth;
+  const height = contentDiv.clientHeight;
 
   const NODERADIUS = 12;
+  const force = -100;
 
   switch (graph) {
     case 1:
@@ -82,30 +83,21 @@ async function simulateNodeSystem(index1, index2, graph) {
       let links1 = data1.links;
       let backgroundColor1 = "#bcd1eb";
 
-      let svgDummy = d3
-        .select("#content")
-        .append("svg")
-        .attr("id", "svgDummy")
-        .attr("width", width / 2)
-        .attr("height", height)
-        .style("background-color", backgroundColor1);
-
       d3.select("#svg1").remove();
 
       let svg1 = d3
         .select("#content")
-        .insert("svg", ":first-child") // Insert SVG before the first child element
+        .insert("svg", ":first-child")
         .attr("id", "svg1")
         .attr("width", width / 2)
         .attr("height", height)
-        .style("background-color", "#bcd1eb");
-
-      d3.select("#svgDummy").remove();
+        .style("background-color", "#bcd1eb")
+        .append("g"); // Append a group element for the visualization
 
       let simulation1 = d3
         .forceSimulation(nodes1)
-        .force("charge", d3.forceManyBody().strength(-50))
-        .force("center", d3.forceCenter(width / 4, height / 2).strength(0.6))
+        .force("charge", d3.forceManyBody().strength(force))
+        .force("center", d3.forceCenter(width / 4, height / 2).strength(0.8))
         .force("link", d3.forceLink().links(links1))
         .on("tick", function () {
           ticked("#svg1", links1, nodes1, backgroundColor1);
@@ -120,7 +112,7 @@ async function simulateNodeSystem(index1, index2, graph) {
           // Adjust nodes to stay within bounding box
           nodes1.forEach(function (d) {
             d.x = Math.max(NODERADIUS, Math.min(width / 2 - NODERADIUS, d.x)); // Ensure x is within left and right bounds
-            d.y = Math.max(3 * NODERADIUS, Math.min(height - NODERADIUS, d.y)); // Ensure y is within top and bottom bounds
+            d.y = Math.max(NODERADIUS, Math.min(height - 3 * NODERADIUS, d.y)); // Ensure y is within top and bottom bounds
           });
 
           // Call ticked function
@@ -146,13 +138,13 @@ async function simulateNodeSystem(index1, index2, graph) {
         .attr("id", "svg2")
         .attr("width", width / 2)
         .attr("height", height)
-        .style("background-color", backgroundColor2);
+        .style("background-color", backgroundColor2)
+        .append("g");
 
       let simulation2 = d3
         .forceSimulation(nodes2)
-
-        .force("charge", d3.forceManyBody().strength(-50))
-        .force("center", d3.forceCenter(width / 4, height / 2).strength(0.6))
+        .force("charge", d3.forceManyBody().strength(force))
+        .force("center", d3.forceCenter(width / 4, height / 2).strength(0.8))
         .force("link", d3.forceLink().links(links2))
         .force(
           "collision",
@@ -164,7 +156,7 @@ async function simulateNodeSystem(index1, index2, graph) {
           // Adjust nodes to stay within bounding box
           nodes2.forEach(function (d) {
             d.x = Math.max(NODERADIUS, Math.min(width / 2 - NODERADIUS, d.x)); // Ensure x is within left and right bounds
-            d.y = Math.max(3 * NODERADIUS, Math.min(height - NODERADIUS, d.y)); // Ensure y is within top and bottom bounds
+            d.y = Math.max(NODERADIUS, Math.min(height - 3 * NODERADIUS, d.y)); // Ensure y is within top and bottom bounds
           });
 
           // Call ticked function
@@ -198,6 +190,7 @@ async function simulateNodeSystem(index1, index2, graph) {
         return d.target.y;
       });
   }
+
   async function updateNodes(id, theNodes, backgroundColor) {
     let fontSize = 12;
 
@@ -220,6 +213,11 @@ async function simulateNodeSystem(index1, index2, graph) {
       .style("fill", function (d) {
         return backgroundColor;
       })
+      .on("click", (event) => {
+        d3.select(this).attr("r", "#FFF");
+
+        console.log("event");
+      })
       .raise();
 
     // Update text elements
@@ -233,8 +231,8 @@ async function simulateNodeSystem(index1, index2, graph) {
       .attr("y", function (d) {
         return d.y;
       })
-      .attr("dy", "0.35em") // Adjust vertical alignment
-      .attr("text-anchor", "middle") // Center text horizontally
+      .attr("dy", "0.35em")
+      .attr("text-anchor", "middle")
       .text(function (d) {
         return d.name;
       })
@@ -243,6 +241,10 @@ async function simulateNodeSystem(index1, index2, graph) {
       })
       .attr("font-size", function (d) {
         return Math.max((fontSize * d.value) / 60, fontSize);
+      })
+      .on("click", (event) => {
+        d3.select(this).attr("fill", "red");
+        console.log("color");
       })
       .raise();
   }
