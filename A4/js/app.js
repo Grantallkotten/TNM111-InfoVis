@@ -184,12 +184,26 @@ async function simulateNodeSystem(id, index, nodeColor) {
       .data(theNodes)
       .join("g")
       .attr("class", "node-group")
-      .on("click", onClick) // onClick is function
+      .on("click", onClick)
       .raise();
+
+    // Create a clipPath for each node
+    nodeGroups.append("clipPath")
+      .attr("id", d => "clip-" + d.name)
+      .append("circle")
+      .attr("cx", function (d) {
+        return d.x;
+      })
+      .attr("cy", function (d) {
+        return d.y;
+      })
+      .attr("r", function (d) {
+        return Math.max((NODERADIUS * d.value) / 120, NODERADIUS);
+      });
 
     // Update circle elements within the group
     nodeGroups.selectAll("circle")
-      .data(d => [d]) // Wrap the data in an array to bind it to a single circle
+      .data(d => [d])
       .join("circle")
       .attr("cx", function (d) {
         return d.x;
@@ -198,7 +212,7 @@ async function simulateNodeSystem(id, index, nodeColor) {
         return d.y;
       })
       .attr("r", function (d) {
-        return Math.max((NODERADIUS * d.value) / 120, NODERADIUS); // Default radius if not provided
+        return Math.max((NODERADIUS * d.value) / 120, NODERADIUS);
       })
       .style("fill", function (d) {
         return nodeColor;
@@ -206,21 +220,22 @@ async function simulateNodeSystem(id, index, nodeColor) {
 
     // Update image elements within the group
     nodeGroups.selectAll("image")
-      .data(d => [d]) // Wrap the data in an array to bind it to a single image
+      .data(d => [d])
       .join("image")
       .attr("x", function (d) {
-        return d.x - NODERADIUS; // Adjust the position based on the circle's radius
+        return d.x - NODERADIUS;
       })
       .attr("y", function (d) {
-        return d.y - NODERADIUS; // Adjust the position based on the circle's radius
+        return d.y - NODERADIUS;
       })
       .attr("width", 2 * NODERADIUS)
       .attr("height", 2 * NODERADIUS)
-      .attr("xlink:href", d => d.image);
+      .attr("xlink:href", d => d.image)
+      .attr("clip-path", d => "url(#clip-" + d.name + ")");
 
     // Update text elements within the group
     nodeGroups.selectAll("text")
-      .data(d => [d]) // Wrap the data in an array to bind it to a single text
+      .data(d => [d])
       .join("text")
       .attr("text-name", function (d) {
         return d.name;
