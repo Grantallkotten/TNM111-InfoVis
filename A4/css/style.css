@@ -1,21 +1,35 @@
 :root {
-  --bg-color: #dcdee1;
+  --bg-color: #ffffff;
+}
+
+body {
+  background-image: url("../img/background-image.png");
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+section {
+  /* backdrop-filter: blur(10px); */
+  min-height: fit-content;
+  padding: 1vw;
 }
 
 #content {
-  background-color: var(--bg-color);
-  margin: 1vw;
+  margin: 0.1vh;
   width: max;
-  height: 80vh;
-  padding: 1vw;
+  height: 85vh;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
   display: flex;
+  border-radius: 12px;
 }
 
 #content svg {
   width: 100%;
   height: 100%;
   cursor: default;
+  border-radius: 12px;
+  padding: 2px;
+  margin: 5px;
 }
 
 #episodeForm {
