@@ -62,9 +62,10 @@ class link {
   }
 }
 
-let backgroundColors = ["#fff", "#fff"];
+const BACKGROUNDCOLORS = ["#fff", "#fff"];
+const HIGHLIGHTCOLOR = "red";
 
-function initSimulateNodeSystem(ids, backgroundColors) {
+function initSimulateNodeSystem(ids, BACKGROUNDCOLORS) {
   const contentDiv = document.getElementById("content");
   let i = 0;
 
@@ -78,7 +79,7 @@ function initSimulateNodeSystem(ids, backgroundColors) {
       .attr("id", id)
       .attr("width", width / 2)
       .attr("height", height)
-      .style("background-color", backgroundColors[i])
+      .style("background-color", BACKGROUNDCOLORS[i])
       .append("g");
     i++;
   });
@@ -88,8 +89,8 @@ function initSimulateNodeSystem(ids, backgroundColors) {
   unSelectAllInForm("#form2", "radio");
   selectButtonInForm("#form2", "#option3");
 
-  simulateNodeSystem("#svg1", [1], backgroundColors[0]);
-  simulateNodeSystem("#svg2", [2], backgroundColors[1]);
+  simulateNodeSystem("#svg1", [1], BACKGROUNDCOLORS[0]);
+  simulateNodeSystem("#svg2", [2], BACKGROUNDCOLORS[1]);
 }
 
 let selectedNode1;
@@ -254,10 +255,10 @@ async function simulateNodeSystem(id, index, nodeColor) {
 
     selectedNode1 = this;
     d3.select(this)
-      .style("text-shadow", "0 0 20px rgba(255, 0, 0, 1)")
+      .style("text-shadow", "0 0 10px rgba(255, 0, 0, 1)")
 
       .style("fill", function (d) {
-        return "red";
+        return HIGHLIGHTCOLOR;
       });
     const name = d3.select(this).attr("text-name");
     let id2 = "#svg2";
@@ -283,9 +284,9 @@ async function simulateNodeSystem(id, index, nodeColor) {
       });
 
     matching
-      .style("text-shadow", "0 0 20px rgba(255, 0, 0, 1)")
+      .style("text-shadow", "0 0 10px rgba(255, 0, 0, 1)")
       .style("fill", function (d) {
-        return "red";
+        return HIGHLIGHTCOLOR;
       });
     selectedNode2 = `text[text-name="${name}"]`;
   }
@@ -315,7 +316,7 @@ function changeEpisode(form) {
           checkedEpisodes1.push(parseInt(checkedBox.property("value")));
         }
       });
-      simulateNodeSystem("#svg1", checkedEpisodes1[0], backgroundColors[0]);
+      simulateNodeSystem("#svg1", checkedEpisodes1[0], BACKGROUNDCOLORS[0]);
       break;
     case 2:
       episodeForm2.selectAll("input").each(function () {
@@ -324,7 +325,7 @@ function changeEpisode(form) {
           checkedEpisodes2.push(parseInt(checkedBox.property("value")));
         }
       });
-      simulateNodeSystem("#svg2", checkedEpisodes2[0], backgroundColors[1]);
+      simulateNodeSystem("#svg2", checkedEpisodes2[0], BACKGROUNDCOLORS[1]);
       break;
     default:
   }
@@ -350,4 +351,4 @@ function selectButtonInForm(formId, id) {
   button.checked = true;
 }
 
-initSimulateNodeSystem(["#svg1", "#svg2"], backgroundColors);
+initSimulateNodeSystem(["#svg1", "#svg2"], BACKGROUNDCOLORS);
