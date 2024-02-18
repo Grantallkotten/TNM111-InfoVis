@@ -88,7 +88,7 @@ function initSimulateNodeSystem(ids, BACKGROUNDCOLORS) {
 
     d3.select("#content-headers")
       .append("div")
-      .attr("id", id + "-div");
+      .attr("id", id + "-header");
 
     i++;
   });
@@ -119,7 +119,7 @@ async function simulateNodeSystem(id, index, nodeColor) {
   let data = EPISODES[index];
 
   contentHeaders
-    .select(id + "-div")
+    .select(id + "-header")
     .selectAll("*")
     .remove();
 
@@ -127,7 +127,7 @@ async function simulateNodeSystem(id, index, nodeColor) {
   if (index == 0) {
     strEp = "All Episodes";
   }
-  contentHeaders.select(id + "-div").text(strEp);
+  contentHeaders.select(id + "-header").text(strEp);
 
   let nodes = data.nodes;
   let links = data.links;
