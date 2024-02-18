@@ -48,8 +48,8 @@ class SWdata {
 
 class node {
   constructor(name, value, colour) {
-    this.name = name;
-    this.value = value;
+    this.name = name.toLowerCase();
+    this.value = value.toLowerCase();
     this.colour = colour;
   }
 }
@@ -68,6 +68,9 @@ const HIGHLIGHTSHADOW = "0 0 10px rgba(255, 18, 43, 1)";
 
 function initSimulateNodeSystem(ids, BACKGROUNDCOLORS) {
   const contentDiv = document.getElementById("content");
+  const contentHeaders = d3.select("#content-headers");
+
+  // Append two divs with text "HEJ"
   let i = 0;
 
   const width = contentDiv.clientWidth;
@@ -82,6 +85,11 @@ function initSimulateNodeSystem(ids, BACKGROUNDCOLORS) {
       .attr("height", height)
       .style("background-color", BACKGROUNDCOLORS[i])
       .append("g");
+
+    d3.select("#content-headers")
+      .append("div")
+      .attr("id", id + "-div");
+
     i++;
   });
   unSelectAllInForm("#form1", "radio");
@@ -101,7 +109,7 @@ async function simulateNodeSystem(id, index, nodeColor) {
   let EPISODES = await loadEp();
 
   const contentDiv = document.getElementById("content");
-  // contentDiv.innerHTML = "";
+  const contentHeaders = d3.select("#content-headers");
 
   const width = contentDiv.clientWidth;
   const height = contentDiv.clientHeight;
@@ -109,6 +117,17 @@ async function simulateNodeSystem(id, index, nodeColor) {
   const NODERADIUS = 12;
 
   let data = EPISODES[index];
+
+  contentHeaders
+    .select(id + "-div")
+    .selectAll("*")
+    .remove();
+
+  let strEp = "Episode " + index;
+  if (index == 0) {
+    strEp = "All Episodes";
+  }
+  contentHeaders.select(id + "-div").text(strEp);
 
   let nodes = data.nodes;
   let links = data.links;
@@ -140,8 +159,8 @@ async function simulateNodeSystem(id, index, nodeColor) {
     .on("tick", function () {
       nodes.forEach(function (d) {
         d.x = Math.max(
-          4 * NODERADIUS,
-          Math.min(width / 2 - 4 * NODERADIUS, d.x)
+          6 * NODERADIUS,
+          Math.min(width / 2 - 6 * NODERADIUS, d.x)
         ); // Ensure x is within left and right bounds
         d.y = Math.max(NODERADIUS, Math.min(height - 3 * NODERADIUS, d.y)); // Ensure y is within top and bottom bounds
       });
@@ -209,6 +228,9 @@ async function simulateNodeSystem(id, index, nodeColor) {
       .attr("text-name", function (d) {
         return d.name;
       })
+      .attr("conversations", function (d) {
+        return d.value;
+      })
       .attr("x", function (d) {
         return d.x;
       })
@@ -240,24 +262,11 @@ async function simulateNodeSystem(id, index, nodeColor) {
       .style("fill", function (d) {
         return d.colour;
       });
+
+    d3.select(".context").selectAll("*").remove();
   }
 
   function onClick() {
-    // d3.select(selectedNode1)
-    //   .style("text-shadow", "0 0 0px rgba(255, 0, 0, 0)")
-
-    //   .style("fill", function (d) {
-    //     return d.colour;
-    //   });
-
-    // let svg = d3.select(id);
-    // svg
-    //   .select(selectedNode2)
-    //   .style("text-shadow", "0 0 0px rgba(255, 0, 0, 0)")
-
-    //   .style("fill", function (d) {
-    //     return d.colour;
-    //   });
     resetHiglight();
 
     selectedNode1 = this;
@@ -269,6 +278,8 @@ async function simulateNodeSystem(id, index, nodeColor) {
         return HIGHLIGHTCOLOR;
       });
     const name = d3.select(this).attr("text-name");
+    const conversations = d3.select(this).attr("conversations");
+
     let id2 = "#svg2";
 
     if (id == "#svg2") {
@@ -277,9 +288,10 @@ async function simulateNodeSystem(id, index, nodeColor) {
     selectAll(name, id2);
 
     // @TODO
-    const context1 = d3.select("#context1");
-    context1.selectAll("*").remove();
-    context1.append("text").text(name.toLowerCase());
+    const context = d3.select(id + "-context");
+    context.selectAll("*").remove();
+    context.append("text").text(name.toLowerCase());
+    context.append("text").text(" " + conversations.toLowerCase());
   }
 
   function selectAll(name, id) {
@@ -299,13 +311,16 @@ async function simulateNodeSystem(id, index, nodeColor) {
     selectedNode2 = matching.node();
 
     // @TODO
+    const context = d3.select(id + "-context");
+
     if (matching.node()) {
-      const context1 = d3.select("#context2");
-      context1.selectAll("*").remove();
-      context1.append("text").text(name.toLowerCase());
+      context.selectAll("*").remove();
+      context.append("text").text(name.toLowerCase());
+      const conversations = d3.select(matching.node()).attr("conversations");
+
+      context.append("text").text(" " + conversations.toLowerCase());
     } else {
-      const context1 = d3.select("#context2");
-      context1.selectAll("*").remove();
+      context.selectAll("*").remove();
     }
   }
 }

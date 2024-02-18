@@ -24,6 +24,20 @@ section {
   padding: 1vw;
 }
 
+#content-headers {
+  width: 100%;
+  display: flex;
+}
+
+#content-headers div {
+  width: 100%;
+  height: fit-content;
+  text-align: center;
+  font-size: 1.5rem;
+  color: white;
+  text-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+}
+
 #content {
   margin: 0.1vh;
   width: max;
@@ -44,7 +58,7 @@ section {
 
 #episodeForm {
   width: 100%;
-  height: max;
+  height: 40vh;
   display: flex;
 }
 
@@ -52,14 +66,16 @@ section {
   width: 100%;
   margin: 5px;
   margin-top: 1vw;
+  height: 50vh;
 }
 
-#episodeForm form {
+.form {
   width: 80%;
   background-color: var(--bg-color);
   /* box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3); */
   border-radius: var(--border-radius);
   padding: 2vw;
+  height: 50vh;
 }
 
 .context {
@@ -70,4 +86,19 @@ section {
 
 line {
   stroke: #bfb6b6;
+}
+
+footer {
+  height: 60vh;
+  width: 100%;
+}
+
+h1 {
+  color: rgb(255, 255, 255);
+  text-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+
+  width: 100%;
+  text-align: center;
+  font-size: 4rem;
+  margin: 0;
 }
