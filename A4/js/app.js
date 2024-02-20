@@ -1,3 +1,5 @@
+import { initSliders } from "./rangeSlider.js";
+
 const urls = [
   "./json/starwars-full-interactions-allCharacters.json",
   "./json/starwars-episode-1-interactions-allCharacters.json",
@@ -66,16 +68,13 @@ const BACKGROUNDCOLORS = ["#fff", "#fff"];
 const HIGHLIGHTCOLOR = "#FF1200";
 const HIGHLIGHTSHADOW = "0 0 10px rgba(255, 18, 43, 1)";
 
-function initSimulateNodeSystem(ids, BACKGROUNDCOLORS) {
+function initSimulateNodeSystem(ids) {
   const contentDiv = document.getElementById("content");
-  const contentHeaders = d3.select("#content-headers");
-
-  // Append two divs with text "HEJ"
-  let i = 0;
 
   const width = contentDiv.clientWidth;
   const height = contentDiv.clientHeight;
 
+  let i = 0;
   ids.forEach((id) => {
     id = id.replace("#", "");
     d3.select("#content")
@@ -98,14 +97,14 @@ function initSimulateNodeSystem(ids, BACKGROUNDCOLORS) {
   unSelectAllInForm("#form2", "radio");
   selectButtonInForm("#form2", "#option3");
 
-  simulateNodeSystem("#svg1", [1], BACKGROUNDCOLORS[0]);
-  simulateNodeSystem("#svg2", [2], BACKGROUNDCOLORS[1]);
+  simulateNodeSystem("#svg1", [1], BACKGROUNDCOLORS[0], -Infinity, Infinity);
+  simulateNodeSystem("#svg2", [2], BACKGROUNDCOLORS[1], -Infinity, Infinity);
 }
 
 let selectedNode1;
 let selectedNode2;
 
-async function simulateNodeSystem(id, index, nodeColor) {
+async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
   let EPISODES = await loadEp();
 
   const contentDiv = document.getElementById("content");
@@ -133,8 +132,10 @@ async function simulateNodeSystem(id, index, nodeColor) {
   let links = data.links;
 
   let force = 0;
+  let scale = 1;
   if (nodes.length > 100) {
-    force = -60;
+    force = -40;
+    scale = 0.6;
   } else {
     force = -300;
   }
@@ -170,17 +171,29 @@ async function simulateNodeSystem(id, index, nodeColor) {
     });
 
   async function ticked(id, theLinks, theNodes, nodeColor) {
-    updateLinks(id, theLinks);
+    updateLinks(id, theNodes, theLinks);
     updateNodes(id, theNodes, nodeColor);
     // initZoom(id);
   }
 
-  async function updateLinks(id, theLinks) {
+  async function updateLinks(id, theNodes, theLinks) {
     let svg = d3.select(id);
 
     svg
       .selectAll("line")
-      .data(theLinks)
+      .data(
+        theLinks.filter(function (d) {
+          const nodeTarget = theNodes.find((n) => n.name === d.target.name);
+          const nodeSource = theNodes.find((n) => n.name === d.source.name);
+
+          return (
+            nodeTarget.value >= valMin &&
+            nodeTarget.value <= valMax &&
+            nodeSource.value >= valMin &&
+            nodeSource.value <= valMax
+          );
+        })
+      )
       .join("line")
       .attr("x1", function (d) {
         return d.source.x;
@@ -193,7 +206,20 @@ async function simulateNodeSystem(id, index, nodeColor) {
       })
       .attr("y2", function (d) {
         return d.target.y;
-      });
+      })
+      .attr("source", function (d) {
+        return d.source.name;
+      })
+      .attr("target", function (d) {
+        return d.target.name;
+      })
+      .attr("value", function (d) {
+        return d.value;
+      })
+      .style("stroke-width", "3px")
+      .style("stroke", "")
+
+      .on("click", onClickLink);
   }
 
   async function updateNodes(id, theNodes, nodeColor) {
@@ -204,7 +230,11 @@ async function simulateNodeSystem(id, index, nodeColor) {
     // Update circle elements
     svg
       .selectAll("circle")
-      .data(theNodes)
+      .data(
+        theNodes.filter(function (d) {
+          return d.value >= valMin && d.value <= valMax;
+        })
+      )
       .join("circle")
       .attr("cx", function (d) {
         return d.x;
@@ -213,7 +243,10 @@ async function simulateNodeSystem(id, index, nodeColor) {
         return d.y;
       })
       .attr("r", function (d) {
-        return Math.max((NODERADIUS * d.value) / 120, NODERADIUS); // Default radius if not provided
+        return Math.max(
+          ((NODERADIUS * d.value) / 120) * scale,
+          NODERADIUS * scale
+        ); // Default radius if not provided
       })
       .style("fill", function (d) {
         return nodeColor;
@@ -223,7 +256,11 @@ async function simulateNodeSystem(id, index, nodeColor) {
     // Update text elements
     svg
       .selectAll("text")
-      .data(theNodes)
+      .data(
+        theNodes.filter(function (d) {
+          return d.value >= valMin && d.value <= valMax;
+        })
+      )
       .join("text")
       .attr("text-name", function (d) {
         return d.name;
@@ -246,14 +283,38 @@ async function simulateNodeSystem(id, index, nodeColor) {
         return d.colour;
       })
       .attr("font-size", function (d) {
-        return Math.max((fontSize * d.value) / 60, fontSize);
+        return Math.max(((fontSize * d.value) / 60) * scale, fontSize * scale);
       })
-      .on("click", onClick) // onClick is function
+      .on("click", onClickNode)
+      .on("mouseover", function () {
+        d3.select(this)
+          .transition()
+          .duration(200)
+          .attr("font-size", function (d) {
+            return Math.max(
+              ((fontSize * d.value) / 30) * scale,
+              fontSize * scale * 2
+            );
+          });
+      })
+      .on("mouseout", function () {
+        d3.select(this)
+          .transition()
+          .duration(100)
+          .attr("font-size", function (d) {
+            return Math.max(
+              ((fontSize * d.value) / 60) * scale,
+              fontSize * scale
+            );
+          });
+      })
       .raise();
   }
 
   function resetHiglight() {
     let content = d3.select("#content");
+
+    content.selectAll("line").style("stroke", "").style("filter", "");
 
     content
       .selectAll("text")
@@ -263,10 +324,48 @@ async function simulateNodeSystem(id, index, nodeColor) {
         return d.colour;
       });
 
-    d3.select(".context").selectAll("*").remove();
+    d3.selectAll(".context").html("");
   }
 
-  function onClick() {
+  function onClickLink() {
+    resetHiglight();
+
+    d3.select(this)
+      .style("stroke", HIGHLIGHTCOLOR)
+      .style("filter", "opacity(60%)");
+
+    const source = d3.select(this).attr("source");
+    const target = d3.select(this).attr("target");
+    const value = d3.select(this).attr("value");
+
+    let svg = d3.select(id);
+
+    const sourceNode = svg.select(`text[text-name="${source}"]`);
+    sourceNode
+      .style("text-shadow", HIGHLIGHTSHADOW)
+      .style("fill", function (d) {
+        return HIGHLIGHTCOLOR;
+      });
+
+    const targeteNode = svg.select(`text[text-name="${target}"]`);
+    targeteNode
+      .style("text-shadow", HIGHLIGHTSHADOW)
+      .style("fill", function (d) {
+        return HIGHLIGHTCOLOR;
+      });
+
+    const context = d3.select(id + "-context");
+    context.html(
+      source.toLowerCase() +
+        " and " +
+        target.toLowerCase() +
+        "<br/>" +
+        "Conversations: " +
+        value
+    );
+  }
+
+  function onClickNode() {
     resetHiglight();
 
     selectedNode1 = this;
@@ -287,11 +386,16 @@ async function simulateNodeSystem(id, index, nodeColor) {
     }
     selectAll(name, id2);
 
-    // @TODO
     const context = d3.select(id + "-context");
-    context.selectAll("*").remove();
-    context.append("text").text(name.toLowerCase());
-    context.append("text").text(" " + conversations.toLowerCase());
+    context.html("");
+
+    context.html(
+      "Name: " +
+        name.toLowerCase() +
+        "<br/>" +
+        "Conversations: " +
+        conversations
+    );
   }
 
   function selectAll(name, id) {
@@ -312,17 +416,57 @@ async function simulateNodeSystem(id, index, nodeColor) {
 
     // @TODO
     const context = d3.select(id + "-context");
+    context.html("");
 
     if (matching.node()) {
-      context.selectAll("*").remove();
-      context.append("text").text(name.toLowerCase());
       const conversations = d3.select(matching.node()).attr("conversations");
 
-      context.append("text").text(" " + conversations.toLowerCase());
-    } else {
-      context.selectAll("*").remove();
+      context.html(
+        "Name: " +
+          name.toLowerCase() +
+          "<br/>" +
+          "Conversations: " +
+          conversations
+      );
     }
   }
+
+  function InitNodeRange(id) {
+    const sliderInputMin = document.querySelector(id + "-fromSlider");
+    const sliderInputMax = document.querySelector(id + "-toSlider");
+
+    let timer;
+
+    sliderInputMin.addEventListener("input", function () {
+      clearTimeout(timer); // Clear the previous timer
+
+      timer = setTimeout(function () {
+        simulateNodeSystem(
+          id,
+          index,
+          nodeColor,
+          sliderInputMin.value,
+          sliderInputMax.value
+        );
+      }, 500); // 500 milliseconds
+    });
+
+    sliderInputMax.addEventListener("input", function () {
+      clearTimeout(timer); // Clear the previous timer
+
+      timer = setTimeout(function () {
+        simulateNodeSystem(
+          id,
+          index,
+          nodeColor,
+          sliderInputMin.value,
+          sliderInputMax.value
+        );
+      }, 500); // 500 milliseconds
+    });
+  }
+
+  InitNodeRange(id);
 }
 
 let episodeForm1 = d3.select("#form1");
@@ -384,4 +528,11 @@ function selectButtonInForm(formId, id) {
   button.checked = true;
 }
 
+initSliders(
+  ["#svg1", "#svg2"],
+  [
+    [0, 500],
+    [0, 500],
+  ]
+);
 initSimulateNodeSystem(["#svg1", "#svg2"], BACKGROUNDCOLORS);

@@ -5,14 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>STARWARS</title>
     <link rel="icon" href="img/SW.png" type="image/x-icon" />
+
     <link rel="stylesheet" href="./css/style.css" />
-    <script type="module" src="./js/app.js"></script>
+    <link rel="stylesheet" href="./css/rangeSlider.css" />
+
     <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script type="module" src="./js/rangeSlider.js"></script>
+    <script type="module" src="./js/app.js"></script>
   </head>
   <body>
     <section>
       <h1>Star Wars conversations</h1>
       <div id="content-headers"></div>
+      <div class="ranges"></div>
       <div id="content"></div>
       <div id="episodeForm">
         <div>
@@ -73,6 +78,7 @@
         <div id="svg2-context" class="context"></div>
       </div>
     </section>
+
     <footer></footer>
   </body>
 </html>
