@@ -36,8 +36,6 @@ function fillSlider(from, to, sliderColor, rangeColor, controlSlider) {
       ${sliderColor} 100%)`;
 }
 
-const nrOfSliders = 2;
-
 export function initSliders(ids, range) {
   for (let i = 0; i < ids.length; i++) {
     let id = ids[i];
@@ -70,17 +68,17 @@ function creatSlider(id, min, max) {
   const fromSlider = document.createElement("input");
   fromSlider.setAttribute("type", "range");
   fromSlider.setAttribute("id", id + "-fromSlider");
-  fromSlider.setAttribute("value", min);
   fromSlider.setAttribute("min", min);
   fromSlider.setAttribute("max", max);
+  fromSlider.setAttribute("value", min);
 
   // Create the toSlider input
   const toSlider = document.createElement("input");
   toSlider.setAttribute("type", "range");
   toSlider.setAttribute("id", id + "-toSlider");
-  toSlider.setAttribute("value", max);
   toSlider.setAttribute("min", min);
   toSlider.setAttribute("max", max);
+  toSlider.setAttribute("value", max);
 
   // Append the sliders to the sliders control div
   slidersControl.appendChild(fromSlider);
