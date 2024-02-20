@@ -115,7 +115,7 @@ async function simulateNodeSystem(id, index, nodeColor) {
   const width = contentDiv.clientWidth;
   const height = contentDiv.clientHeight;
 
-  const NODERADIUS = 12;
+  const NODERADIUS = 30;
 
   let data = EPISODES[index];
 
@@ -135,9 +135,9 @@ async function simulateNodeSystem(id, index, nodeColor) {
 
   let force = 0;
   if (nodes.length > 100) {
-    force = -60;
+    force = -100;
   } else {
-    force = -300;
+    force = -400;
   }
 
   resetHiglight();
@@ -173,7 +173,23 @@ async function simulateNodeSystem(id, index, nodeColor) {
   async function ticked(id, theLinks, theNodes, nodeColor) {
     updateLinks(id, theLinks);
     updateNodes(id, theNodes, nodeColor);
-    // initZoom(id);
+    updateClipPaths(id, theNodes); // Add this line to update clip path positions
+  }
+
+  async function updateClipPaths(id, theNodes) {
+    let svg = d3.select(id);
+
+    // Update clip path positions based on node positions
+    svg.selectAll(".node-group")
+      .data(theNodes)
+      .select("clipPath")
+      .select("circle")
+      .attr("cx", function (d) {
+        return d.x;
+      })
+      .attr("cy", function (d) {
+        return d.y;
+      });
   }
 
   async function updateLinks(id, theLinks) {
@@ -221,24 +237,7 @@ async function simulateNodeSystem(id, index, nodeColor) {
         return d.y;
       })
       .attr("r", function (d) {
-        return Math.max((NODERADIUS * d.value) / 120, NODERADIUS);
-      });
-
-    // Update circle elements within the group
-    nodeGroups.selectAll("circle")
-      .data(d => [d])
-      .join("circle")
-      .attr("cx", function (d) {
-        return d.x;
-      })
-      .attr("cy", function (d) {
-        return d.y;
-      })
-      .attr("r", function (d) {
-        return Math.max((NODERADIUS * d.value) / 120, NODERADIUS);
-      })
-      .style("fill", function (d) {
-        return nodeColor;
+        return NODERADIUS;
       });
 
     // Update image elements within the group
@@ -254,7 +253,27 @@ async function simulateNodeSystem(id, index, nodeColor) {
       .attr("width", 2 * NODERADIUS)
       .attr("height", 2 * NODERADIUS)
       .attr("xlink:href", d => d.image)
-      .attr("clip-path", d => "url(#clip-" + d.name + ")");
+      .attr("clip-path", d => "url(#clip-" + d.name + ")"); // Apply clip-path
+
+    // Create circular clip path for each node
+    nodeGroups.selectAll("clipPath")
+      .data(d => [d])
+      .join("clipPath")
+      .attr("id", d => "clip-" + d.name)
+      .append("circle")
+      .attr("r", function (d) {
+        return NODERADIUS;
+      });
+
+    // Update clip path positions based on node positions
+    nodeGroups.selectAll("clipPath")
+      .select("circle")
+      .attr("cx", function (d) {
+        return d.x;
+      })
+      .attr("cy", function (d) {
+        return d.y;
+      });
 
     // Update text elements within the group
     nodeGroups.selectAll("text")
@@ -270,7 +289,7 @@ async function simulateNodeSystem(id, index, nodeColor) {
         return d.x;
       })
       .attr("y", function (d) {
-        return d.y;
+        return d.y + 30;
       })
       .attr("dy", "0.35em")
       .attr("text-anchor", "middle")
