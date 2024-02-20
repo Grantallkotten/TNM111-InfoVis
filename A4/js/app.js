@@ -49,7 +49,7 @@ class SWdata {
 }
 
 class node {
-  constructor(name, value, colour) {
+  constructor(name, value, colour, image) {
     this.name = name.toLowerCase();
     this.value = value.toLowerCase();
     this.colour = colour;
@@ -242,17 +242,23 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
 
   async function updateNodes(id, theNodes, nodeColor) {
     let fontSize = 12;
+    let borderWidth = 0; // Set the border thickness
 
     let svg = d3.select(id);
 
-    // Update circle elements
-    svg
+    // Update group elements
+    let nodeGroups = svg
+      .selectAll(".node-group")
+      .data(theNodes)
+      .join("g")
+      .attr("class", "node-group")
+      .on("click", onClick)
+      .raise();
+
+    // Update circle elements within the group
+    let circles = nodeGroups
       .selectAll("circle")
-      .data(
-        theNodes.filter(function (d) {
-          return d.value >= valMin && d.value <= valMax;
-        })
-      )
+      .data((d) => [d])
       .join("circle")
       .attr("cx", function (d) {
         return d.x;
@@ -261,24 +267,35 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
         return d.y;
       })
       .attr("r", function (d) {
-        return Math.max(
-          ((NODERADIUS * d.value) / 120) * scale,
-          NODERADIUS * scale
-        ); // Default radius if not provided
+        return d.value;
       })
       .style("fill", function (d) {
-        return nodeColor;
+        return d.colour;
       })
-      .raise();
+      .style("stroke", function (d) {
+        return d.colour;
+      }) // Add stroke color if needed
+      .style("stroke-width", borderWidth); // Add stroke width if needed
 
-    // Update text elements
-    svg
-      .selectAll("text")
-      .data(
-        theNodes.filter(function (d) {
-          return d.value >= valMin && d.value <= valMax;
-        })
-      )
+    // Update image elements within the group
+    nodeGroups
+      .selectAll("image")
+      .data((d) => [d])
+      .join("image")
+      .attr("width", function (d) { return Math.max(40, d.value * 2) })
+      .attr("height", function (d) { return Math.max(40, d.value * 2) })
+      .attr("x", function (d) {
+        return d.x - Math.max(20, d.value);
+      })
+      .attr("y", function (d) {
+        return d.y - Math.max(20, d.value);
+      })
+      .attr("xlink:href", (d) => d.image)
+      .attr("clip-path", (d) => "url(#clip-" + d.name + ")"); // Apply clip-path
+
+    // Update text elements within the group
+    nodeGroups.selectAll("text")
+      .data(d => [d])
       .join("text")
       .attr("text-name", function (d) {
         return d.name;
@@ -290,12 +307,12 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
         return d.x;
       })
       .attr("y", function (d) {
-        return d.y + 30;
+        return d.y + (d.value / 1.5);
       })
       .attr("dy", "0.35em")
       .attr("text-anchor", "middle")
       .text(function (d) {
-        return d.name.toLowerCase(); // Starwars font dont work for upper (defect in .ttf)
+        return d.name.toLowerCase();
       })
       .style("fill", function (d) {
         return d.colour;
@@ -375,11 +392,11 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
     const context = d3.select(id + "-context");
     context.html(
       source.toLowerCase() +
-        " and " +
-        target.toLowerCase() +
-        "<br/>" +
-        "Conversations: " +
-        value
+      " and " +
+      target.toLowerCase() +
+      "<br/>" +
+      "Conversations: " +
+      value
     );
   }
 
@@ -409,10 +426,10 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
 
     context.html(
       "Name: " +
-        name.toLowerCase() +
-        "<br/>" +
-        "Conversations: " +
-        conversations
+      name.toLowerCase() +
+      "<br/>" +
+      "Conversations: " +
+      conversations
     );
   }
 
@@ -441,10 +458,10 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
 
       context.html(
         "Name: " +
-          name.toLowerCase() +
-          "<br/>" +
-          "Conversations: " +
-          conversations
+        name.toLowerCase() +
+        "<br/>" +
+        "Conversations: " +
+        conversations
       );
     }
   }
@@ -554,3 +571,4 @@ initSliders(
   ]
 );
 initSimulateNodeSystem(["#svg1", "#svg2"], BACKGROUNDCOLORS);
+
