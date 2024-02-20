@@ -4,163 +4,163 @@
       "name": "LUKE",
       "value": 2,
       "colour": "#3881e5",
-      "image": "./characters_img/luke.png"
+      "image": "./characters_img/luke.jpeg"
     },
     {
       "name": "R2-D2",
       "value": 5,
       "colour": "#bde0f6",
-      "image": "./characters_img/r2d2.png"
+      "image": "./characters_img/r2d2.jpeg"
     },
     {
       "name": "CHEWBACCA",
       "value": 43,
       "colour": "#A0522D",
-      "image": "./characters_img/chewbacca.png"
+      "image": "./characters_img/chewbacca.jpeg"
     },
     {
       "name": "BB-8",
       "value": 40,
       "colour": "#eb5d00",
-      "image": "./characters_img/bb8.png"
+      "image": "./characters_img/bb8.jpeg"
     },
     {
       "name": "LOR SAN TEKKA",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/lorsantekka.png"
+      "image": "./characters_img/lorsantekka.jpeg"
     },
     {
       "name": "POE",
       "value": 31,
       "colour": "#a15bea",
-      "image": "./characters_img/poe.png"
+      "image": "./characters_img/poe.jpeg"
     },
     {
       "name": "KYLO REN",
       "value": 23,
       "colour": "#000000",
-      "image": "./characters_img/kyloren.png"
+      "image": "./characters_img/kyloren.jpeg"
     },
     {
       "name": "CAPTAIN PHASMA",
       "value": 7,
       "colour": "#808080",
-      "image": "./characters_img/captainphasma.png"
+      "image": "./characters_img/captainphasma.jpeg"
     },
     {
       "name": "FINN",
       "value": 64,
       "colour": "#07b19f",
-      "image": "./characters_img/finn.png"
+      "image": "./characters_img/finn.jpeg"
     },
     {
       "name": "UNKAR PLUTT",
       "value": 6,
       "colour": "#808080",
-      "image": "./characters_img/unkarplutt.png"
+      "image": "./characters_img/unkarplutt.jpeg"
     },
     {
       "name": "REY",
       "value": 57,
       "colour": "#ffe0af",
-      "image": "./characters_img/rey.png"
+      "image": "./characters_img/rey.jpeg"
     },
     {
       "name": "GENERAL HUX",
       "value": 15,
       "colour": "#808080",
-      "image": "./characters_img/generalhux.png"
+      "image": "./characters_img/generalhux.jpeg"
     },
     {
       "name": "LIEUTENANT MITAKA",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/lieutenantmitaka.png"
+      "image": "./characters_img/lieutenantmitaka.jpeg"
     },
     {
       "name": "HAN",
       "value": 47,
       "colour": "#ff9400",
-      "image": "./characters_img/han.png"
+      "image": "./characters_img/han.jpeg"
     },
     {
       "name": "BALA-TIK",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/balatik.png"
+      "image": "./characters_img/balatik.jpeg"
     },
     {
       "name": "SNOKE",
       "value": 5,
       "colour": "#191970",
-      "image": "./characters_img/snoke.png"
+      "image": "./characters_img/snoke.jpeg"
     },
     {
       "name": "MAZ",
       "value": 7,
       "colour": "#808080",
-      "image": "./characters_img/maz.png"
+      "image": "./characters_img/maz.jpeg"
     },
     {
       "name": "C-3PO",
       "value": 9,
       "colour": "#FFD700",
-      "image": "./characters_img/c3po.png"
+      "image": "./characters_img/c3po.jpeg"
     },
     {
       "name": "LEIA",
       "value": 11,
       "colour": "#DCDCDC",
-      "image": "./characters_img/leia.png"
+      "image": "./characters_img/leia.jpeg"
     },
     {
       "name": "SNAP",
       "value": 6,
       "colour": "#808080",
-      "image": "./characters_img/snap.png"
+      "image": "./characters_img/snap.jpeg"
     },
     {
       "name": "ADMIRAL ACKBAR",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/admiralackbar.png"
+      "image": "./characters_img/admiralackbar.jpeg"
     },
     {
       "name": "ADMIRAL STATURA",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/admiralstatura.png"
+      "image": "./characters_img/admiralstatura.jpeg"
     },
     {
       "name": "YOLO ZIFF",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/yoloziff.png"
+      "image": "./characters_img/yoloziff.jpeg"
     },
     {
       "name": "COLONEL DATOO",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/coloneldatoo.png"
+      "image": "./characters_img/coloneldatoo.jpeg"
     },
     {
       "name": "ELLO ASTY",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/elloasty.png"
+      "image": "./characters_img/elloasty.jpeg"
     },
     {
       "name": "JESS",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/jess.png"
+      "image": "./characters_img/jess.jpeg"
     },
     {
       "name": "NIV LEK",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/nivlek.png"
+      "image": "./characters_img/nivlek.jpeg"
     }
   ],
   "links": [

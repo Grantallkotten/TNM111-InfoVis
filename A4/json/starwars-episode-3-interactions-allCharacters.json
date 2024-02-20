@@ -4,151 +4,151 @@
       "name": "R2-D2",
       "value": 31,
       "colour": "#bde0f6",
-      "image": "./characters_img/r2d2.png"
+      "image": "./characters_img/r2d2.jpeg"
     },
     {
       "name": "ANAKIN",
       "value": 54,
       "colour": "#ce3b59",
-      "image": "./characters_img/anakin.png"
+      "image": "./characters_img/anakin.jpeg"
     },
     {
       "name": "OBI-WAN",
       "value": 60,
       "colour": "#48D1CC",
-      "image": "./characters_img/obiwankenobi.png"
+      "image": "./characters_img/obiwankenobi.jpeg"
     },
     {
       "name": "ODD BALL",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/oddball.png"
+      "image": "./characters_img/oddball.jpeg"
     },
     {
       "name": "GENERAL GRIEVOUS",
       "value": 13,
       "colour": "#808080",
-      "image": "./characters_img/generalgrievous.png"
+      "image": "./characters_img/generalgriveous.jpeg"
     },
     {
       "name": "EMPEROR",
       "value": 25,
       "colour": "#191970",
-      "image": "./characters_img/emperor.png"
+      "image": "./characters_img/emperor.jpeg"
     },
     {
       "name": "COUNT DOOKU",
       "value": 3,
       "colour": "#808080",
-      "image": "./characters_img/countdooku.png"
+      "image": "./characters_img/countdooku.jpeg"
     },
     {
       "name": "BAIL ORGANA",
       "value": 21,
       "colour": "#808080",
-      "image": "./characters_img/bailorgana.png"
+      "image": "./characters_img/bailorgana.jpeg"
     },
     {
       "name": "C-3PO",
       "value": 16,
       "colour": "#FFD700",
-      "image": "./characters_img/c3po.png"
+      "image": "./characters_img/c3po.jpeg"
     },
     {
       "name": "PADME",
       "value": 24,
       "colour": "#DDA0DD",
-      "image": "./characters_img/padme.png"
+      "image": "./characters_img/padme.jpeg"
     },
     {
       "name": "YODA",
       "value": 24,
       "colour": "#9ACD32",
-      "image": "./characters_img/yoda.png"
+      "image": "./characters_img/yoda.jpeg"
     },
     {
       "name": "FANG ZAR",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/fangzar.png"
+      "image": "./characters_img/fangzar.jpeg"
     },
     {
       "name": "MON MOTHMA",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/monmothma.png"
+      "image": "./characters_img/monmothma.jpeg"
     },
     {
       "name": "GIDDEAN DANU",
       "value": 3,
       "colour": "#808080",
-      "image": "./characters_img/giddeandanu.png"
+      "image": "./characters_img/giddeandanu.jpeg"
     },
     {
       "name": "MACE WINDU",
       "value": 8,
       "colour": "#808080",
-      "image": "./characters_img/macewindu.png"
+      "image": "./characters_img/macewindu.jpeg"
     },
     {
       "name": "CAPTAIN TYPHO",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/captaintypho.png"
+      "image": "./characters_img/captaintypho.jpeg"
     },
     {
       "name": "CLONE COMMANDER GREE",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/clonecommandergree.png"
+      "image": "./characters_img/clonecommandergree.jpeg"
     },
     {
       "name": "CLONE COMMANDER CODY",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/clonecommandercody.png"
+      "image": "./characters_img/clonecommandercody.jpeg"
     },
     {
       "name": "JAR JAR",
       "value": 3,
       "colour": "#9a9a00",
-      "image": "./characters_img/jarjar.png"
+      "image": "./characters_img/jarjar.jpeg"
     },
     {
       "name": "TION MEDON",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/tionmedon.png"
+      "image": "./characters_img/tionmedon.jpeg"
     },
     {
       "name": "NUTE GUNRAY",
       "value": 6,
       "colour": "#808080",
-      "image": "./characters_img/nutegunray.png"
+      "image": "./characters_img/nutegunray.jpeg"
     },
     {
       "name": "PLO KOON",
       "value": 3,
       "colour": "#808080",
-      "image": "./characters_img/plokoon.png"
+      "image": "./characters_img/plokoon.jpeg"
     },
     {
       "name": "CAPTAIN ANTILLES",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/captainantilles.png"
+      "image": "./characters_img/antilles.jpeg"
     },
     {
       "name": "DARTH VADER",
       "value": 5,
       "colour": "#000000",
-      "image": "./characters_img/darthvader.png"
+      "image": "./characters_img/darthvader.jpeg"
     },
     {
       "name": "QUI-GON",
       "value": 3,
       "colour": "#4f4fb1",
-      "image": "./characters_img/quigonjin.png"
+      "image": "./characters_img/quigonjin.jpeg"
     }
   ],
   "links": [

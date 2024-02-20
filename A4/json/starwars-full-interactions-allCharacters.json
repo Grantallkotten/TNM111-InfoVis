@@ -4,673 +4,673 @@
       "name": "R2-D2",
       "value": 171,
       "colour": "#bde0f6",
-      "image": "./characters_img/r2d2.png"
+      "image": "./characters_img/r2d2.jpeg"
     },
     {
       "name": "CHEWBACCA",
       "value": 145,
       "colour": "#A0522D",
-      "image": "./characters_img/chewbacca.png"
+      "image": "./characters_img/chewbacca.jpeg"
     },
     {
       "name": "BB-8",
       "value": 40,
       "colour": "#eb5d00",
-      "image": "./characters_img/bb8.png"
+      "image": "./characters_img/bb8.jpeg"
     },
     {
       "name": "QUI-GON",
       "value": 62,
       "colour": "#4f4fb1",
-      "image": "./characters_img/quigonjin.png"
+      "image": "./characters_img/quigonjin.jpeg"
     },
     {
       "name": "NUTE GUNRAY",
       "value": 25,
       "colour": "#808080",
-      "image": "./characters_img/nutegunray.png"
+      "image": "./characters_img/nutegunray.jpeg"
     },
     {
       "name": "PK-4",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/pk4.png"
+      "image": "./characters_img/pk4.jpeg"
     },
     {
       "name": "TC-14",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/tc14.png"
+      "image": "./characters_img/tc14.jpeg"
     },
     {
       "name": "OBI-WAN",
       "value": 148,
       "colour": "#48D1CC",
-      "image": "./characters_img/obiwankenobi.png"
+      "image": "./characters_img/obiwankenobi.jpeg"
     },
     {
       "name": "DOFINE",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/dofine.png"
+      "image": "./characters_img/dofine.jpeg"
     },
     {
       "name": "RUNE",
       "value": 11,
       "colour": "#808080",
-      "image": "./characters_img/rune.png"
+      "image": "./characters_img/rune.jpeg"
     },
     {
       "name": "TEY HOW",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/teyhow.png"
+      "image": "./characters_img/teyhow.jpeg"
     },
     {
       "name": "EMPEROR",
       "value": 52,
       "colour": "#191970",
-      "image": "./characters_img/emperor.png"
+      "image": "./characters_img/emperor.jpeg"
     },
     {
       "name": "CAPTAIN PANAKA",
       "value": 20,
       "colour": "#808080",
-      "image": "./characters_img/captainpanaka.png"
+      "image": "./characters_img/captainpanaka.jpeg"
     },
     {
       "name": "SIO BIBBLE",
       "value": 9,
       "colour": "#808080",
-      "image": "./characters_img/siobibble.png"
+      "image": "./characters_img/siobibble.jpeg"
     },
     {
       "name": "JAR JAR",
       "value": 42,
       "colour": "#9a9a00",
-      "image": "./characters_img/jarjar.png"
+      "image": "./characters_img/jarjar.jpeg"
     },
     {
       "name": "TARPALS",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/tarpals.png"
+      "image": "./characters_img/tarpals.jpeg"
     },
     {
       "name": "BOSS NASS",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/bossnass.png"
+      "image": "./characters_img/bossnass.jpeg"
     },
     {
       "name": "PADME",
       "value": 75,
       "colour": "#DDA0DD",
-      "image": "./characters_img/padme.png"
+      "image": "./characters_img/padme.jpeg"
     },
     {
       "name": "RIC OLIE",
       "value": 12,
       "colour": "#808080",
-      "image": "./characters_img/ricolie.png"
+      "image": "./characters_img/ricolie.jpeg"
     },
     {
       "name": "WATTO",
       "value": 9,
       "colour": "#808080",
-      "image": "./characters_img/watto.png"
+      "image": "./characters_img/watto.jpeg"
     },
     {
       "name": "ANAKIN",
       "value": 132,
       "colour": "#ce3b59",
-      "image": "./characters_img/anakin.png"
+      "image": "./characters_img/anakin.jpeg"
     },
     {
       "name": "SEBULBA",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/sebulba.png"
+      "image": "./characters_img/sebulba.jpeg"
     },
     {
       "name": "JIRA",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/jira.png"
+      "image": "./characters_img/jira.jpeg"
     },
     {
       "name": "SHMI",
       "value": 12,
       "colour": "#808080",
-      "image": "./characters_img/shmi.png"
+      "image": "./characters_img/shmi.jpeg"
     },
     {
       "name": "C-3PO",
       "value": 151,
       "colour": "#FFD700",
-      "image": "./characters_img/c3po.png"
+      "image": "./characters_img/c3po.jpeg"
     },
     {
       "name": "DARTH MAUL",
       "value": 6,
       "colour": "#808080",
-      "image": "./characters_img/darthmaul.png"
+      "image": "./characters_img/darthmaul.jpeg"
     },
     {
       "name": "KITSTER",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/kitster.png"
+      "image": "./characters_img/kitster.jpeg"
     },
     {
       "name": "WALD",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/wald.png"
+      "image": "./characters_img/wald.jpeg"
     },
     {
       "name": "FODE/BEED",
       "value": 12,
       "colour": "#808080",
-      "image": "./characters_img/fodebeed.png"
+      "image": "./characters_img/fodebeed.jpeg"
     },
     {
       "name": "JABBA",
       "value": 8,
       "colour": "#808080",
-      "image": "./characters_img/jabba.png"
+      "image": "./characters_img/jabba.jpeg"
     },
     {
       "name": "GREEDO",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/greedo.png"
+      "image": "./characters_img/greedo.jpeg"
     },
     {
       "name": "VALORUM",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/valorum.png"
+      "image": "./characters_img/valorum.jpeg"
     },
     {
       "name": "MACE WINDU",
       "value": 23,
       "colour": "#808080",
-      "image": "./characters_img/macewindu.png"
+      "image": "./characters_img/macewindu.jpeg"
     },
     {
       "name": "KI-ADI-MUNDI",
       "value": 7,
       "colour": "#808080",
-      "image": "./characters_img/kiadimundi.png"
+      "image": "./characters_img/kiadimundi.jpeg"
     },
     {
       "name": "YODA",
       "value": 46,
       "colour": "#9ACD32",
-      "image": "./characters_img/yoda.png"
+      "image": "./characters_img/yoda.jpeg"
     },
     {
       "name": "RABE",
       "value": 3,
       "colour": "#808080",
-      "image": "./characters_img/rabe.png"
+      "image": "./characters_img/rabe.jpeg"
     },
     {
       "name": "BAIL ORGANA",
       "value": 24,
       "colour": "#808080",
-      "image": "./characters_img/bailorgana.png"
+      "image": "./characters_img/bailorgana.jpeg"
     },
     {
       "name": "GENERAL CEEL",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/generalceel.png"
+      "image": "./characters_img/generalceel.jpeg"
     },
     {
       "name": "BRAVO TWO",
       "value": 6,
       "colour": "#808080",
-      "image": "./characters_img/bravotwo.png"
+      "image": "./characters_img/bravotwo.jpeg"
     },
     {
       "name": "BRAVO THREE",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/bravothree.png"
+      "image": "./characters_img/bravothree.jpeg"
     },
     {
       "name": "CAPTAIN TYPHO",
       "value": 7,
       "colour": "#808080",
-      "image": "./characters_img/captaintypho.png"
+      "image": "./characters_img/captaintypho.jpeg"
     },
     {
       "name": "SENATOR ASK AAK",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/senatoraskaak.png"
+      "image": "./characters_img/senatoraskaak.jpeg"
     },
     {
       "name": "ORN FREE TAA",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/ornfreetaa.png"
+      "image": "./characters_img/ornfreetaa.jpeg"
     },
     {
       "name": "SOLA",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/sola.png"
+      "image": "./characters_img/sola.jpeg"
     },
     {
       "name": "JOBAL",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/jobal.png"
+      "image": "./characters_img/jobal.jpeg"
     },
     {
       "name": "RUWEE",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/ruwee.png"
+      "image": "./characters_img/ruwee.jpeg"
     },
     {
       "name": "TAUN WE",
       "value": 8,
       "colour": "#808080",
-      "image": "./characters_img/taunwe.png"
+      "image": "./characters_img/taunwe.jpeg"
     },
     {
       "name": "LAMA SU",
       "value": 9,
       "colour": "#808080",
-      "image": "./characters_img/lamasu.png"
+      "image": "./characters_img/lamasu.jpeg"
     },
     {
       "name": "BOBA FETT",
       "value": 11,
       "colour": "#808080",
-      "image": "./characters_img/bobafett.png"
+      "image": "./characters_img/bobafett.jpeg"
     },
     {
       "name": "JANGO FETT",
       "value": 6,
       "colour": "#808080",
-      "image": "./characters_img/jangofett.png"
+      "image": "./characters_img/jangofett.jpeg"
     },
     {
       "name": "OWEN",
       "value": 11,
       "colour": "#808080",
-      "image": "./characters_img/owen.png"
+      "image": "./characters_img/owen.jpeg"
     },
     {
       "name": "BERU",
       "value": 7,
       "colour": "#808080",
-      "image": "./characters_img/beru.png"
+      "image": "./characters_img/beru.jpeg"
     },
     {
       "name": "CLIEGG",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/cliegg.png"
+      "image": "./characters_img/cliegg.jpeg"
     },
     {
       "name": "COUNT DOOKU",
       "value": 10,
       "colour": "#808080",
-      "image": "./characters_img/countdooku.png"
+      "image": "./characters_img/countdooku.jpeg"
     },
     {
       "name": "SUN RIT",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/sunrit.png"
+      "image": "./characters_img/sunrit.jpeg"
     },
     {
       "name": "POGGLE",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/poggle.png"
+      "image": "./characters_img/poggle.jpeg"
     },
     {
       "name": "PLO KOON",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/plokoon.png"
+      "image": "./characters_img/plokoon.jpeg"
     },
     {
       "name": "ODD BALL",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/oddball.png"
+      "image": "./characters_img/oddball.jpeg"
     },
     {
       "name": "GENERAL GRIEVOUS",
       "value": 13,
       "colour": "#808080",
-      "image": "./characters_img/generalgrievous.png"
+      "image": "./characters_img/generalgrievous.jpeg"
     },
     {
       "name": "FANG ZAR",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/fangzar.png"
+      "image": "./characters_img/fangzar.jpeg"
     },
     {
       "name": "MON MOTHMA",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/monmothma.png"
+      "image": "./characters_img/monmothma.jpeg"
     },
     {
       "name": "GIDDEAN DANU",
       "value": 3,
       "colour": "#808080",
-      "image": "./characters_img/giddeandanu.png"
+      "image": "./characters_img/giddeandanu.jpeg"
     },
     {
       "name": "CLONE COMMANDER GREE",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/clonecommandergree.png"
+      "image": "./characters_img/clonecommandergree.jpeg"
     },
     {
       "name": "CLONE COMMANDER CODY",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/clonecommandercody.png"
+      "image": "./characters_img/clonecommandercody.jpeg"
     },
     {
       "name": "TION MEDON",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/tionmedon.png"
+      "image": "./characters_img/tionmedon.jpeg"
     },
     {
       "name": "CAPTAIN ANTILLES",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/captainantilles.png"
+      "image": "./characters_img/captainantilles.jpeg"
     },
     {
       "name": "DARTH VADER",
       "value": 59,
       "colour": "#000000",
-      "image": "./characters_img/darthvader.png"
+      "image": "./characters_img/darthvader.jpeg"
     },
     {
       "name": "LUKE",
       "value": 161,
       "colour": "#3881e5",
-      "image": "./characters_img/luke.png"
+      "image": "./characters_img/luke.jpeg"
     },
     {
       "name": "CAMIE",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/camie.png"
+      "image": "./characters_img/camie.jpeg"
     },
     {
       "name": "BIGGS",
       "value": 19,
       "colour": "#808080",
-      "image": "./characters_img/biggs.png"
+      "image": "./characters_img/biggs.jpeg"
     },
     {
       "name": "LEIA",
       "value": 99,
       "colour": "#DCDCDC",
-      "image": "./characters_img/leia.png"
+      "image": "./characters_img/leia.jpeg"
     },
     {
       "name": "MOTTI",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/motti.png"
+      "image": "./characters_img/motti.jpeg"
     },
     {
       "name": "TARKIN",
       "value": 13,
       "colour": "#808080",
-      "image": "./characters_img/tarkin.png"
+      "image": "./characters_img/tarkin.jpeg"
     },
     {
       "name": "HAN",
       "value": 170,
       "colour": "#ff9400",
-      "image": "./characters_img/han.png"
+      "image": "./characters_img/han.jpeg"
     },
     {
       "name": "DODONNA",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/dodonna.png"
+      "image": "./characters_img/dodonna.jpeg"
     },
     {
       "name": "GOLD LEADER",
       "value": 15,
       "colour": "#808080",
-      "image": "./characters_img/goldleader.png"
+      "image": "./characters_img/goldleader.jpeg"
     },
     {
       "name": "WEDGE",
       "value": 29,
       "colour": "#808080",
-      "image": "./characters_img/wedge.png"
+      "image": "./characters_img/wedge.jpeg"
     },
     {
       "name": "RED LEADER",
       "value": 34,
       "colour": "#808080",
-      "image": "./characters_img/redleader.png"
+      "image": "./characters_img/redleader.jpeg"
     },
     {
       "name": "RED TEN",
       "value": 9,
       "colour": "#808080",
-      "image": "./characters_img/redten.png"
+      "image": "./characters_img/redten.jpeg"
     },
     {
       "name": "GOLD FIVE",
       "value": 9,
       "colour": "#808080",
-      "image": "./characters_img/goldfive.png"
+      "image": "./characters_img/goldfive.jpeg"
     },
     {
       "name": "RIEEKAN",
       "value": 8,
       "colour": "#808080",
-      "image": "./characters_img/rieekan.png"
+      "image": "./characters_img/rieekan.jpeg"
     },
     {
       "name": "DERLIN",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/derlin.png"
+      "image": "./characters_img/derlin.jpeg"
     },
     {
       "name": "ZEV",
       "value": 7,
       "colour": "#808080",
-      "image": "./characters_img/zev.png"
+      "image": "./characters_img/zev.jpeg"
     },
     {
       "name": "PIETT",
       "value": 13,
       "colour": "#808080",
-      "image": "./characters_img/piett.png"
+      "image": "./characters_img/piett.jpeg"
     },
     {
       "name": "OZZEL",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/ozzel.png"
+      "image": "./characters_img/ozzel.jpeg"
     },
     {
       "name": "DACK",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/dack.png"
+      "image": "./characters_img/dack.jpeg"
     },
     {
       "name": "JANSON",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/janson.png"
+      "image": "./characters_img/janson.jpeg"
     },
     {
       "name": "NEEDA",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/needa.png"
+      "image": "./characters_img/needa.jpeg"
     },
     {
       "name": "LANDO",
       "value": 42,
       "colour": "#808080",
-      "image": "./characters_img/lando.png"
+      "image": "./characters_img/lando.jpeg"
     },
     {
       "name": "JERJERROD",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/jerjerrod.png"
+      "image": "./characters_img/jerjerrod.jpeg"
     },
     {
       "name": "BIB FORTUNA",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/bibfortuna.png"
+      "image": "./characters_img/bibfortuna.jpeg"
     },
     {
       "name": "BOUSHH",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/boushh.png"
+      "image": "./characters_img/boushh.jpeg"
     },
     {
       "name": "ADMIRAL ACKBAR",
       "value": 13,
       "colour": "#808080",
-      "image": "./characters_img/admiralackbar.png"
+      "image": "./characters_img/admiralackbar.jpeg"
     },
     {
       "name": "LOR SAN TEKKA",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/lorsantekka.png"
+      "image": "./characters_img/lorsantekka.jpeg"
     },
     {
       "name": "POE",
       "value": 31,
       "colour": "#a15bea",
-      "image": "./characters_img/poe.png"
+      "image": "./characters_img/poe.jpeg"
     },
     {
       "name": "KYLO REN",
       "value": 23,
       "colour": "#000000",
-      "image": "./characters_img/kyloren.png"
+      "image": "./characters_img/kyloren.jpeg"
     },
     {
       "name": "CAPTAIN PHASMA",
       "value": 7,
       "colour": "#808080",
-      "image": "./characters_img/captainphasma.png"
+      "image": "./characters_img/captainphasma.jpeg"
     },
     {
       "name": "FINN",
       "value": 64,
       "colour": "#07b19f",
-      "image": "./characters_img/finn.png"
+      "image": "./characters_img/finn.jpeg"
     },
     {
       "name": "UNKAR PLUTT",
       "value": 6,
       "colour": "#808080",
-      "image": "./characters_img/unkarplutt.png"
+      "image": "./characters_img/unkarplutt.jpeg"
     },
     {
       "name": "REY",
       "value": 57,
       "colour": "#ffe0af",
-      "image": "./characters_img/rey.png"
+      "image": "./characters_img/rey.jpeg"
     },
     {
       "name": "GENERAL HUX",
       "value": 15,
       "colour": "#808080",
-      "image": "./characters_img/generalhux.png"
+      "image": "./characters_img/generalhux.jpeg"
     },
     {
       "name": "LIEUTENANT MITAKA",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/lieutenantmitaka.png"
+      "image": "./characters_img/lieutenantmitaka.jpeg"
     },
     {
       "name": "BALA-TIK",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/balatik.png"
+      "image": "./characters_img/balatik.jpeg"
     },
     {
       "name": "SNOKE",
       "value": 5,
       "colour": "#191970",
-      "image": "./characters_img/snoke.png"
+      "image": "./characters_img/snoke.jpeg"
     },
     {
       "name": "MAZ",
       "value": 7,
       "colour": "#808080",
-      "image": "./characters_img/maz.png"
+      "image": "./characters_img/maz.jpeg"
     },
     {
       "name": "SNAP",
       "value": 6,
       "colour": "#808080",
-      "image": "./characters_img/snap.png"
+      "image": "./characters_img/snap.jpeg"
     },
     {
       "name": "ADMIRAL STATURA",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/admiralstatura.png"
+      "image": "./characters_img/admiralstatura.jpeg"
     },
     {
       "name": "YOLO ZIFF",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/yoloziff.png"
+      "image": "./characters_img/yoloziff.jpeg"
     },
     {
       "name": "COLONEL DATOO",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/coloneldatoo.png"
+      "image": "./characters_img/coloneldatoo.jpeg"
     },
     {
       "name": "ELLO ASTY",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/elloasty.png"
+      "image": "./characters_img/elloasty.jpeg"
     },
     {
       "name": "JESS",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/jess.png"
+      "image": "./characters_img/jess.jpeg"
     },
     {
       "name": "NIV LEK",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/nivlek.png"
+      "image": "./characters_img/nivlek.jpeg"
     }
   ],
   "links": [
