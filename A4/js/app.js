@@ -53,6 +53,7 @@ class node {
     this.name = name.toLowerCase();
     this.value = value.toLowerCase();
     this.colour = colour;
+    this.image = image;
   }
 }
 
@@ -113,7 +114,7 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
   const width = contentDiv.clientWidth;
   const height = contentDiv.clientHeight;
 
-  const NODERADIUS = 12;
+  const NODERADIUS = 30;
 
   let data = EPISODES[index];
 
@@ -137,7 +138,7 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
     force = -40;
     scale = 0.6;
   } else {
-    force = -300;
+    force = -400;
   }
 
   resetHiglight();
@@ -173,7 +174,24 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
   async function ticked(id, theLinks, theNodes, nodeColor) {
     updateLinks(id, theNodes, theLinks);
     updateNodes(id, theNodes, nodeColor);
-    // initZoom(id);
+    updateClipPaths(id, theNodes); // Add this line to update clip path positions
+  }
+
+  async function updateClipPaths(id, theNodes) {
+    let svg = d3.select(id);
+
+    // Update clip path positions based on node positions
+    svg
+      .selectAll(".node-group")
+      .data(theNodes)
+      .select("clipPath")
+      .select("circle")
+      .attr("cx", function (d) {
+        return d.x;
+      })
+      .attr("cy", function (d) {
+        return d.y;
+      });
   }
 
   async function updateLinks(id, theNodes, theLinks) {
@@ -272,7 +290,7 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
         return d.x;
       })
       .attr("y", function (d) {
-        return d.y;
+        return d.y + 30;
       })
       .attr("dy", "0.35em")
       .attr("text-anchor", "middle")
