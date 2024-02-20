@@ -4,229 +4,229 @@
       "name": "R2-D2",
       "value": 33,
       "colour": "#bde0f6",
-      "image": "./characters_img/r2d2.jpeg"
+      "image": "./characters_img/r2d2.png"
     },
     {
       "name": "QUI-GON",
       "value": 61,
       "colour": "#4f4fb1",
-      "image": "./characters_img/quigonjin.jpeg"
+      "image": "./characters_img/quigonjin.png"
     },
     {
       "name": "NUTE GUNRAY",
       "value": 19,
       "colour": "#808080",
-      "image": "./characters_img/nutegunray.jpeg"
+      "image": "./characters_img/nutegunray.png"
     },
     {
       "name": "PK-4",
       "value": 3,
       "colour": "#808080",
-      "image": "./characters_img/pk4.jpeg"
+      "image": "./characters_img/pk4.png"
     },
     {
       "name": "TC-14",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/tc14.jpeg"
+      "image": "./characters_img/tc14.png"
     },
     {
       "name": "OBI-WAN",
       "value": 34,
       "colour": "#48D1CC",
-      "image": "./characters_img/obiwankenobi.jpeg"
+      "image": "./characters_img/obiwankenobi.png"
     },
     {
       "name": "DOFINE",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/dofine.jpeg"
+      "image": "./characters_img/dofine.png"
     },
     {
       "name": "RUNE",
       "value": 11,
       "colour": "#808080",
-      "image": "./characters_img/rune.jpeg"
+      "image": "./characters_img/rune.png"
     },
     {
       "name": "TEY HOW",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/teyhow.jpeg"
+      "image": "./characters_img/teyhow.png"
     },
     {
       "name": "EMPEROR",
       "value": 14,
       "colour": "#191970",
-      "image": "./characters_img/emperor.jpeg"
+      "image": "./characters_img/emperor.png"
     },
     {
       "name": "CAPTAIN PANAKA",
       "value": 20,
       "colour": "#808080",
-      "image": "./characters_img/captainpanaka.jpeg"
+      "image": "./characters_img/captainpanaka.png"
     },
     {
       "name": "SIO BIBBLE",
       "value": 8,
       "colour": "#808080",
-      "image": "./characters_img/siobibble.jpeg"
+      "image": "./characters_img/siobibble.png"
     },
     {
       "name": "JAR JAR",
       "value": 36,
       "colour": "#9a9a00",
-      "image": "./characters_img/jarjar.jpeg"
+      "image": "./characters_img/jarjar.png"
     },
     {
       "name": "TARPALS",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/tarpals.jpeg"
+      "image": "./characters_img/tarpals.png"
     },
     {
       "name": "BOSS NASS",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/bossnass.jpeg"
+      "image": "./characters_img/bossnass.png"
     },
     {
       "name": "PADME",
       "value": 31,
       "colour": "#DDA0DD",
-      "image": "./characters_img/padme.jpeg"
+      "image": "./characters_img/padme.png"
     },
     {
       "name": "RIC OLIE",
       "value": 12,
       "colour": "#808080",
-      "image": "./characters_img/ricolie.jpeg"
+      "image": "./characters_img/ricolie.png"
     },
     {
       "name": "WATTO",
       "value": 8,
       "colour": "#808080",
-      "image": "./characters_img/watto.jpeg"
+      "image": "./characters_img/watto.png"
     },
     {
       "name": "ANAKIN",
       "value": 41,
       "colour": "#ce3b59",
-      "image": "./characters_img/anakin.jpeg"
+      "image": "./characters_img/anakin.png"
     },
     {
       "name": "SEBULBA",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/sebulba.jpeg"
+      "image": "./characters_img/sebulba.png"
     },
     {
       "name": "JIRA",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/jira.jpeg"
+      "image": "./characters_img/jira.png"
     },
     {
       "name": "SHMI",
       "value": 11,
       "colour": "#808080",
-      "image": "./characters_img/shmi.jpeg"
+      "image": "./characters_img/shmi.png"
     },
     {
       "name": "C-3PO",
       "value": 6,
       "colour": "#FFD700",
-      "image": "./characters_img/c3po.jpeg"
+      "image": "./characters_img/c3po.png"
     },
     {
       "name": "DARTH MAUL",
       "value": 6,
       "colour": "#808080",
-      "image": "./characters_img/darthmaul.jpeg"
+      "image": "./characters_img/darthmaul.png"
     },
     {
       "name": "KITSTER",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/kitster.jpeg"
+      "image": "./characters_img/kitster.png"
     },
     {
       "name": "WALD",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/wald.jpeg"
+      "image": "./characters_img/wald.png"
     },
     {
       "name": "FODE/BEED",
       "value": 12,
       "colour": "#808080",
-      "image": "./characters_img/fodebeed.jpeg"
+      "image": "./characters_img/fodebeed.png"
     },
     {
       "name": "JABBA",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/jabba.jpeg"
+      "image": "./characters_img/jabba.png"
     },
     {
       "name": "GREEDO",
       "value": 3,
       "colour": "#808080",
-      "image": "./characters_img/greedo.jpeg"
+      "image": "./characters_img/greedo.png"
     },
     {
       "name": "VALORUM",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/valorum.jpeg"
+      "image": "./characters_img/valorum.png"
     },
     {
       "name": "MACE WINDU",
       "value": 6,
       "colour": "#808080",
-      "image": "./characters_img/macewindu.jpeg"
+      "image": "./characters_img/macewindu.png"
     },
     {
       "name": "KI-ADI-MUNDI",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/kiadimundi.jpeg"
+      "image": "./characters_img/kiadimundi.png"
     },
     {
       "name": "YODA",
       "value": 7,
       "colour": "#9ACD32",
-      "image": "./characters_img/yoda.jpeg"
+      "image": "./characters_img/yoda.png"
     },
     {
       "name": "RABE",
       "value": 3,
       "colour": "#808080",
-      "image": "./characters_img/rabe.jpeg"
+      "image": "./characters_img/rabe.png"
     },
     {
       "name": "BAIL ORGANA",
       "value": 3,
       "colour": "#808080",
-      "image": "./characters_img/bailorgana.jpeg"
+      "image": "./characters_img/bailorgana.png"
     },
     {
       "name": "GENERAL CEEL",
       "value": 5,
       "colour": "#808080",
-      "image": "./characters_img/generalceel.jpeg"
+      "image": "./characters_img/generalceel.png"
     },
     {
       "name": "BRAVO TWO",
       "value": 6,
       "colour": "#808080",
-      "image": "./characters_img/bravotwo.jpeg"
+      "image": "./characters_img/bravotwo.png"
     },
     {
       "name": "BRAVO THREE",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/bravothree.jpeg"
+      "image": "./characters_img/bravothree.png"
     }
   ],
   "links": [
