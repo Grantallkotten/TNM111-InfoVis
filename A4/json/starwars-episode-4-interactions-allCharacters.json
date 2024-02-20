@@ -4,133 +4,133 @@
       "name": "R2-D2",
       "value": 40,
       "colour": "#bde0f6",
-      "image": "./characters_img/r2d2.jpeg"
+      "image": "./characters_img/r2d2.png"
     },
     {
       "name": "CHEWBACCA",
       "value": 30,
       "colour": "#A0522D",
-      "image": "./characters_img/chewbacca.jpeg"
+      "image": "./characters_img/chewbacca.png"
     },
     {
       "name": "C-3PO",
       "value": 43,
       "colour": "#FFD700",
-      "image": "./characters_img/c3po.jpeg"
+      "image": "./characters_img/c3po.png"
     },
     {
       "name": "LUKE",
       "value": 89,
       "colour": "#3881e5",
-      "image": "./characters_img/luke.jpeg"
+      "image": "./characters_img/luke.png"
     },
     {
       "name": "DARTH VADER",
       "value": 26,
       "colour": "#000000",
-      "image": "./characters_img/darthvader.jpeg"
+      "image": "./characters_img/darthvader.png"
     },
     {
       "name": "CAMIE",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/camie.jpeg"
+      "image": "./characters_img/camie.png"
     },
     {
       "name": "BIGGS",
       "value": 19,
       "colour": "#808080",
-      "image": "./characters_img/biggs.jpeg"
+      "image": "./characters_img/biggs.png"
     },
     {
       "name": "LEIA",
       "value": 26,
       "colour": "#DCDCDC",
-      "image": "./characters_img/leia.jpeg"
+      "image": "./characters_img/leia.png"
     },
     {
       "name": "BERU",
       "value": 6,
       "colour": "#808080",
-      "image": "./characters_img/beru.jpeg"
+      "image": "./characters_img/beru.png"
     },
     {
       "name": "OWEN",
       "value": 7,
       "colour": "#808080",
-      "image": "./characters_img/owen.jpeg"
+      "image": "./characters_img/owen.png"
     },
     {
       "name": "OBI-WAN",
       "value": 23,
       "colour": "#48D1CC",
-      "image": "./characters_img/obiwankenobi.jpeg"
+      "image": "./characters_img/obiwankenobi.png"
     },
     {
       "name": "MOTTI",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/motti.jpeg"
+      "image": "./characters_img/motti.png"
     },
     {
       "name": "TARKIN",
       "value": 13,
       "colour": "#808080",
-      "image": "./characters_img/tarkin.jpeg"
+      "image": "./characters_img/tarkin.png"
     },
     {
       "name": "HAN",
       "value": 45,
       "colour": "#ff9400",
-      "image": "./characters_img/han.jpeg"
+      "image": "./characters_img/han.png"
     },
     {
       "name": "GREEDO",
       "value": 3,
       "colour": "#808080",
-      "image": "./characters_img/greedo.jpeg"
+      "image": "./characters_img/greedo.png"
     },
     {
       "name": "JABBA",
       "value": 3,
       "colour": "#808080",
-      "image": "./characters_img/jabba.jpeg"
+      "image": "./characters_img/jabba.png"
     },
     {
       "name": "DODONNA",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/dodonna.jpeg"
+      "image": "./characters_img/dodonna.png"
     },
     {
       "name": "GOLD LEADER",
       "value": 15,
       "colour": "#808080",
-      "image": "./characters_img/goldleader.jpeg"
+      "image": "./characters_img/goldleader.png"
     },
     {
       "name": "WEDGE",
       "value": 16,
       "colour": "#808080",
-      "image": "./characters_img/wedge.jpeg"
+      "image": "./characters_img/wedge.png"
     },
     {
       "name": "RED LEADER",
       "value": 34,
       "colour": "#808080",
-      "image": "./characters_img/redleader.jpeg"
+      "image": "./characters_img/redleader.png"
     },
     {
       "name": "RED TEN",
       "value": 9,
       "colour": "#808080",
-      "image": "./characters_img/redten.jpeg"
+      "image": "./characters_img/redten.png"
     },
     {
       "name": "GOLD FIVE",
       "value": 9,
       "colour": "#808080",
-      "image": "./characters_img/goldfive.jpeg"
+      "image": "./characters_img/goldfive.png"
     }
   ],
   "links": [

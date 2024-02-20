@@ -47,7 +47,7 @@ class SWdata {
 }
 
 class node {
-  constructor(name, value, colour) {
+  constructor(name, value, colour, image) {
     this.name = name.toLowerCase();
     this.value = value.toLowerCase();
     this.colour = colour;
@@ -173,23 +173,6 @@ async function simulateNodeSystem(id, index, nodeColor) {
   async function ticked(id, theLinks, theNodes, nodeColor) {
     updateLinks(id, theLinks);
     updateNodes(id, theNodes, nodeColor);
-    updateClipPaths(id, theNodes); // Add this line to update clip path positions
-  }
-
-  async function updateClipPaths(id, theNodes) {
-    let svg = d3.select(id);
-
-    // Update clip path positions based on node positions
-    svg.selectAll(".node-group")
-      .data(theNodes)
-      .select("clipPath")
-      .select("circle")
-      .attr("cx", function (d) {
-        return d.x;
-      })
-      .attr("cy", function (d) {
-        return d.y;
-      });
   }
 
   async function updateLinks(id, theLinks) {
@@ -215,21 +198,24 @@ async function simulateNodeSystem(id, index, nodeColor) {
 
   async function updateNodes(id, theNodes, nodeColor) {
     let fontSize = 12;
+    let borderWidth = 0; // Set the border thickness
 
     let svg = d3.select(id);
 
     // Update group elements
-    let nodeGroups = svg.selectAll(".node-group")
+    let nodeGroups = svg
+      .selectAll(".node-group")
       .data(theNodes)
       .join("g")
       .attr("class", "node-group")
       .on("click", onClick)
       .raise();
 
-    // Create a clipPath for each node
-    nodeGroups.append("clipPath")
-      .attr("id", d => "clip-" + d.name)
-      .append("circle")
+    // Update circle elements within the group
+    let circles = nodeGroups
+      .selectAll("circle")
+      .data((d) => [d])
+      .join("circle")
       .attr("cx", function (d) {
         return d.x;
       })
@@ -237,43 +223,31 @@ async function simulateNodeSystem(id, index, nodeColor) {
         return d.y;
       })
       .attr("r", function (d) {
-        return NODERADIUS;
-      });
+        return d.value;
+      })
+      .style("fill", function (d) {
+        return d.colour;
+      })
+      .style("stroke", function (d) {
+        return d.colour;
+      }) // Add stroke color if needed
+      .style("stroke-width", borderWidth); // Add stroke width if needed
 
     // Update image elements within the group
-    nodeGroups.selectAll("image")
-      .data(d => [d])
+    nodeGroups
+      .selectAll("image")
+      .data((d) => [d])
       .join("image")
+      .attr("width", function (d) { return Math.max(40, d.value * 2) })
+      .attr("height", function (d) { return Math.max(40, d.value * 2) })
       .attr("x", function (d) {
-        return d.x - NODERADIUS;
+        return d.x - Math.max(20, d.value);
       })
       .attr("y", function (d) {
-        return d.y - NODERADIUS;
+        return d.y - Math.max(20, d.value);
       })
-      .attr("width", 2 * NODERADIUS)
-      .attr("height", 2 * NODERADIUS)
-      .attr("xlink:href", d => d.image)
-      .attr("clip-path", d => "url(#clip-" + d.name + ")"); // Apply clip-path
-
-    // Create circular clip path for each node
-    nodeGroups.selectAll("clipPath")
-      .data(d => [d])
-      .join("clipPath")
-      .attr("id", d => "clip-" + d.name)
-      .append("circle")
-      .attr("r", function (d) {
-        return NODERADIUS;
-      });
-
-    // Update clip path positions based on node positions
-    nodeGroups.selectAll("clipPath")
-      .select("circle")
-      .attr("cx", function (d) {
-        return d.x;
-      })
-      .attr("cy", function (d) {
-        return d.y;
-      });
+      .attr("xlink:href", (d) => d.image)
+      .attr("clip-path", (d) => "url(#clip-" + d.name + ")"); // Apply clip-path
 
     // Update text elements within the group
     nodeGroups.selectAll("text")
@@ -289,12 +263,12 @@ async function simulateNodeSystem(id, index, nodeColor) {
         return d.x;
       })
       .attr("y", function (d) {
-        return d.y + 30;
+        return d.y + (d.value / 1.5);
       })
       .attr("dy", "0.35em")
       .attr("text-anchor", "middle")
       .text(function (d) {
-        return d.name.toLowerCase(); // Starwars font dont work for upper (defect in .ttf)
+        return d.name.toLowerCase();
       })
       .style("fill", function (d) {
         return d.colour;
@@ -438,3 +412,4 @@ function selectButtonInForm(formId, id) {
 }
 
 initSimulateNodeSystem(["#svg1", "#svg2"], BACKGROUNDCOLORS);
+
