@@ -3,107 +3,128 @@
     {
       "name": "R2-D2",
       "value": 30,
-      "colour": "#bde0f6"
+      "colour": "#bde0f6",
+      "image": "./characters_img/r2d2.jpeg"
     },
     {
       "name": "CHEWBACCA",
       "value": 46,
-      "colour": "#A0522D"
+      "colour": "#A0522D",
+      "image": "./characters_img/chewbacca.jpeg"
     },
     {
       "name": "LUKE",
       "value": 45,
-      "colour": "#3881e5"
+      "colour": "#3881e5",
+      "image": "./characters_img/luke.jpeg"
     },
     {
       "name": "HAN",
       "value": 51,
-      "colour": "#ff9400"
+      "colour": "#ff9400",
+      "image": "./characters_img/han.jpeg"
     },
     {
       "name": "RIEEKAN",
       "value": 8,
-      "colour": "#808080"
+      "colour": "#808080",
+      "image": "./characters_img/rieekan.jpeg"
     },
     {
       "name": "LEIA",
       "value": 46,
-      "colour": "#DCDCDC"
+      "colour": "#DCDCDC",
+      "image": "./characters_img/leia.jpeg"
     },
     {
       "name": "C-3PO",
       "value": 46,
-      "colour": "#FFD700"
+      "colour": "#FFD700",
+      "image": "./characters_img/c3po.jpeg"
     },
     {
       "name": "DERLIN",
       "value": 4,
-      "colour": "#808080"
+      "colour": "#808080",
+      "image": "./characters_img/derlin.jpeg"
     },
     {
       "name": "OBI-WAN",
       "value": 4,
-      "colour": "#48D1CC"
+      "colour": "#48D1CC",
+      "image": "./characters_img/obiwankenobi.jpeg"
     },
     {
       "name": "ZEV",
       "value": 7,
-      "colour": "#808080"
+      "colour": "#808080",
+      "image": "./characters_img/zev.jpeg"
     },
     {
       "name": "PIETT",
       "value": 10,
-      "colour": "#808080"
+      "colour": "#808080",
+      "image": "./characters_img/piett.jpeg"
     },
     {
       "name": "OZZEL",
       "value": 4,
-      "colour": "#808080"
+      "colour": "#808080",
+      "image": "./characters_img/ozzel.jpeg"
     },
     {
       "name": "DARTH VADER",
       "value": 21,
-      "colour": "#000000"
+      "colour": "#000000",
+      "image": "./characters_img/darthvader.jpeg"
     },
     {
       "name": "DACK",
       "value": 5,
-      "colour": "#808080"
+      "colour": "#808080",
+      "image": "./characters_img/dack.jpeg"
     },
     {
       "name": "WEDGE",
       "value": 9,
-      "colour": "#808080"
+      "colour": "#808080",
+      "image": "./characters_img/wedge.jpeg"
     },
     {
       "name": "JANSON",
       "value": 5,
-      "colour": "#808080"
+      "colour": "#808080",
+      "image": "./characters_img/janson.jpeg"
     },
     {
       "name": "NEEDA",
       "value": 4,
-      "colour": "#808080"
+      "colour": "#808080",
+      "image": "./characters_img/needa.jpeg"
     },
     {
       "name": "EMPEROR",
       "value": 3,
-      "colour": "#191970"
+      "colour": "#191970",
+      "image": "./characters_img/emperor.jpeg"
     },
     {
       "name": "YODA",
       "value": 7,
-      "colour": "#9ACD32"
+      "colour": "#9ACD32",
+      "image": "./characters_img/yoda.jpeg"
     },
     {
       "name": "BOBA FETT",
       "value": 6,
-      "colour": "#808080"
+      "colour": "#808080",
+      "image": "./characters_img/bobafett.jpeg"
     },
     {
       "name": "LANDO",
       "value": 23,
-      "colour": "#808080"
+      "colour": "#808080",
+      "image": "./characters_img/lando.jpeg"
     }
   ],
   "links": [

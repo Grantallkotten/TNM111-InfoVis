@@ -3,127 +3,152 @@
     {
       "name": "R2-D2",
       "value": 31,
-      "colour": "#bde0f6"
+      "colour": "#bde0f6",
+      "image": "./characters_img/r2d2.jpeg"
     },
     {
       "name": "ANAKIN",
       "value": 54,
-      "colour": "#ce3b59"
+      "colour": "#ce3b59",
+      "image": "./characters_img/anakin.jpeg"
     },
     {
       "name": "OBI-WAN",
       "value": 60,
-      "colour": "#48D1CC"
+      "colour": "#48D1CC",
+      "image": "./characters_img/obiwankenobi.jpeg"
     },
     {
       "name": "ODD BALL",
       "value": 5,
-      "colour": "#808080"
+      "colour": "#808080",
+      "image": "./characters_img/oddball.jpeg"
     },
     {
       "name": "GENERAL GRIEVOUS",
       "value": 13,
-      "colour": "#808080"
+      "colour": "#808080",
+      "image": "./characters_img/generalgriveous.jpeg"
     },
     {
       "name": "EMPEROR",
       "value": 25,
-      "colour": "#191970"
+      "colour": "#191970",
+      "image": "./characters_img/emperor.jpeg"
     },
     {
       "name": "COUNT DOOKU",
       "value": 3,
-      "colour": "#808080"
+      "colour": "#808080",
+      "image": "./characters_img/countdooku.jpeg"
     },
     {
       "name": "BAIL ORGANA",
       "value": 21,
-      "colour": "#808080"
+      "colour": "#808080",
+      "image": "./characters_img/bailorgana.jpeg"
     },
     {
       "name": "C-3PO",
       "value": 16,
-      "colour": "#FFD700"
+      "colour": "#FFD700",
+      "image": "./characters_img/c3po.jpeg"
     },
     {
       "name": "PADME",
       "value": 24,
-      "colour": "#DDA0DD"
+      "colour": "#DDA0DD",
+      "image": "./characters_img/padme.jpeg"
     },
     {
       "name": "YODA",
       "value": 24,
-      "colour": "#9ACD32"
+      "colour": "#9ACD32",
+      "image": "./characters_img/yoda.jpeg"
     },
     {
       "name": "FANG ZAR",
       "value": 4,
-      "colour": "#808080"
+      "colour": "#808080",
+      "image": "./characters_img/fangzar.jpeg"
     },
     {
       "name": "MON MOTHMA",
       "value": 4,
-      "colour": "#808080"
+      "colour": "#808080",
+      "image": "./characters_img/monmothma.jpeg"
     },
     {
       "name": "GIDDEAN DANU",
       "value": 3,
-      "colour": "#808080"
+      "colour": "#808080",
+      "image": "./characters_img/giddeandanu.jpeg"
     },
     {
       "name": "MACE WINDU",
       "value": 8,
-      "colour": "#808080"
+      "colour": "#808080",
+      "image": "./characters_img/macewindu.jpeg"
     },
     {
       "name": "CAPTAIN TYPHO",
       "value": 4,
-      "colour": "#808080"
+      "colour": "#808080",
+      "image": "./characters_img/captaintypho.jpeg"
     },
     {
       "name": "CLONE COMMANDER GREE",
       "value": 5,
-      "colour": "#808080"
+      "colour": "#808080",
+      "image": "./characters_img/clonecommandergree.jpeg"
     },
     {
       "name": "CLONE COMMANDER CODY",
       "value": 5,
-      "colour": "#808080"
+      "colour": "#808080",
+      "image": "./characters_img/clonecommandercody.jpeg"
     },
     {
       "name": "JAR JAR",
       "value": 3,
-      "colour": "#9a9a00"
+      "colour": "#9a9a00",
+      "image": "./characters_img/jarjar.jpeg"
     },
     {
       "name": "TION MEDON",
       "value": 4,
-      "colour": "#808080"
+      "colour": "#808080",
+      "image": "./characters_img/tionmedon.jpeg"
     },
     {
       "name": "NUTE GUNRAY",
       "value": 6,
-      "colour": "#808080"
+      "colour": "#808080",
+      "image": "./characters_img/nutegunray.jpeg"
     },
     {
       "name": "PLO KOON",
       "value": 3,
-      "colour": "#808080"
+      "colour": "#808080",
+      "image": "./characters_img/plokoon.jpeg"
     },
     {
       "name": "CAPTAIN ANTILLES",
       "value": 4,
-      "colour": "#808080"
+      "colour": "#808080",
+      "image": "./characters_img/antilles.jpeg"
     },
     {
       "name": "DARTH VADER",
       "value": 5,
-      "colour": "#000000"
+      "colour": "#000000",
+      "image": "./characters_img/darthvader.jpeg"
     },
     {
       "name": "QUI-GON",
       "value": 3,
-      "colour": "#4f4fb1"
+      "colour": "#4f4fb1",
+      "image": "./characters_img/quigonjin.jpeg"
     }
   ],
   "links": [
