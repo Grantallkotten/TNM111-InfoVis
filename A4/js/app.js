@@ -49,7 +49,7 @@ class SWdata {
 }
 
 class node {
-  constructor(name, value, colour) {
+  constructor(name, value, colour, image) {
     this.name = name.toLowerCase();
     this.value = value.toLowerCase();
     this.colour = colour;
@@ -68,6 +68,8 @@ class link {
 const BACKGROUNDCOLORS = ["#fff", "#fff"];
 const HIGHLIGHTCOLOR = "#FF1200";
 const HIGHLIGHTSHADOW = "0 0 10px rgba(255, 18, 43, 1)";
+const CONTEXTHEADER =
+  "<p style='text-align: center; margin: 0;'>Context table</p></br>";
 
 function initSimulateNodeSystem(ids) {
   const contentDiv = document.getElementById("content");
@@ -115,7 +117,10 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
   const height = contentDiv.clientHeight;
 
   const NODERADIUS = 30;
-  const PADDING = 0;
+  const MINNODERADIUS = 20;
+  const MAXNODERADIUS = 40;
+
+  const PADDING = 30;
 
   let data = EPISODES[index];
 
@@ -156,19 +161,16 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
     .force(
       "collision",
       d3.forceCollide().radius(function (d) {
-        return Math.max((NODERADIUS * d.value) / 80, NODERADIUS);
+        return Math.min(Math.max(20, d.value), 40) * 2 * scale;
       })
     )
     .on("tick", function () {
       nodes.forEach(function (d) {
         d.x = Math.max(
-          NODERADIUS + PADDING,
+          NODERADIUS - PADDING,
           Math.min(width / 2 - NODERADIUS - PADDING, d.x)
         ); // Ensure x is within left and right bounds
-        d.y = Math.max(
-          NODERADIUS + PADDING,
-          Math.min(height - NODERADIUS - PADDING, d.y)
-        ); // Ensure y is within top and bottom bounds
+        d.y = Math.max(NODERADIUS - PADDING, Math.min(height - NODERADIUS - PADDING, d.y)); // Ensure y is within top and bottom bounds
       });
 
       // Call ticked function
@@ -246,6 +248,7 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
   async function updateNodes(id, theNodes, nodeColor) {
     let fontSize = 12;
 
+
     let svg = d3.select(id);
 
     // Update circle elements
@@ -264,13 +267,37 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
         return d.y;
       })
       .attr("r", function (d) {
-        return Math.max(
-          ((NODERADIUS * d.value) / 120) * scale,
-          NODERADIUS * scale
-        ); // Default radius if not provided
+        return Math.min(Math.max(MINNODERADIUS, d.value), 40); // Default radius if not provided
       })
       .style("fill", function (d) {
         return nodeColor;
+      });
+
+    // Update image elements
+    svg
+      .selectAll("image")
+      .data(
+        theNodes.filter(function (d) {
+          return d.value >= valMin && d.value <= valMax;
+        })
+      )
+      .join("image")
+      .attr("text-name", function (d) {
+        return d.name;
+      })
+      .attr("conversations", function (d) {
+        return d.value;
+      })
+      .attr("xlink:href", function (d) {
+        return d.image; // Provide the image URL from your data
+      })
+      .attr("width", function (d) { return Math.min(Math.max(MINNODERADIUS * 2, d.value * 2), MAXNODERADIUS * 2) })
+      .attr("height", function (d) { return Math.min(Math.max(MINNODERADIUS * 2, d.value * 2), MAXNODERADIUS * 2) })
+      .attr("x", function (d) {
+        return d.x - Math.min(Math.max(MINNODERADIUS * 2, d.value * 2), MAXNODERADIUS * 2) / 2;
+      })
+      .attr("y", function (d) {
+        return d.y - Math.min(Math.max(MINNODERADIUS * 2, d.value * 2), MAXNODERADIUS * 2) / 2;
       })
       .raise();
 
@@ -289,11 +316,14 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
       .attr("conversations", function (d) {
         return d.value;
       })
+      .attr("img-href", function (d) {
+        return d.image; // Provide the image URL from your data
+      })
       .attr("x", function (d) {
         return d.x;
       })
       .attr("y", function (d) {
-        return d.y + 30;
+        return d.y + 5 + Math.min(Math.max(MINNODERADIUS, d.value), MAXNODERADIUS);
       })
       .attr("dy", "0.35em")
       .attr("text-anchor", "middle")
@@ -345,7 +375,7 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
         return d.colour;
       });
 
-    d3.selectAll(".context").html("");
+    d3.selectAll(".context").html(CONTEXTHEADER);
   }
 
   function onClickLink() {
@@ -359,6 +389,7 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
     const target = d3.select(this).attr("target");
     const value = d3.select(this).attr("value");
 
+
     let svg = d3.select(id);
 
     const sourceNode = svg.select(`text[text-name="${source}"]`);
@@ -368,21 +399,28 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
         return HIGHLIGHTCOLOR;
       });
 
-    const targeteNode = svg.select(`text[text-name="${target}"]`);
-    targeteNode
+    const targetNode = svg.select(`text[text-name="${target}"]`);
+    targetNode
       .style("text-shadow", HIGHLIGHTSHADOW)
       .style("fill", function (d) {
         return HIGHLIGHTCOLOR;
       });
 
+    const imgHrefSource = sourceNode.attr("img-href");
+    const imgHrefTarget = targetNode.attr("img-href");
+
     const context = d3.select(id + "-context");
+
     context.html(
+      CONTEXTHEADER +
       source.toLowerCase() +
-        " and " +
-        target.toLowerCase() +
-        "<br/>" +
-        "Conversations: " +
-        value
+      " and " +
+      target.toLowerCase() +
+      "<br/>" +
+      "Conversations: " +
+      value +
+      " <br/><img src='" + imgHrefSource + "' class='context-href'>" +
+      " <img src='" + imgHrefTarget + "' class='context-href'>"
     );
   }
 
@@ -399,6 +437,7 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
       });
     const name = d3.select(this).attr("text-name");
     const conversations = d3.select(this).attr("conversations");
+    const imgHref = d3.select(this).attr("img-href");
 
     let id2 = "#svg2";
 
@@ -411,11 +450,12 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
     context.html("");
 
     context.html(
+      CONTEXTHEADER +
       "Name: " +
-        name.toLowerCase() +
-        "<br/>" +
-        "Conversations: " +
-        conversations
+      name.toLowerCase() +
+      "<br/>" +
+      "Conversations: " +
+      conversations + " <br/><img src='" + imgHref + "' class='context-href'>"
     );
   }
 
@@ -441,13 +481,15 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
 
     if (matching.node()) {
       const conversations = d3.select(matching.node()).attr("conversations");
+      const imgHref = d3.select(matching.node()).attr("img-href");
 
       context.html(
+        CONTEXTHEADER +
         "Name: " +
-          name.toLowerCase() +
-          "<br/>" +
-          "Conversations: " +
-          conversations
+        name.toLowerCase() +
+        "<br/>" +
+        "Conversations: " +
+        conversations + " <br/><img src='" + imgHref + "' class='context-href'>"
       );
     }
   }

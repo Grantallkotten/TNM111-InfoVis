@@ -111,3 +111,8 @@ h1 {
   font-size: 4rem;
   margin: 0;
 }
+
+.context-href {
+  width: 200px;
+  height: 200px;
+}

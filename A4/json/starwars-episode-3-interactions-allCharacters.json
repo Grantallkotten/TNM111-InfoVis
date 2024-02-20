@@ -28,7 +28,7 @@
       "name": "GENERAL GRIEVOUS",
       "value": 13,
       "colour": "#808080",
-      "image": "./characters_img/generalgriveous.png"
+      "image": "./characters_img/generalgrievous.png"
     },
     {
       "name": "EMPEROR",
@@ -136,7 +136,7 @@
       "name": "CAPTAIN ANTILLES",
       "value": 4,
       "colour": "#808080",
-      "image": "./characters_img/antilles.png"
+      "image": "./characters_img/captainantilles.png"
     },
     {
       "name": "DARTH VADER",
