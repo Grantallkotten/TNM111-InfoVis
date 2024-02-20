@@ -51,6 +51,7 @@ class node {
     this.name = name.toLowerCase();
     this.value = value.toLowerCase();
     this.colour = colour;
+    this.image = image;
   }
 }
 
@@ -201,10 +202,31 @@ async function simulateNodeSystem(id, index, nodeColor) {
 
     let svg = d3.select(id);
 
-    // Update circle elements
-    svg
-      .selectAll("circle")
+    // Update group elements
+    let nodeGroups = svg.selectAll(".node-group")
       .data(theNodes)
+      .join("g")
+      .attr("class", "node-group")
+      .on("click", onClick)
+      .raise();
+
+    // Create a clipPath for each node
+    nodeGroups.append("clipPath")
+      .attr("id", d => "clip-" + d.name)
+      .append("circle")
+      .attr("cx", function (d) {
+        return d.x;
+      })
+      .attr("cy", function (d) {
+        return d.y;
+      })
+      .attr("r", function (d) {
+        return Math.max((NODERADIUS * d.value) / 120, NODERADIUS);
+      });
+
+    // Update circle elements within the group
+    nodeGroups.selectAll("circle")
+      .data(d => [d])
       .join("circle")
       .attr("cx", function (d) {
         return d.x;
@@ -213,17 +235,30 @@ async function simulateNodeSystem(id, index, nodeColor) {
         return d.y;
       })
       .attr("r", function (d) {
-        return Math.max((NODERADIUS * d.value) / 120, NODERADIUS); // Default radius if not provided
+        return Math.max((NODERADIUS * d.value) / 120, NODERADIUS);
       })
       .style("fill", function (d) {
         return nodeColor;
-      })
-      .raise();
+      });
 
-    // Update text elements
-    svg
-      .selectAll("text")
-      .data(theNodes)
+    // Update image elements within the group
+    nodeGroups.selectAll("image")
+      .data(d => [d])
+      .join("image")
+      .attr("x", function (d) {
+        return d.x - NODERADIUS;
+      })
+      .attr("y", function (d) {
+        return d.y - NODERADIUS;
+      })
+      .attr("width", 2 * NODERADIUS)
+      .attr("height", 2 * NODERADIUS)
+      .attr("xlink:href", d => d.image)
+      .attr("clip-path", d => "url(#clip-" + d.name + ")");
+
+    // Update text elements within the group
+    nodeGroups.selectAll("text")
+      .data(d => [d])
       .join("text")
       .attr("text-name", function (d) {
         return d.name;
@@ -248,7 +283,6 @@ async function simulateNodeSystem(id, index, nodeColor) {
       .attr("font-size", function (d) {
         return Math.max((fontSize * d.value) / 60, fontSize);
       })
-      .on("click", onClick) // onClick is function
       .raise();
   }
 
