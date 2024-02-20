@@ -36,8 +36,6 @@ function fillSlider(from, to, sliderColor, rangeColor, controlSlider) {
       ${sliderColor} 100%)`;
 }
 
-const nrOfSliders = 2;
-
 export function initSliders(ids, range) {
   for (let i = 0; i < ids.length; i++) {
     let id = ids[i];
@@ -46,13 +44,17 @@ export function initSliders(ids, range) {
 
     creatSlider(id, min, max);
 
-    const fromSlider = document.querySelector(id + "-fromSlider");
-    const toSlider = document.querySelector(id + "-toSlider");
-    fillSlider(fromSlider, toSlider, "#C6C6C6", "#25daa5", toSlider);
-
-    fromSlider.oninput = () => controlFromSlider(fromSlider, toSlider);
-    toSlider.oninput = () => controlToSlider(fromSlider, toSlider);
+    runSlider(id);
   }
+}
+
+export function runSlider(id) {
+  const fromSlider = document.querySelector(id + "-fromSlider");
+  const toSlider = document.querySelector(id + "-toSlider");
+  fillSlider(fromSlider, toSlider, "#C6C6C6", "#25daa5", toSlider);
+
+  fromSlider.oninput = () => controlFromSlider(fromSlider, toSlider);
+  toSlider.oninput = () => controlToSlider(fromSlider, toSlider);
 }
 
 function creatSlider(id, min, max) {

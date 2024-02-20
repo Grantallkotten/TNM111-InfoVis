@@ -115,6 +115,7 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
   const height = contentDiv.clientHeight;
 
   const NODERADIUS = 30;
+  const PADDING = 0;
 
   let data = EPISODES[index];
 
@@ -135,7 +136,7 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
   let force = 0;
   let scale = 1;
   if (nodes.length > 100) {
-    force = -40;
+    force = -100;
     scale = 0.6;
   } else {
     force = -400;
@@ -161,10 +162,13 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
     .on("tick", function () {
       nodes.forEach(function (d) {
         d.x = Math.max(
-          6 * NODERADIUS,
-          Math.min(width / 2 - 6 * NODERADIUS, d.x)
+          NODERADIUS + PADDING,
+          Math.min(width / 2 - NODERADIUS - PADDING, d.x)
         ); // Ensure x is within left and right bounds
-        d.y = Math.max(NODERADIUS, Math.min(height - 3 * NODERADIUS, d.y)); // Ensure y is within top and bottom bounds
+        d.y = Math.max(
+          NODERADIUS + PADDING,
+          Math.min(height - NODERADIUS - PADDING, d.y)
+        ); // Ensure y is within top and bottom bounds
       });
 
       // Call ticked function
@@ -203,7 +207,6 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
         theLinks.filter(function (d) {
           const nodeTarget = theNodes.find((n) => n.name === d.target.name);
           const nodeSource = theNodes.find((n) => n.name === d.source.name);
-
           return (
             nodeTarget.value >= valMin &&
             nodeTarget.value <= valMax &&
@@ -502,7 +505,6 @@ function changeEpisode(form) {
   let checkedEpisodes1 = [];
   let checkedEpisodes2 = [];
 
-  console.log(form);
   switch (form) {
     case 1:
       episodeForm1.selectAll("input").each(function () {
@@ -511,7 +513,13 @@ function changeEpisode(form) {
           checkedEpisodes1.push(parseInt(checkedBox.property("value")));
         }
       });
-      simulateNodeSystem("#svg1", checkedEpisodes1[0], BACKGROUNDCOLORS[0]);
+      simulateNodeSystem(
+        "#svg1",
+        checkedEpisodes1[0],
+        BACKGROUNDCOLORS[0],
+        -Infinity,
+        Infinity
+      );
       break;
     case 2:
       episodeForm2.selectAll("input").each(function () {
@@ -520,7 +528,13 @@ function changeEpisode(form) {
           checkedEpisodes2.push(parseInt(checkedBox.property("value")));
         }
       });
-      simulateNodeSystem("#svg2", checkedEpisodes2[0], BACKGROUNDCOLORS[1]);
+      simulateNodeSystem(
+        "#svg2",
+        checkedEpisodes2[0],
+        BACKGROUNDCOLORS[1],
+        -Infinity,
+        Infinity
+      );
       break;
     default:
   }
