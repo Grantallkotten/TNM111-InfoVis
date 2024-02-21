@@ -37,7 +37,7 @@ section {
   border-radius: var(--border-radius);
 
   display: flex;
-  height: 16vh;
+  height: 18vh;
 }
 
 #content-headers {
