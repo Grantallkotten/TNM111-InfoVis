@@ -1,4 +1,5 @@
 import { initSliders } from "./rangeSlider.js";
+import { changeSliderRange } from "./rangeSlider.js";
 
 const urls = [
   "./json/starwars-full-interactions-allCharacters.json",
@@ -250,7 +251,7 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
 
   async function updateNodes(id, theNodes, nodeColor) {
     let fontSize = 12;
-
+    let maxValInData = 0;
     let svg = d3.select(id);
 
     // Update circle elements
@@ -258,6 +259,7 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
       .selectAll("circle")
       .data(
         theNodes.filter(function (d) {
+          maxValInData = Math.max(maxValInData, d.value);
           return d.value >= valMin && d.value <= valMax;
         })
       )
@@ -274,6 +276,8 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
       .style("fill", function (d) {
         return nodeColor;
       });
+
+    changeSliderRange(id, 0, maxValInData + 1);
 
     // Update image elements
     svg

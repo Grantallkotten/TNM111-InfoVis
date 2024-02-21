@@ -65,11 +65,39 @@ export function runSlider(id) {
 
 function updateSliderValues(fromSlider, toSlider) {
   const valueDiv = fromSlider.parentElement.nextElementSibling;
-  const [from, to] = getParsed(fromSlider, toSlider);
+  const from = parseInt(fromSlider.value);
+  const to = parseInt(toSlider.value);
   const beforeFromSlider = valueDiv.children[0];
   const afterFromSlider = valueDiv.children[1];
   beforeFromSlider.textContent = from;
   afterFromSlider.textContent = to;
+}
+
+export function changeSliderRange(id, min, max) {
+  const fromSlider = document.querySelector(id + "-fromSlider");
+  const toSlider = document.querySelector(id + "-toSlider");
+
+  // Update the attributes of the sliders
+  fromSlider.setAttribute("min", min);
+  fromSlider.setAttribute("max", max);
+  fromSlider.setAttribute("value", min);
+
+  toSlider.setAttribute("min", min);
+  toSlider.setAttribute("max", max);
+  toSlider.setAttribute("value", max);
+
+  // Update the text content of the before and after sliders
+  const valueDiv = fromSlider.parentElement.nextElementSibling;
+  const beforeFromSlider = valueDiv.children[0];
+  const afterFromSlider = valueDiv.children[1];
+  beforeFromSlider.textContent = min;
+  afterFromSlider.textContent = max;
+
+  // Update the slider appearance
+  fillSlider(fromSlider, toSlider, "#C6C6C6", "#25daa5", toSlider);
+
+  // Call updateSliderValues to ensure the text content is updated
+  updateSliderValues(fromSlider, toSlider);
 }
 
 function creatSlider(id, min, max) {
