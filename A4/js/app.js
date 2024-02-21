@@ -71,6 +71,8 @@ const HIGHLIGHTCOLOR = "#FF1200";
 const HIGHLIGHTSHADOW = "0 0 10px rgba(255, 18, 43, 1)";
 const CONTEXTHEADER = "<p class='contex-header'>Context table</p>";
 const LINKSIZE = 2;
+const LINECOLOR = "#BDB7B7";
+const LINEHIGLIGHT = "#00D679";
 
 function initSimulateNodeSystem(ids) {
   const contentDiv = document.getElementById("content");
@@ -105,8 +107,8 @@ function initSimulateNodeSystem(ids) {
   simulateNodeSystem("#svg2", [2], BACKGROUNDCOLORS[1], -Infinity, Infinity);
 }
 
-let selectedNode1;
 let selectedNode2;
+let selectedNode1;
 
 async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
   let EPISODES = await loadEp();
@@ -184,7 +186,7 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
   async function ticked(id, theLinks, theNodes, nodeColor) {
     updateLinks(id, theNodes, theLinks);
     updateNodes(id, theNodes, nodeColor);
-    updateClipPaths(id, theNodes); // Add this line to update clip path positions
+    // updateClipPaths(id, theNodes);
   }
 
   async function updateClipPaths(id, theNodes) {
@@ -204,7 +206,7 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
       });
   }
 
-  async function updateLinks(id, theNodes, theLinks) {
+  async function updateLinks(id, theNodes, theLinks, selectedName = "") {
     let svg = d3.select(id);
 
     svg
@@ -221,6 +223,7 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
           );
         })
       )
+
       .join("line")
       .attr("x1", function (d) {
         return d.source.x;
@@ -244,7 +247,16 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
         return d.value;
       })
       .style("stroke-width", Math.max(LINKSIZE * scale, 1) + "px")
-      .style("stroke", "")
+      .style("stroke", function (d) {
+        if (selectedName != "") {
+          if (d.source.name == selectedName || d.target.name == selectedName) {
+            return LINEHIGLIGHT;
+          }
+          return "rgba(189, 183, 183, 0.24)";
+        } else {
+          return LINECOLOR;
+        }
+      })
 
       .on("click", onClickLink);
   }
@@ -475,6 +487,8 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
     const conversations = d3.select(this).attr("conversations");
     const imgHref = d3.select(this).attr("img-href");
 
+    updateLinks(id, nodes, links, name);
+
     let id2 = "#svg2";
 
     if (id == "#svg2") {
@@ -514,11 +528,17 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
     });
     selectedNode2 = matching.node();
 
-    // @TODO
     const context = d3.select(id + "-context");
     context.html(CONTEXTHEADER);
 
     if (matching.node()) {
+      updateLinks(
+        id,
+        svg.selectAll("circle").data(),
+        svg.selectAll("line").data(),
+        name
+      );
+
       const conversations = d3.select(matching.node()).attr("conversations");
       const imgHref = d3.select(matching.node()).attr("img-href");
 
