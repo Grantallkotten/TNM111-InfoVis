@@ -378,7 +378,7 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
         return d.colour;
       })
       .attr("font-size", function (d) {
-        return Math.max(((fontSize * d.value) / 60) * scale, fontSize * scale);
+        return Math.max(((fontSize * d.value) / 60) * scale, fontSize);
       })
       .on("click", onClickNode)
       .on("mouseover", function () {
