@@ -168,11 +168,11 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
     .on("tick", function () {
       nodes.forEach(function (d) {
         d.x = Math.max(
-          NODERADIUS - PADDING,
+          2 * NODERADIUS - PADDING,
           Math.min(width / 2 - NODERADIUS - PADDING, d.x)
         ); // Ensure x is within left and right bounds
         d.y = Math.max(
-          NODERADIUS - PADDING,
+          2 * NODERADIUS - PADDING,
           Math.min(height - NODERADIUS - PADDING, d.y)
         ); // Ensure y is within top and bottom bounds
       });
