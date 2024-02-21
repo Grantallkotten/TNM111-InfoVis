@@ -516,7 +516,7 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
 
     // @TODO
     const context = d3.select(id + "-context");
-    context.html("");
+    context.html(CONTEXTHEADER);
 
     if (matching.node()) {
       const conversations = d3.select(matching.node()).attr("conversations");
