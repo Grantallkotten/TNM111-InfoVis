@@ -69,6 +69,7 @@ const BACKGROUNDCOLORS = ["#fff", "#fff"];
 const HIGHLIGHTCOLOR = "#FF1200";
 const HIGHLIGHTSHADOW = "0 0 10px rgba(255, 18, 43, 1)";
 const CONTEXTHEADER = "<p class='contex-header'>Context table</p>";
+const LINKSIZE = 2;
 
 function initSimulateNodeSystem(ids) {
   const contentDiv = document.getElementById("content");
@@ -241,7 +242,7 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
       .attr("value", function (d) {
         return d.value;
       })
-      .style("stroke-width", "3px")
+      .style("stroke-width", Math.max(LINKSIZE * scale, 1) + "px")
       .style("stroke", "")
 
       .on("click", onClickLink);
@@ -452,7 +453,10 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
         "' class='context-href'>" +
         " <img src='" +
         imgHrefTarget +
-        "' class='context-href'></div>"
+        "' class='context-href'></div>" +
+        "<table border='0' style=''> <tr> <td>Conversations</td> <td>" +
+        value +
+        "</td> </tr> <tr> <td>Row 2, Column 1</td> <td>Row 2, Column 2</td></tr> </table>"
     );
   }
 

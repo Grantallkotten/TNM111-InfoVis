@@ -16,7 +16,6 @@
   --bg-color: #ffffff;
   --border-radius: 8px;
   --p-color: #2b2c30;
-  /* font-family: "Star Wars", sans-serif; */
   font-family: "STARWARS", sans-serif;
 }
 
@@ -38,7 +37,7 @@ section {
   border-radius: var(--border-radius);
 
   display: flex;
-  height: 8vh;
+  height: 16vh;
 }
 
 #content-headers {
@@ -59,7 +58,6 @@ section {
   margin: 0.1vh;
   width: max;
   height: 85vh;
-  /* box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3); */
   display: flex;
   border-radius: var(--border-radius);
 }
@@ -89,7 +87,6 @@ section {
 .form {
   width: 80%;
   background-color: var(--bg-color);
-  /* box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3); */
   border-radius: var(--border-radius);
   padding: 2vw;
   height: 41vh;

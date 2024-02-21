@@ -53,8 +53,23 @@ export function runSlider(id) {
   const toSlider = document.querySelector(id + "-toSlider");
   fillSlider(fromSlider, toSlider, "#C6C6C6", "#25daa5", toSlider);
 
-  fromSlider.oninput = () => controlFromSlider(fromSlider, toSlider);
-  toSlider.oninput = () => controlToSlider(fromSlider, toSlider);
+  fromSlider.oninput = () => {
+    controlFromSlider(fromSlider, toSlider);
+    updateSliderValues(fromSlider, toSlider);
+  };
+  toSlider.oninput = () => {
+    controlToSlider(fromSlider, toSlider);
+    updateSliderValues(fromSlider, toSlider);
+  };
+}
+
+function updateSliderValues(fromSlider, toSlider) {
+  const valueDiv = fromSlider.parentElement.nextElementSibling;
+  const [from, to] = getParsed(fromSlider, toSlider);
+  const beforeFromSlider = valueDiv.children[0];
+  const afterFromSlider = valueDiv.children[1];
+  beforeFromSlider.textContent = from;
+  afterFromSlider.textContent = to;
 }
 
 function creatSlider(id, min, max) {
@@ -63,6 +78,13 @@ function creatSlider(id, min, max) {
   // Create the range container div
   const rangeContainer = document.createElement("div");
   rangeContainer.classList.add("rangeContainer");
+
+  const rangeHeader = document.createElement("div");
+  rangeHeader.textContent = "Number of conversations";
+  rangeContainer.classList.add("rangeHeader");
+
+  const content = document.createElement("div");
+  content.style.paddingTop = "1rem";
 
   // Create the sliders control div
   const slidersControl = document.createElement("div");
@@ -88,8 +110,31 @@ function creatSlider(id, min, max) {
   slidersControl.appendChild(fromSlider);
   slidersControl.appendChild(toSlider);
 
+  // Create the valueDiv container
+  const valueDiv = document.createElement("div");
+  valueDiv.style.display = "flex";
+  valueDiv.style.width = "100%"; // Ensure it takes full width
+  valueDiv.style.justifyContent = "space-between"; // Distribute items evenly
+
+  // Create the <p> elements for before and after the fromSlider
+  const beforeFromSlider = document.createElement("p");
+  beforeFromSlider.textContent = min;
+
+  const afterFromSlider = document.createElement("p");
+  afterFromSlider.textContent = max;
+
+  // Append the <p> elements to the valueDiv
+  valueDiv.appendChild(beforeFromSlider);
+  valueDiv.appendChild(afterFromSlider);
+
   // Append the sliders control div to the range container div
-  rangeContainer.appendChild(slidersControl);
+  content.appendChild(slidersControl);
+
+  // Append the valueDiv to the range container div
+  content.appendChild(valueDiv);
+
+  rangeContainer.appendChild(rangeHeader);
+  rangeContainer.appendChild(content);
 
   // Get the ranges div and append the range container div
   const rangesDiv = document.querySelector(".ranges");
