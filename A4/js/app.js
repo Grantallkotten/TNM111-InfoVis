@@ -257,8 +257,8 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
           return LINECOLOR;
         }
       })
-
-      .on("click", onClickLink);
+      .on("click", onClickLink)
+      .lower();
   }
 
   async function updateNodes(id, theNodes, nodeColor) {
