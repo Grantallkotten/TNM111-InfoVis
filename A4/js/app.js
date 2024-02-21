@@ -372,7 +372,7 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
           .attr("font-size", function (d) {
             return Math.max(
               ((fontSize * d.value) / 30) * scale,
-              fontSize * scale * 2
+              fontSize * scale * 1.5
             );
           });
       })
@@ -440,23 +440,19 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
 
     context.html(
       CONTEXTHEADER +
-        "<p>" +
+        "<table border='0' style=''> <tr> <td class='left-align'>Names:    </td> <td>" +
         source +
         " and " +
         target +
-        "</p>" +
-        "<p> Conversations: " +
+        "</td> </tr> <tr> <td class='left-align'>Conversations:    </td> <td>" +
         value +
-        "</p>" +
-        "<div style='display: flex; width: 100%; red; justify-content: center; align-items: center; height: fit-content;'><img src='" +
+        "</td></tr> </table>" +
+        "<div style='margin-top: 3vh; display: flex; width: 100%; red; justify-content: center; align-items: center; height: fit-content;'><img src='" +
         imgHrefSource +
         "' class='context-href'>" +
         " <img src='" +
         imgHrefTarget +
-        "' class='context-href'></div>" +
-        "<table border='0' style=''> <tr> <td>Conversations</td> <td>" +
-        value +
-        "</td> </tr> <tr> <td>Row 2, Column 1</td> <td>Row 2, Column 2</td></tr> </table>"
+        "' class='context-href'></div>"
     );
   }
 
@@ -487,15 +483,12 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
 
     context.html(
       CONTEXTHEADER +
-        "<p>" +
-        "Name: " +
+        "<table border='0' style=''> <tr> <td class='left-align'>Name:    </td> <td>" +
         name +
-        "</p>" +
-        "<p>" +
-        "Conversations: " +
+        "</td> </tr> <tr> <td class='left-align'>Conversations:    </td> <td>" +
         conversations +
-        "</p>" +
-        "<div style='display: flex; width: 100%; red; justify-content: center; align-items: center; height: fit-content;'><img src='" +
+        "</td></tr> </table>" +
+        "<div style='margin-top: 3vh; display: flex; width: 100%; red; justify-content: center; align-items: center; height: fit-content;'><img src='" +
         imgHref +
         "' class='context-href'>"
     );
@@ -527,15 +520,12 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
 
       context.html(
         CONTEXTHEADER +
-          "<p>" +
-          "Name: " +
+          "<table border='0' style=''> <tr> <td class='left-align'>Name:    </td> <td>" +
           name +
-          "</p>" +
-          "<p>" +
-          "Conversations: " +
+          "</td> </tr> <tr> <td class='left-align'>Conversations:    </td> <td>" +
           conversations +
-          "</p>" +
-          "<div style='display: flex; width: 100%; red; justify-content: center; align-items: center; height: fit-content;'><img src='" +
+          "</td></tr> </table>" +
+          "<div style='margin-top: 3vh; display: flex; width: 100%; red; justify-content: center; align-items: center; height: fit-content;'><img src='" +
           imgHref +
           "' class='context-href'>"
       );
