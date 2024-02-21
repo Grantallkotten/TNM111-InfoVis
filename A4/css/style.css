@@ -1,6 +1,13 @@
 @font-face {
-  font-family: "YourFontName";
+  font-family: "STARWARS";
   src: url("../font/Starjedi.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Ant";
+  src: url("../font/Anta-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
@@ -8,8 +15,9 @@
 :root {
   --bg-color: #ffffff;
   --border-radius: 8px;
+  --p-color: #2b2c30;
   /* font-family: "Star Wars", sans-serif; */
-  font-family: "YourFontName", sans-serif;
+  font-family: "STARWARS", sans-serif;
 }
 
 body {
@@ -84,13 +92,35 @@ section {
   /* box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3); */
   border-radius: var(--border-radius);
   padding: 2vw;
-  height: 50vh;
+  height: 41vh;
 }
 
 .context {
   background-color: var(--bg-color);
   border-radius: var(--border-radius);
-  padding: 1vh;
+  padding: 0vh;
+}
+
+.contex-header {
+  font-family: "STARWARS";
+  text-align: center;
+  margin: 0;
+  color: black;
+}
+
+p {
+  color: var(--p-color);
+  padding: 0 1vw;
+  height: 2rem;
+  margin: 0;
+  font-family: "Ant";
+  font-weight: bold;
+}
+
+.context-href {
+  width: 10vw;
+  height: 10vw;
+  padding-right: 0.5vw;
 }
 
 line {
@@ -110,9 +140,4 @@ h1 {
   text-align: center;
   font-size: 4rem;
   margin: 0;
-}
-
-.context-href {
-  width: 200px;
-  height: 200px;
 }
