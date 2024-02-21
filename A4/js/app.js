@@ -397,10 +397,7 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
           .transition()
           .duration(100)
           .attr("font-size", function (d) {
-            return Math.max(
-              ((fontSize * d.value) / 60) * scale,
-              fontSize * scale
-            );
+            return Math.max(((fontSize * d.value) / 60) * scale, fontSize);
           });
       })
       .raise();
