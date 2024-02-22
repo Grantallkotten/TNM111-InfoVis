@@ -526,7 +526,6 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
     selectedNode2 = matching.node();
 
     const context = d3.select(id + "-context");
-    context.html(CONTEXTHEADER);
 
     if (matching.node()) {
       updateLinks(
@@ -549,6 +548,13 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
           "<div style='margin-top: 3vh; display: flex; width: 100%; red; justify-content: center; align-items: center; height: fit-content;'><img src='" +
           imgHref +
           "' class='context-href'>"
+      );
+    } else {
+      context.html(CONTEXTHEADER);
+      updateLinks(
+        id,
+        svg.selectAll("circle").data(),
+        svg.selectAll("line").data()
       );
     }
   }
