@@ -206,13 +206,22 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
       });
   }
 
-  async function updateLinks(id, theNodes, theLinks, selectedName = "") {
+  async function updateLinks(
+    id,
+    theNodes,
+    theLinks,
+    selectedName = "",
+    isThis = true
+  ) {
     let svg = d3.select(id);
 
     svg
       .selectAll("line")
       .data(
         theLinks.filter(function (d) {
+          if (!isThis) {
+            return true;
+          }
           const nodeTarget = theNodes.find((n) => n.name === d.target.name);
           const nodeSource = theNodes.find((n) => n.name === d.source.name);
           return (
@@ -225,6 +234,9 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
       )
 
       .join("line")
+      .attr("id", function (d) {
+        return id;
+      })
       .attr("x1", function (d) {
         return d.source.x;
       })
@@ -276,6 +288,9 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
         })
       )
       .join("circle")
+      .attr("id", function (d) {
+        return id;
+      })
       .attr("cx", function (d) {
         return d.x;
       })
@@ -429,8 +444,9 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
     const source = d3.select(this).attr("source");
     const target = d3.select(this).attr("target");
     const value = d3.select(this).attr("value");
+    const thisId = d3.select(this).attr("id");
 
-    let svg = d3.select(id);
+    let svg = d3.select(thisId);
 
     const sourceNode = svg.select(`text[text-name="${source}"]`);
     sourceNode
@@ -449,7 +465,7 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
     const imgHrefSource = sourceNode.attr("img-href");
     const imgHrefTarget = targetNode.attr("img-href");
 
-    const context = d3.select(id + "-context");
+    const context = d3.select(thisId + "-context");
 
     context.html(
       CONTEXTHEADER +
@@ -532,7 +548,8 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
         id,
         svg.selectAll("circle").data(),
         svg.selectAll("line").data(),
-        name
+        name,
+        false
       );
 
       const conversations = d3.select(matching.node()).attr("conversations");
@@ -554,7 +571,9 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
       updateLinks(
         id,
         svg.selectAll("circle").data(),
-        svg.selectAll("line").data()
+        svg.selectAll("line").data(),
+        "",
+        false
       );
     }
   }
