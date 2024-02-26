@@ -1,6 +1,7 @@
 function controlFromSlider(fromSlider, toSlider) {
   const [from, to] = getParsed(fromSlider, toSlider);
   fillSlider(fromSlider, toSlider, "#C6C6C6", "#25daa5", toSlider);
+
   if (from > to) {
     fromSlider.value = to;
   }
@@ -19,6 +20,7 @@ function controlToSlider(fromSlider, toSlider) {
 function getParsed(currentFrom, currentTo) {
   const from = parseInt(currentFrom.value, 10);
   const to = parseInt(currentTo.value, 10);
+
   return [from, to];
 }
 
@@ -74,6 +76,7 @@ function updateSliderValues(fromSlider, toSlider) {
 }
 
 export function changeSliderRange(id, min, max) {
+  console.log("[" + min + " ," + max + "]");
   const fromSlider = document.querySelector(id + "-fromSlider");
   const toSlider = document.querySelector(id + "-toSlider");
 

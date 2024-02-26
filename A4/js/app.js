@@ -27,16 +27,16 @@ async function loadEp() {
   }
 
   let EPISODES = [];
-  let index = 0;
+  let i = 0;
   for (let ep of SWEpRaw) {
-    if (index == 0) {
+    if (i == 0) {
       let SWep = new SWdata("All episodes", ep.nodes, ep.links);
       EPISODES.push(SWep);
     } else {
-      let SWep = new SWdata("Episode " + index, ep.nodes, ep.links);
+      let SWep = new SWdata("Episode " + i, ep.nodes, ep.links);
       EPISODES.push(SWep);
     }
-    index++;
+    i++;
   }
   return EPISODES;
 }
@@ -86,6 +86,7 @@ function initSimulateNodeSystem(ids) {
     d3.select("#content")
       .insert("svg")
       .attr("id", id)
+
       .attr("width", width / 2)
       .attr("height", height)
       .style("background-color", BACKGROUNDCOLORS[i])
@@ -112,6 +113,11 @@ let selectedNode1;
 
 async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
   let EPISODES = await loadEp();
+
+  const value = document.querySelector(
+    "#form" + id.slice(-1) + ' input[name="option"]:checked'
+  ).value;
+  index = index !== value ? value : index; // When the index dont corespond to the slider
 
   const contentDiv = document.getElementById("content");
   const contentHeaders = d3.select("#content-headers");
@@ -182,6 +188,9 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
       // Call ticked function
       ticked(id, links, nodes, nodeColor);
     });
+
+  const svg = d3.select(id);
+  const g = svg.select("g");
 
   async function ticked(id, theLinks, theNodes, nodeColor) {
     updateLinks(id, theNodes, theLinks);
@@ -272,7 +281,12 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
       .on("click", onClickLink)
       .lower();
   }
+  await setRange(nodes);
 
+  async function setRange(theNodes) {
+    let maxValInData = Math.max(...theNodes.map((obj) => obj.value));
+    changeSliderRange(id, 0, maxValInData + 1);
+  }
   async function updateNodes(id, theNodes, nodeColor) {
     let fontSize = 12;
     let maxValInData = 0;
@@ -303,8 +317,6 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
       .style("fill", function (d) {
         return nodeColor;
       });
-
-    changeSliderRange(id, 0, maxValInData + 1);
 
     // Update image elements
     svg
@@ -578,42 +590,43 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
     }
   }
 
-  function InitNodeRange(id) {
-    const sliderInputMin = document.querySelector(id + "-fromSlider");
-    const sliderInputMax = document.querySelector(id + "-toSlider");
-
-    let timer;
-
-    sliderInputMin.addEventListener("input", function () {
-      clearTimeout(timer); // Clear the previous timer
-
-      timer = setTimeout(function () {
-        simulateNodeSystem(
-          id,
-          index,
-          nodeColor,
-          sliderInputMin.value,
-          sliderInputMax.value
-        );
-      }, 500); // 500 milliseconds
-    });
-
-    sliderInputMax.addEventListener("input", function () {
-      clearTimeout(timer); // Clear the previous timer
-
-      timer = setTimeout(function () {
-        simulateNodeSystem(
-          id,
-          index,
-          nodeColor,
-          sliderInputMin.value,
-          sliderInputMax.value
-        );
-      }, 500); // 500 milliseconds
-    });
-  }
-
   InitNodeRange(id);
+}
+
+function InitNodeRange(id, nodeColor) {
+  const sliderInputMin = document.querySelector(id + "-fromSlider");
+  const sliderInputMax = document.querySelector(id + "-toSlider");
+  let timer;
+  const selectedValue = document.querySelector(
+    "#form" + id.slice(-1) + ' input[name="option"]:checked'
+  ).value;
+
+  sliderInputMin.addEventListener("input", function () {
+    clearTimeout(timer); // Clear the previous timer
+    timer = setTimeout(function () {
+      simulateNodeSystem(
+        id,
+        [selectedValue],
+        nodeColor,
+        sliderInputMin.value,
+        sliderInputMax.value
+      );
+    }, 500); // 500 milliseconds
+  });
+
+  sliderInputMax.addEventListener("input", function () {
+    clearTimeout(timer); // Clear the previous timer
+
+    timer = setTimeout(function () {
+      simulateNodeSystem(
+        id,
+        [selectedValue],
+        nodeColor,
+        sliderInputMin.value,
+        sliderInputMax.value
+      );
+    }, 500); // 500 milliseconds
+  });
 }
 
 let episodeForm1 = d3.select("#form1");
