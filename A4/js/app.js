@@ -153,7 +153,7 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
   if (nodes.length > 100) {
     force = -500;
     scale = 0.6;
-    BOXPADDING = 1000;
+    BOXPADDING = 400;
     LINKSIZE = 4;
   } else {
     force = -400;
