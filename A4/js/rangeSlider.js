@@ -76,7 +76,6 @@ function updateSliderValues(fromSlider, toSlider) {
 }
 
 export function changeSliderRange(id, min, max) {
-  console.log("[" + min + " ," + max + "]");
   const fromSlider = document.querySelector(id + "-fromSlider");
   const toSlider = document.querySelector(id + "-toSlider");
 
