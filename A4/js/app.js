@@ -70,9 +70,14 @@ const BACKGROUNDCOLORS = ["#fff", "#fff"];
 const HIGHLIGHTCOLOR = "#FF1200";
 const HIGHLIGHTSHADOW = "0 0 10px rgba(255, 18, 43, 1)";
 const CONTEXTHEADER = "<p class='contex-header'>Context table</p>";
-let LINKSIZE = 2;
+const LINKSIZE = 2;
 const LINECOLOR = "#BDB7B7";
 const LINEHIGLIGHT = "#00D679";
+
+const NODERADIUS = 30;
+const MINNODERADIUS = 20;
+const MAXNODERADIUS = 40;
+const PADDING = 30;
 
 function initSimulateNodeSystem(ids) {
   const contentDiv = document.getElementById("content");
@@ -125,13 +130,6 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
   const width = contentDiv.clientWidth;
   const height = contentDiv.clientHeight;
 
-  const NODERADIUS = 30;
-  const MINNODERADIUS = 20;
-  const MAXNODERADIUS = 40;
-  let BOXPADDING = 100;
-
-  const PADDING = 30;
-
   let data = EPISODES[index];
 
   contentHeaders
@@ -148,16 +146,16 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
   let nodes = data.nodes;
   let links = data.links;
 
+  let boxPadding = 100;
   let force = 0;
   let scale = 1;
   if (nodes.length > 100) {
     force = -500;
     scale = 0.6;
-    BOXPADDING = 400;
-    LINKSIZE = 4;
+    boxPadding = 400;
   } else {
     force = -400;
-    BOXPADDING = 0;
+    boxPadding = 0;
   }
 
   resetHiglight();
@@ -177,41 +175,36 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
     .on("tick", function () {
       nodes.forEach(function (d) {
         d.x = Math.max(
-          2 * NODERADIUS - PADDING - BOXPADDING,
-          Math.min(width / 2 - NODERADIUS - PADDING + BOXPADDING, d.x)
+          2 * NODERADIUS - PADDING - boxPadding,
+          Math.min(width / 2 - NODERADIUS - PADDING + boxPadding, d.x)
         ); // Ensure x is within left and right bounds
         d.y = Math.max(
-          2 * NODERADIUS - PADDING - BOXPADDING,
-          Math.min(height - NODERADIUS - PADDING + BOXPADDING, d.y)
+          2 * NODERADIUS - PADDING - boxPadding,
+          Math.min(height - NODERADIUS - PADDING + boxPadding, d.y)
         ); // Ensure y is within top and bottom bounds
       });
 
       // Call ticked function
-      ticked(id, links, nodes, nodeColor);
+      ticked(id);
     });
+
+  updateLinks(id, nodes, links, valMin, valMax);
+  updateNodes(id, nodes, nodeColor, valMin, valMax);
 
   const svg = d3.select(id);
   const zoom = d3.zoom().scaleExtent([0.1, 15]).on("zoom", handleZoom);
   svg.call(zoom);
 
   function handleZoom(e) {
-    //svg.selectAll("circle").attr("transform", e.transform);
-    //svg.selectAll("image").attr("transform", e.transform);
-    //svg.selectAll("text").attr("transform", e.transform);
-    //
-    //svg.selectAll("line").attr("transform", e.transform);
     svg.selectAll("*").attr("transform", e.transform);
   }
 
-  async function ticked(id, theLinks, theNodes, nodeColor) {
-    tickLinks();
-    tickNodes();
+  async function ticked(id) {
+    tickLinks(id);
+    tickNodes(id);
   }
 
-  updateLinks(id, nodes, links);
-  updateNodes(id, nodes, nodeColor);
-
-  function tickLinks() {
+  function tickLinks(id) {
     let svg = d3.select(id);
 
     svg
@@ -230,7 +223,7 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
       });
   }
 
-  function tickNodes() {
+  function tickNodes(id) {
     let svg = d3.select(id);
 
     svg
@@ -277,87 +270,12 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
       });
   }
 
-  async function updateLinks(
-    id,
-    theNodes,
-    theLinks,
-    selectedName = "",
-    isThis = true
-  ) {
-    let svg = d3.select(id);
-
-    svg
-      .selectAll("line")
-      .data(
-        theLinks.filter(function (d) {
-          if (!isThis) {
-            return true;
-          }
-          const nodeTarget = theNodes.find((n) => n.name === d.target.name);
-          const nodeSource = theNodes.find((n) => n.name === d.source.name);
-          return (
-            nodeTarget.value >= valMin &&
-            nodeTarget.value <= valMax &&
-            nodeSource.value >= valMin &&
-            nodeSource.value <= valMax
-          );
-        })
-      )
-
-      .join("line")
-      .attr("id", function (d) {
-        return id;
-      })
-      .attr("source", function (d) {
-        return d.source.name;
-      })
-      .attr("target", function (d) {
-        return d.target.name;
-      })
-      .attr("value", function (d) {
-        return d.value;
-      })
-      .attr("x1", function (d) {
-        return d.source.x;
-      })
-      .attr("y1", function (d) {
-        return d.source.y;
-      })
-      .attr("x2", function (d) {
-        return d.target.x;
-      })
-      .attr("y2", function (d) {
-        return d.target.y;
-      })
-      .style("stroke-width", Math.max(LINKSIZE * scale, 1) + "px")
-      .style("stroke", function (d) {
-        if (selectedName != "") {
-          if (d.source.name == selectedName || d.target.name == selectedName) {
-            console.log(
-              selectedName,
-              ": [ ",
-              d.source.name,
-              "  ",
-              d.target.name,
-              "]"
-            );
-            return LINEHIGLIGHT;
-          }
-          return "rgba(189, 183, 183, 0.24)";
-        } else {
-          return LINECOLOR;
-        }
-      })
-      .on("click", onClickLink)
-      .lower();
-  }
-  await setRange(nodes);
-
-  async function setRange(theNodes) {
+  async function setRange(id, theNodes) {
     let maxValInData = Math.max(...theNodes.map((obj) => obj.value));
     changeSliderRange(id, 0, maxValInData + 1);
   }
-  async function updateNodes(id, theNodes, nodeColor) {
+
+  async function updateNodes(id, theNodes, nodeColor, valMin, valMax) {
     let fontSize = 12;
     let maxValInData = 0;
     let svg = d3.select(id);
@@ -466,6 +384,76 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
       .raise();
   }
 
+  async function updateLinks(
+    id,
+    theNodes,
+    theLinks,
+    valMin,
+    valMax,
+    selectedName = "",
+    isThis = true
+  ) {
+    let svg = d3.select(id);
+
+    svg
+      .selectAll("line")
+      .data(
+        theLinks.filter(function (d) {
+          if (!isThis) {
+            return true;
+          }
+          const nodeTarget = theNodes.find((n) => n.name === d.target.name);
+          const nodeSource = theNodes.find((n) => n.name === d.source.name);
+          return (
+            nodeTarget.value >= valMin &&
+            nodeTarget.value <= valMax &&
+            nodeSource.value >= valMin &&
+            nodeSource.value <= valMax
+          );
+        })
+      )
+
+      .join("line")
+      .attr("id", function (d) {
+        return id;
+      })
+      .attr("source", function (d) {
+        return d.source.name;
+      })
+      .attr("target", function (d) {
+        return d.target.name;
+      })
+      .attr("value", function (d) {
+        return d.value;
+      })
+      .attr("x1", function (d) {
+        return d.source.x;
+      })
+      .attr("y1", function (d) {
+        return d.source.y;
+      })
+      .attr("x2", function (d) {
+        return d.target.x;
+      })
+      .attr("y2", function (d) {
+        return d.target.y;
+      })
+      .style("stroke-width", Math.max(LINKSIZE * scale, 1) + "px")
+      .style("stroke", function (d) {
+        if (selectedName != "") {
+          if (d.source.name == selectedName || d.target.name == selectedName) {
+            return LINEHIGLIGHT;
+          }
+          return "rgba(189, 183, 183, 0.24)";
+        } else {
+          return LINECOLOR;
+        }
+      })
+      .on("click", onClickLink)
+      .lower();
+  }
+  await setRange(id, nodes);
+
   function resetHiglight() {
     let content = d3.select("#content");
 
@@ -549,7 +537,7 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
     const conversations = d3.select(this).attr("conversations");
     const imgHref = d3.select(this).attr("img-href");
 
-    updateLinks(id, nodes, links, name);
+    updateLinks(id, nodes, links, valMin, valMax, name);
 
     let id2 = "#svg2";
 
@@ -597,6 +585,8 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
         id,
         svg.selectAll("circle").data(),
         svg.selectAll("line").data(),
+        valMin,
+        valMax,
         name,
         false
       );
@@ -621,6 +611,8 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
         id,
         svg.selectAll("circle").data(),
         svg.selectAll("line").data(),
+        valMin,
+        valMax,
         "",
         false
       );
