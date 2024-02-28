@@ -553,7 +553,7 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
       CONTEXTHEADER +
         "<table border='0' style=''> <tr> <td class='left-align'>Name:    </td> <td>" +
         name +
-        "</td> </tr> <tr> <td class='left-align'>Appearance:    </td> <td>" +
+        "</td> </tr> <tr> <td class='left-align'>Appearances:    </td> <td>" +
         conversations +
         "</td></tr> </table>" +
         "<div style='margin-top: 3vh; display: flex; width: 100%; red; justify-content: center; align-items: center; height: fit-content;'><img src='" +
@@ -598,7 +598,7 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
         CONTEXTHEADER +
           "<table border='0' style=''> <tr> <td class='left-align'>Name:    </td> <td>" +
           name +
-          "</td> </tr> <tr> <td class='left-align'>Appearance:    </td> <td>" +
+          "</td> </tr> <tr> <td class='left-align'>Appearances:    </td> <td>" +
           conversations +
           "</td></tr> </table>" +
           "<div style='margin-top: 3vh; display: flex; width: 100%; red; justify-content: center; align-items: center; height: fit-content;'><img src='" +
