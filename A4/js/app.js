@@ -71,8 +71,10 @@ const HIGHLIGHTCOLOR = "#FF1200";
 const HIGHLIGHTSHADOW = "0 0 10px rgba(255, 18, 43, 1)";
 const CONTEXTHEADER = "<p class='contex-header'>Context table</p>";
 const LINECOLOR = "#BDB7B7";
+const LINKNODEHIGLIGHT = "rgb(151, 215, 169)";
 const LINEHIGLIGHT = "rgb(255, 18, 0)";
 const LINKHOVERCOLOR = "rgb(44, 41, 81)";
+const LINKSIZE = 4;
 
 const NODERADIUS = 30;
 const MINNODERADIUS = 20;
@@ -131,7 +133,6 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
   const height = contentDiv.clientHeight;
 
   let data = EPISODES[index];
-  let linkSize = 4;
 
   contentHeaders
     .select(id + "-header")
@@ -440,12 +441,12 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
       .attr("y2", function (d) {
         return d.target.y;
       })
-      .style("stroke-width", Math.max(linkSize * scale, 1) + "px")
+      .style("stroke-width", Math.max(LINKSIZE * scale, 1) + "px")
 
       .style("stroke", function (d) {
         if (selectedName != "") {
           if (d.source.name == selectedName || d.target.name == selectedName) {
-            return LINEHIGLIGHT;
+            return LINKNODEHIGLIGHT;
           }
           return "rgba(189, 183, 183, 0.24)";
         } else {
@@ -455,13 +456,19 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
       .on("mouseover", function (event, d) {
         const currentColor = d3.select(this).style("stroke");
 
-        if (currentColor !== LINEHIGLIGHT) {
+        if (
+          currentColor !== LINEHIGLIGHT &&
+          currentColor !== LINKNODEHIGLIGHT
+        ) {
           d3.select(this).style("stroke", LINKHOVERCOLOR);
         }
       })
       .on("mouseout", function (event, d) {
         const currentColor = d3.select(this).style("stroke");
-        if (currentColor !== LINEHIGLIGHT) {
+        if (
+          currentColor !== LINEHIGLIGHT &&
+          currentColor !== LINKNODEHIGLIGHT
+        ) {
           d3.select(this).style("stroke", function (d) {
             if (selectedName !== "") {
               if (
