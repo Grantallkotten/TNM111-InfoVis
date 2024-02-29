@@ -70,9 +70,9 @@ const BACKGROUNDCOLORS = ["#fff", "#fff"];
 const HIGHLIGHTCOLOR = "#FF1200";
 const HIGHLIGHTSHADOW = "0 0 10px rgba(255, 18, 43, 1)";
 const CONTEXTHEADER = "<p class='contex-header'>Context table</p>";
-const LINKSIZE = 2;
 const LINECOLOR = "#BDB7B7";
-const LINEHIGLIGHT = "#00D679";
+const LINEHIGLIGHT = "rgb(255, 18, 0)";
+const LINKHOVERCOLOR = "rgb(44, 41, 81)";
 
 const NODERADIUS = 30;
 const MINNODERADIUS = 20;
@@ -131,6 +131,7 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
   const height = contentDiv.clientHeight;
 
   let data = EPISODES[index];
+  let linkSize = 4;
 
   contentHeaders
     .select(id + "-header")
@@ -192,6 +193,7 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
   updateNodes(id, nodes, nodeColor, valMin, valMax);
 
   const svg = d3.select(id);
+
   const zoom = d3.zoom().scaleExtent([0.1, 15]).on("zoom", handleZoom);
   svg.call(zoom);
 
@@ -438,7 +440,8 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
       .attr("y2", function (d) {
         return d.target.y;
       })
-      .style("stroke-width", Math.max(LINKSIZE * scale, 1) + "px")
+      .style("stroke-width", Math.max(linkSize * scale, 1) + "px")
+
       .style("stroke", function (d) {
         if (selectedName != "") {
           if (d.source.name == selectedName || d.target.name == selectedName) {
@@ -447,6 +450,32 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
           return "rgba(189, 183, 183, 0.24)";
         } else {
           return LINECOLOR;
+        }
+      })
+      .on("mouseover", function (event, d) {
+        const currentColor = d3.select(this).style("stroke");
+
+        if (currentColor !== LINEHIGLIGHT) {
+          d3.select(this).style("stroke", LINKHOVERCOLOR);
+        }
+      })
+      .on("mouseout", function (event, d) {
+        const currentColor = d3.select(this).style("stroke");
+        if (currentColor !== LINEHIGLIGHT) {
+          d3.select(this).style("stroke", function (d) {
+            if (selectedName !== "") {
+              if (
+                d.source.name === selectedName ||
+                d.target.name === selectedName
+              ) {
+                return LINEHIGLIGHT;
+              } else {
+                return "rgba(189, 183, 183, 0.24)";
+              }
+            } else {
+              return LINECOLOR;
+            }
+          });
         }
       })
       .on("click", onClickLink)
@@ -473,7 +502,6 @@ async function simulateNodeSystem(id, index, nodeColor, valMin, valMax) {
   function onClickLink() {
     resetHiglight();
 
-    console.log(this);
     d3.select(this)
       .style("stroke", HIGHLIGHTCOLOR)
       .style("filter", "opacity(60%)");
